@@ -1,29 +1,10 @@
-# monkeys-fresh2
+# PROJECT2-SEC-1-Monkeyz
 
-This template should help get you started developing with Vue 3 in Vite.
 
-## Recommended IDE Setup
+## สมาชิกในทีม
+- นายจิตติพัฒน์ พลหาร 65130500009 
+- นายชนะพล เอื้อเฟื้อ 65130500015 
+- นายชิษณุชา เชิงสมอ 65130500016
+- นายชยาศิส เกษรมาศ 65130500097
+- นายธนกร วงษ์คนดี 65130500123
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
-
-## Project Setup
-
-```sh
-npm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
-```
-
-### Compile and Minify for Production
-
-```sh
-npm run build
-```
