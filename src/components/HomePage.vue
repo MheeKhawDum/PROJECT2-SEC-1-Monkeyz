@@ -1,5 +1,9 @@
 <script setup>
 import { ref } from "vue";
+import { useRoute, useRouter } from "vue-router"
+import HeaderFooterLayout from './Header.vue';
+
+const router = useRouter()
 
 // Data for different pages
 const home = ref(true);
@@ -45,7 +49,12 @@ const drinkOptionsItem = (drink) => {
 </script>
 
 <template>
-    <div>
+
+<HeaderFooterLayout>
+    <template #sidebar>
+        <li><a href="#" @click="router.push({name: 'menuPage'})">Menu</a></li>
+        <li><a href="#" @click="router.push({name: 'home'})">Home</a></li>
+      </template>
   <!-- home page -->
   <div  class="relative bg-orange-100">
     <div class="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-8">
@@ -98,5 +107,6 @@ const drinkOptionsItem = (drink) => {
       />
     </div>
   </div>
-    </div>
+  
+</HeaderFooterLayout>
 </template>

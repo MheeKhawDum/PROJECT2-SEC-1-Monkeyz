@@ -1,34 +1,21 @@
 <script setup>
+import { useRoute, useRouter } from "vue-router"
 import HeaderFooterLayout from './Header.vue';
+
+const router = useRouter()
 </script>
  
 <template>
     <HeaderFooterLayout>
       <!-- Slot for sidebar -->
       <template #sidebar>
-        <li><a href="#">Menu Item 1</a></li>
-        <li><a href="#">Menu Item 2</a></li>
+        <li><a href="#" @click="router.push({name: 'menuPage'})">Menu</a></li>
+        <li><a href="#" @click="router.push({name: 'home'})">Home</a></li>
       </template>
-  
-      <!-- Slot for title -->
-      <template #title>
-        <a class="btn btn-ghost text-xl text-white justify-start">My Custom Title</a>
-      </template>
-  
-      <!-- Slot for cart -->
-      <template #cart>
-        <button class="btn btn-square btn-ghost bg-white rounded-xl">My Custom Cart</button>
-      </template>
-  
       <!-- Main content -->
       <div>
-        <p>Main content goes here.</p>
+        <p>ใส่คอนเท้นท์ตรงนี้นะจ๊ะ</p>
       </div>
-  
-      <!-- Slot for footer -->
-      <template #footer>
-        <p>My Custom Footer © 2024</p>
-      </template>
     </HeaderFooterLayout>
   </template>
   
