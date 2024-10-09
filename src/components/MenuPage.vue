@@ -53,13 +53,16 @@ fetchData();
       <div v-if="listCoffee.length">
         <h1>Coffee</h1>
         <div class="menu-grid">
-          <div
-            v-for="(item, index) in listCoffee"
-            :key="index"
-            class="menu-item"
-          >
-            <p>{{ item.name }} - {{ item.price }} THB</p>
+          <div v-on:click="">
+            <div
+              v-for="(item, index) in listCoffee"
+              :key="index"
+              class="menu-item"
+            >
+              <p>{{ item.name }} - {{ item.price }} THB</p>
+            </div>
           </div>
+
         </div>
       </div>
 
