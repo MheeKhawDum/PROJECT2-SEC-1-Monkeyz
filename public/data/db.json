@@ -1,104 +1,100 @@
 {
-    "coffeeMenu": [
-      {
-        "category": "Coffee",
-        "name": "Capuccino",
-        "image": "../picture/cappuccino coffee.png",
-        "price": 40
-      },
-      {
-        "category": "Coffee",
-        "name": "Espresso",
-        "image": "../picture/espresso coffee.png",
-        "price": 50
-      },
-      {
-        "category": "Coffee",
-        "name": "Latte",
-        "image": "../picture/latte coffee.png",
-        "price": 50
-      },
-      {
-        "category": "Coffee",
-        "name": "Mocha",
-        "image": "../picture/Mocha_coffe.png",
-        "price": 50
-      }
-    ],
-    "teaMenu": [
-      {
-        "category": "Tea",
-        "name": "Green Tea",
-        "image": "../picture/green tea.png",
-        "price": 50
-      },
-      {
-        "category": "Tea",
-        "name": "Matcha Latte",
-        "image": "../picture/matcha latte.png",
-        "price": 55
-      },
-      {
-        "category": "Tea",
-        "name": "Black Tea",
-        "image": "../picture/black tea.png",
-        "price": 40
-      },
-      {
-        "category": "Tea",
-        "name": "Hojicha Tea",
-        "image": "../picture/hojicha tea.png",
-        "price": 50
-      },
-      {
-        "category": "Tea",
-        "name": "Milk Tea",
-        "image": "../picture/milk tea.png",
-        "price": 50
-      },
-      {
-        "category": "Tea",
-        "name": "Lemon Tea",
-        "image": "../picture/Lemontea.png",
-        "price": 50
-      },
-      {
-        "category": "Tea",
-        "name": "Thai Tea",
-        "image": "../picture/Thai_tea.png",
-        "price": 50
-      }
-    ],
-    "milkMenu": [
-      {
-        "category": "Milk",
-        "name": "Fresh Milk",
-        "image": "../picture/fresh milk.png",
-        "price": 50
-      },
-      {
-        "category": "Milk",
-        "name": "Pink Milk",
-        "image": "../picture/Pink Milk.png",
-        "price": 50
-      }
-    ],
-    "custom":[
-      {
-        "category":"custom",
-        "base":"",
-        "topping":"",
-        "price":"",
-        "drinktype":""
-      }
-    ],
-    "meterial":[
-      { "name": "Whipped Cream" , "price": 10 ,"position":"topping"},
-      { "name": "Chocolate Chips", "price": 15, "position":"topping"},
-      { "name": "Cinnamon", "price": 5 , "position":"topping"},
-      { "name": "Caramel Drizzle", "price": 10, "position":"topping" },
-      { "name" : "coffee" , "price": 40, "position":"topping"},
-      { "base" : "tea", "price": 40, "position":"topping"},
-      { "base" : "milk", "price": 40, "position":"topping"}
-    ]
-  }
+  "coffeeMenu": [
+    {
+      "category": "Coffee",
+      "name": "Capuccino",
+      "image": "../picture/cappuccino coffee.png",
+      "price": 40
+    },
+    {
+      "category": "Coffee",
+      "name": "Espresso",
+      "image": "../picture/espresso coffee.png",
+      "price": 50
+    },
+    {
+      "category": "Coffee",
+      "name": "Latte",
+      "image": "../picture/latte coffee.png",
+      "price": 50
+    },
+    {
+      "category": "Coffee",
+      "name": "Mocha",
+      "image": "../picture/Mocha_coffe.png",
+      "price": 50
+    }
+  ],
+  "teaMenu": [
+    {
+      "category": "Tea",
+      "name": "Green Tea",
+      "image": "../picture/green tea.png",
+      "price": 50
+    },
+    {
+      "category": "Tea",
+      "name": "Matcha Latte",
+      "image": "../picture/matcha latte.png",
+      "price": 55
+    },
+    {
+      "category": "Tea",
+      "name": "Black Tea",
+      "image": "../picture/black tea.png",
+      "price": 40
+    },
+    {
+      "category": "Tea",
+      "name": "Hojicha Tea",
+      "image": "../picture/hojicha tea.png",
+      "price": 50
+    },
+    {
+      "category": "Tea",
+      "name": "Milk Tea",
+      "image": "../picture/milk tea.png",
+      "price": 50
+    },
+    {
+      "category": "Tea",
+      "name": "Lemon Tea",
+      "image": "../picture/Lemontea.png",
+      "price": 50
+    },
+    {
+      "category": "Tea",
+      "name": "Thai Tea",
+      "image": "../picture/Thai_tea.png",
+      "price": 50
+    }
+  ],
+  "milkMenu": [
+    {
+      "category": "Milk",
+      "name": "Fresh Milk",
+      "image": "../picture/fresh milk.png",
+      "price": 50
+    },
+    {
+      "category": "Milk",
+      "name": "Pink Milk",
+      "image": "../picture/Pink Milk.png",
+      "price": 50
+    }
+  ],
+  "custom":[
+    {"base":["coffee","tea","milk"]},
+    {"drinktype":["hot", "cold"]},
+    {"flavors": ["vanilla","Chocolate","Caramel", "Mint"]}
+  ],
+  "meterial":[
+    { "name": "Whipped Cream" , "price": 10 ,"position":"topping"},
+    { "name": "Chocolate Chips", "price": 15, "position":"topping"},
+    { "name": "Cinnamon", "price": 5 , "position":"topping"},
+    { "name": "Caramel Drizzle", "price": 10, "position":"topping" },
+    { "name" : "coffee" , "price": 40, "position":"topping"},
+    { "base" : "tea", "price": 40, "position":"topping"},
+    { "base" : "milk", "price": 40, "position":"topping"}
+  ]
+}

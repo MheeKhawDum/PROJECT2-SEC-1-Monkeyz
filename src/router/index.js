@@ -3,6 +3,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomePage from '@/components/HomePage.vue'
 import MenuPage from '@/components/MenuPage.vue'
 import CustomPage from '@/components/CustomPage.vue'
+import CartPopup from '../components/CartPopup.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -22,7 +23,12 @@ const router = createRouter({
       path: '/custom',
       name: 'customPage',
       component: CustomPage
-    }
+    },
+    {
+      path: '/cart',
+      name: 'CartPopup',
+      component: CartPopup
+    },
   ],
 })
 
