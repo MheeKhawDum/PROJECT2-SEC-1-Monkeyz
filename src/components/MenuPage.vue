@@ -2,25 +2,26 @@
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import HeaderFooterLayout from "./Header.vue";
-import { getMenu } from "../lib/fetch";
+import { getMenu, getItems } from "../lib/fetch";
 
 const router = useRouter();
-const listCoffee = ref([]);
-const listTea = ref([]);
-const listMilk = ref([]);
 const isLoading = ref(true);
 const errorMessage = ref("");
+
+const listCoffee = ref({})
+const listTea = ref({})
+const listMilk = ref({});
 
 // ฟังก์ชันดึงข้อมูลจาก db.json
 async function fetchData() {
   try {
-    isLoading.value = true;
-    const response = await getMenu();
-    const data = await response.json();
+    // isLoading.value = true;
 
-    listCoffee.value = data.coffeeMenu;
-    listTea.value = data.teaMenu;
-    listMilk.value = data.milkMenu;
+    listCoffee.value = await getItems(`${import.meta.env.VITE_BASE_URL}/coffeeMenu`)
+    listTea.value = await getItems(`${import.meta.env.VITE_BASE_URL}/teaMenu`)
+    listMilk.value = await getItems(`${import.meta.env.VITE_BASE_URL}/milkMenu`)
+
+
   } catch (error) {
     console.error(error);
     errorMessage.value = "Failed to load menu items. Please try again.";

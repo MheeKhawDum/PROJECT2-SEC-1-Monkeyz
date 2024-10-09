@@ -16,6 +16,17 @@ async function getMenu(path) {
 
 }
 
+async function getItems(url) {
+    try {
+      const data = await fetch(url)
+      const items = await data.json()
+      return items
+    } catch (error) {
+      console.log(`error: ${error}`)
+      throw new Error(error)
+    }
+  }
+
 
 async function deleteOrder() {
 
@@ -30,4 +41,4 @@ async function addOrder() {
 
 }
 
-export { getMenu, deleteOrder, editOrder, addOrder }
+export { getMenu, getItems, deleteOrder, editOrder, addOrder }
