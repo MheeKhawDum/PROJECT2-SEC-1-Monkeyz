@@ -3,6 +3,8 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomePage from '@/components/HomePage.vue'
 import MenuPage from '@/components/MenuPage.vue'
 import CustomPage from '@/components/CustomPage.vue'
+import CartPopup from '@/components/CartPopup.vue'
+import EditPage from '@/components/EditPage.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -16,12 +18,33 @@ const router = createRouter({
     {
       path: '/menu',
       name: 'menuPage',
-      component: MenuPage
+      component: MenuPage,
+      // children: [
+      //   {
+      //     path: '/cart',
+      //     name: 'cart',
+      //     component: CartPopup           
+      //   }
+      // ]
     },
     {
       path: '/custom',
       name: 'customPage',
       component: CustomPage
+    },
+    {
+      path: '/edit',
+      name: 'edit',
+      component: EditPage
+    },
+    {
+      path: '/cart',
+      name: 'cart',
+      component: CartPopup           
+    },
+    {
+      path: '/',
+      redirect: {name: 'home'}
     }
   ],
 })
