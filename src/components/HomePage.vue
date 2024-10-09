@@ -82,14 +82,14 @@ const drinkOptionsItem = (drink) => {
 
           <div class="mt-8 flex flex-wrap gap-4 text-center cursor-pointer">
             <button
-              @click="openPage('menu')"
+              @click="router.push({name: 'menuPage'})"
               class="block rounded-lg px-20 py-6 font-sans text-xl font-extrabold uppercase text-slate-950 transition-all hover:bg-orange-500/50 active:bg-orange-500/20 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
             >
               Menu
             </button>
 
             <a
-              @click="openPage('custom')"
+              @click="router.push({name: 'customPage'})"
               class="block rounded-lg px-20 py-6 font-sans text-xl font-extrabold uppercase text-slate-950 transition-all hover:bg-orange-500/50 active:bg-orange-500/20 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
             >
               Custom Menu

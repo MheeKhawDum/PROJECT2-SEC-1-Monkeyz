@@ -1,6 +1,8 @@
 <script setup>
 import { ref } from "vue";
+import { useRoute, useRouter } from "vue-router"
 
+const router = useRouter()
 </script>
 
 <template>
@@ -61,7 +63,7 @@ import { ref } from "vue";
         <!-- Cart Button Slot -->
         <div class="flex-none">
           <slot name="cart">
-            <button class="btn btn-square btn-ghost bg-white rounded-xl">
+            <button class="btn btn-square btn-ghost bg-white rounded-xl" @click="router.push({name: 'edit'})">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
