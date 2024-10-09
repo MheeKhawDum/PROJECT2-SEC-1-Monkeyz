@@ -30,6 +30,12 @@ async function fetchData() {
   }
 }
 
+function openDrinkOption(menuItem) {  
+        router.push({
+        name: "drinkOption",
+        params: { name: menuItem},
+    })
+  }
 fetchData();
 </script>
 
@@ -53,11 +59,12 @@ fetchData();
       <div v-if="listCoffee.length">
         <h1>Coffee</h1>
         <div class="menu-grid">
-          <div v-on:click="">
+          <div >
             <div
               v-for="(item, index) in listCoffee"
               :key="index"
               class="menu-item"
+              @click="openDrinkOption(item.name)"
             >
               <p>{{ item.name }} - {{ item.price }} THB</p>
             </div>
@@ -70,7 +77,7 @@ fetchData();
       <div v-if="listTea.length">
         <h1>Tea</h1>
         <div class="menu-grid">
-          <div v-for="(item, index) in listTea" :key="index" class="menu-item">
+          <div v-for="(item, index) in listTea" :key="index" class="menu-item" @click="openDrinkOption(item.name)">
             <p>{{ item.name }} - {{ item.price }} THB</p>
           </div>
         </div>
@@ -80,7 +87,7 @@ fetchData();
       <div v-if="listMilk.length">
         <h1>Milk</h1>
         <div class="menu-grid">
-          <div v-for="(item, index) in listMilk" :key="index" class="menu-item">
+          <div v-for="(item, index) in listMilk" :key="index" class="menu-item" @click="openDrinkOption(item.name)">
             <p>{{ item.name }} - {{ item.price }} THB</p>
           </div>
         </div>

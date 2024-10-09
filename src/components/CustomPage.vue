@@ -17,6 +17,7 @@ const currentQuestionIndex = ref(0);
 const clickCount = ref(0);
 
 
+
 // ตัวแปรสำหรับจัดการสีพื้นหลังและแก้ว
 const backgroundColor = ref('#fad168');
 const hotColors = { layer4: '#ffcc80', layer3: '#ffb74d', layer2: '#ffa726', layer1: '#ff9800' };

@@ -172,8 +172,7 @@ function placeOrder() {
 </script>
 
 <template>
-  <div class="bg-black bg-opacity-50 absolute inset-0"></div>
-  <div class="modal-box relative z-30 p-5 bg-white rounded shadow-lg w-[35%] h-[50%]">
+  <div>
     <p>popup cart</p>
   </div>
 </template>

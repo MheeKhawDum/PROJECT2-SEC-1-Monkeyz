@@ -44,7 +44,7 @@ const router = createRouter({
       component: CartPopup           
     },
     {
-      path: '/drinkOption',
+      path: '/drinkOption/:name',
       name: 'drinkOption' ,
       component: DrinkOptions
     },
