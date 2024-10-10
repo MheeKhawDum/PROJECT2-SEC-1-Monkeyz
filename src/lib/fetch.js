@@ -1,9 +1,9 @@
 const url = import.meta.env.VITE_BASE_URL
 
 
-async function getList(path) {
+async function getMenu(path) {
     try {
-        const res = await fetch(`${url}${path}`)
+        const res = await fetch(`${url}/${path}`)
         if (!res.ok) {
             throw new Error("Failed to fetch data")
         }
@@ -13,6 +13,32 @@ async function getList(path) {
         console.error("Error fetching data:", error)
         throw error
     }
+
 }
 
-export { getList }
+async function getItems(url) {
+    try {
+      const data = await fetch(url)
+      const items = await data.json()
+      return items
+    } catch (error) {
+      console.log(`error: ${error}`)
+      throw new Error(error)
+    }
+  }
+
+
+async function deleteOrder() {
+
+}
+
+async function editOrder() {
+
+}
+
+
+async function addOrder() {
+
+}
+
+export { getMenu, getItems, deleteOrder, editOrder, addOrder }

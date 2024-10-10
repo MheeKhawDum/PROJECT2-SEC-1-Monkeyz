@@ -1,6 +1,8 @@
 <script setup>
 import { ref } from "vue";
+import { useRoute, useRouter } from "vue-router"
 
+const router = useRouter()
 </script>
 
 <template>
@@ -54,14 +56,14 @@ import { ref } from "vue";
         <div class="flex-1">
           <!-- Title Slot -->
           <slot name="title">
-            <a class="btn btn-ghost text-xl text-white justify-start">Monkeys-Fresh</a>
+            <a class="btn btn-ghost text-xl text-white justify-start" @click="router.push({name: 'home'})">Monkeys-Fresh</a>
           </slot>
         </div>
   
         <!-- Cart Button Slot -->
         <div class="flex-none">
           <slot name="cart">
-            <button class="btn btn-square btn-ghost bg-white rounded-xl">
+            <button class="btn btn-square btn-ghost bg-white rounded-xl" @click="router.push({name: 'cart'})">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"

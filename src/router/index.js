@@ -5,6 +5,10 @@ import MenuPage from '@/components/MenuPage.vue'
 import CustomPage from '@/components/CustomPage.vue'
 import CartPopup from '../components/CartPopup.vue'
 
+import CartPopup from '@/components/CartPopup.vue'
+import EditPage from '@/components/EditPage.vue'
+import DrinkOptions from '@/components/DrinkOptions.vue'
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   //history: createWebHistory("/nw3/"),
@@ -17,7 +21,14 @@ const router = createRouter({
     {
       path: '/menu',
       name: 'menuPage',
-      component: MenuPage
+      component: MenuPage,
+      // children: [
+      //   {
+      //     path: '/cart',
+      //     name: 'cart',
+      //     component: CartPopup           
+      //   }
+      // ]
     },
     {
       path: '/custom',
@@ -29,7 +40,26 @@ const router = createRouter({
       name: 'CartPopup',
       component: CartPopup
     },
-  ],
+
+      path: '/edit',
+      name: 'edit',
+      component: EditPage
+    },
+    {
+      path: '/cart',
+      name: 'cart',
+      component: CartPopup           
+    },
+    {
+      path: '/drinkOption/:name',
+      name: 'drinkOption' ,
+      component: DrinkOptions
+    },
+    {
+      path: '/',
+      redirect: {name: 'home'}
+    }
+  ]
 })
 
 export default router
