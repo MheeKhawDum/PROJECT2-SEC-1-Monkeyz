@@ -2,52 +2,28 @@
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import HeaderFooterLayout from "./Header.vue";
-
-const router = useRouter();
-const listCoffee = ref([]);
-const listTea = ref([]);
-const listMilk = ref([]);
-const isLoading = ref(true);
-const errorMessage = ref("");
-
-// ฟังก์ชันดึงข้อมูลจาก db.json
-async function fetchData() {
-  try {
-    isLoading.value = true;
-    const response = await fetch("/data/db.json");
-    const data = await response.json();
-
-    listCoffee.value = data.coffeeMenu;
-    listTea.value = data.teaMenu;
-    listMilk.value = data.milkMenu;
-  } catch (error) {
-    console.error(error);
-    errorMessage.value = "Failed to load menu items. Please try again.";
-  } finally {
-    isLoading.value = false;
-  }
-}
 import { getMenu, getItems } from "../lib/fetch";
 
 const router = useRouter();
 const isLoading = ref(true);
 const errorMessage = ref("");
 
-const listCoffee = ref({})
-const listTea = ref({})
+const listCoffee = ref({});
+const listTea = ref({});
 const listMilk = ref({});
 
-// ฟังก์ชันดึงข้อมูลจาก db.json
+// ฟังก์ชันดึงข้อมูลจาก API
 async function fetchData() {
   try {
     // isLoading.value = true;
 
-    listCoffee.value = await getItems(`${import.meta.env.VITE_BASE_URL}/coffeeMenu`)
-    listTea.value = await getItems(`${import.meta.env.VITE_BASE_URL}/teaMenu`)
-    listMilk.value = await getItems(`${import.meta.env.VITE_BASE_URL}/milkMenu`)
-
-
-
+    listCoffee.value = await getItems(
+      `${import.meta.env.VITE_BASE_URL}/coffeeMenu`
+    );
+    listTea.value = await getItems(`${import.meta.env.VITE_BASE_URL}/teaMenu`);
+    listMilk.value = await getItems(
+      `${import.meta.env.VITE_BASE_URL}/milkMenu`
+    );
   } catch (error) {
     console.error(error);
     errorMessage.value = "Failed to load menu items. Please try again.";
@@ -56,12 +32,12 @@ async function fetchData() {
   }
 }
 
-function openDrinkOption(menuItem) {  
-        router.push({
-        name: "drinkOption",
-        params: { name: menuItem},
-    })
-  }
+function openDrinkOption(menuItem) {
+  router.push({
+    name: "drinkOption",
+    params: { name: menuItem },
+  });
+}
 fetchData();
 </script>
 
@@ -89,18 +65,9 @@ fetchData();
             v-for="(item, index) in listCoffee"
             :key="index"
             class="menu-item"
+            @click="openDrinkOption(item.name)"
           >
             <p>{{ item.name }} - {{ item.price }} THB</p>
-          </div>
-          <div >
-            <div
-              v-for="(item, index) in listCoffee"
-              :key="index"
-              class="menu-item"
-              @click="openDrinkOption(item.name)"
-            >
-              <p>{{ item.name }} - {{ item.price }} THB</p>
-            </div>
           </div>
         </div>
       </div>
@@ -109,26 +76,31 @@ fetchData();
       <div v-if="listTea.length">
         <h1>Tea</h1>
         <div class="menu-grid">
-          <div v-for="(item, index) in listTea" :key="index" class="menu-item">
-
-          <div v-for="(item, index) in listTea" :key="index" class="menu-item" @click="openDrinkOption(item.name)">
+          <div
+            v-for="(item, index) in listTea"
+            :key="index"
+            class="menu-item"
+            @click="openDrinkOption(item.name)"
+          >
             <p>{{ item.name }} - {{ item.price }} THB</p>
           </div>
         </div>
-      </div>
       </div>
 
       <!-- Milk Menu -->
       <div v-if="listMilk.length">
         <h1>Milk</h1>
         <div class="menu-grid">
-          <div v-for="(item, index) in listMilk" :key="index" class="menu-item">
-          <div v-for="(item, index) in listMilk" :key="index" class="menu-item" @click="openDrinkOption(item.name)">
+          <div
+            v-for="(item, index) in listMilk"
+            :key="index"
+            class="menu-item"
+            @click="openDrinkOption(item.name)"
+          >
             <p>{{ item.name }} - {{ item.price }} THB</p>
           </div>
         </div>
       </div>
-    </div>
     </div>
   </HeaderFooterLayout>
 </template>
@@ -164,6 +136,4 @@ fetchData();
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   text-align: center;
 }
-</style>
-
 </style>

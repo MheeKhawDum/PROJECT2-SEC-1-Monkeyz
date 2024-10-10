@@ -1,45 +1,85 @@
 <script setup>
-import { ref } from 'vue';
+import { ref } from "vue";
+import { useRoute } from "vue-router"; // Import useRoute to access route params
+import { getItems } from "../lib/fetch"; // Import getItems to fetch data
 
-// Data for the selected menu item (this would likely be passed as a prop or fetched from a store)
-const selectedMenuItem = ref({
-  name: 'Latte',
-  drinkType: 'hot',
-  sweetness: '50%',
-  image: '../picture/latte.png', // Update image path
-  basePrice: 50, // base price for the drink
-});
+// Variables
+const route = useRoute();
+const selectedMenuItem = ref(null);
+const menuItems = ref([]);
 
-// Function to calculate the total price based on the drink type
-const priceEdit = () => {
-  let price = selectedMenuItem.value.basePrice;
+// Function to fetch menu items
+async function fetchMenu() {
+  const coffeeMenu = await getItems(
+    `${import.meta.env.VITE_BASE_URL}/coffeeMenu`
+  );
+  const teaMenu = await getItems(`${import.meta.env.VITE_BASE_URL}/teaMenu`);
+  const milkMenu = await getItems(`${import.meta.env.VITE_BASE_URL}/milkMenu`);
 
-  if (selectedMenuItem.value.drinkType === 'cold') {
-    price += 10; // add 10 THB for cold drinks
-  }
+  menuItems.value = [...coffeeMenu, ...teaMenu, ...milkMenu];
 
-  return price;
-};
+  // Find the selected drink based on route params
+  const drinkName = route.params.name;
+  selectedMenuItem.value = menuItems.value.find(
+    (item) => item.name === drinkName
+  );
+}
 
-// Function to save the edited changes
+// Fetch menu on component load
+fetchMenu();
+
+// Save and cancel functions
 const saveEdit = () => {
-  // Logic to save the edited drink (could involve updating a store or making an API call)
-  console.log('Changes saved:', selectedMenuItem.value);
-  alert('Changes saved successfully.');
+  console.log("Changes saved:", selectedMenuItem.value);
+  alert("Changes saved successfully.");
 };
 
-// Function to cancel the edit and revert changes
 const cancelEdit = () => {
-  // Logic to handle cancellation (could involve resetting the data or navigating to a different page)
-  console.log('Edit canceled');
-  alert('Edit canceled.');
+  console.log("Edit canceled");
+  alert("Edit canceled.");
 };
 </script>
 
-
 <template>
-<div>
-  <p>edit page</p>
-</div>
+  <div v-if="selectedMenuItem" class="edit-page">
+    <h1>Edit Drink</h1>
+    <div>
+      <img :src="selectedMenuItem.image" :alt="selectedMenuItem.name" />
+      <p>
+        Name: <strong>{{ selectedMenuItem.name }}</strong>
+      </p>
+      <p>
+        Drink Type:
+        <select v-model="selectedMenuItem.drinkType">
+          <option value="hot">Hot</option>
+          <option value="cold">Cold</option>
+        </select>
+      </p>
+      <p>
+        Sweetness:
+        <select v-model="selectedMenuItem.sweetness">
+          <option value="0%">0%</option>
+          <option value="25%">25%</option>
+          <option value="50%">50%</option>
+          <option value="75%">75%</option>
+          <option value="100%">100%</option>
+        </select>
+      </p>
+      <button @click="saveEdit">Save Changes</button>
+      <button @click="cancelEdit">Cancel</button>
+    </div>
+  </div>
+  <div v-else>
+    <p>Loading...</p>
+  </div>
 </template>
- 
+
+<style scoped>
+.edit-page {
+  padding: 20px;
+}
+.edit-page img {
+  max-width: 100%;
+  height: auto;
+}
+</style>

@@ -5,10 +5,22 @@ import { ref, watch } from "vue";
 const questions = ref([
   { id: 1, question: "เลือกขนาดแก้ว", options: ["Medium", "Extra"] },
   { id: 2, question: "เลือกประเภทเครื่องดื่ม", options: ["ร้อน", "เย็น"] },
-  { id: 3, question: "เลือก Bottoming", options: ["ไข่มุกดำ", "ถั่วแดง", "คอนยัค"] },
+  {
+    id: 3,
+    question: "เลือก Bottoming",
+    options: ["ไข่มุกดำ", "ถั่วแดง", "คอนยัค"],
+  },
   { id: 4, question: "เลือก Base", options: ["ชานม", "ชาเขียว", "โกโก้"] },
-  { id: 5, question: "เลือก Flavor", options: ["ช็อคโกแลต", "นม", "สตอเบอร์รี่"] },
-  { id: 6, question: "เลือก Topping", options: ["ไข่มุก", "เยลลี่", "วิปครีม"] },
+  {
+    id: 5,
+    question: "เลือก Flavor",
+    options: ["ช็อคโกแลต", "นม", "สตอเบอร์รี่"],
+  },
+  {
+    id: 6,
+    question: "เลือก Topping",
+    options: ["ไข่มุก", "เยลลี่", "วิปครีม"],
+  },
 ]);
 
 // เก็บคำตอบของผู้ใช้
@@ -16,14 +28,27 @@ const answers = ref([]);
 const currentQuestionIndex = ref(0);
 const clickCount = ref(0);
 
-
-
 // ตัวแปรสำหรับจัดการสีพื้นหลังและแก้ว
-const backgroundColor = ref('#fad168');
-const hotColors = { layer4: '#ffcc80', layer3: '#ffb74d', layer2: '#ffa726', layer1: '#ff9800' };
-const coldColors = { layer4: '#80dfff', layer3: '#4dcfff', layer2: '#26bfff', layer1: '#00aaff' };
-const whiteColor = '#ffffff';
-const cupColors = ref({ layer1: whiteColor, layer2: whiteColor, layer3: whiteColor, layer4: whiteColor });
+const backgroundColor = ref("#fad168");
+const hotColors = {
+  layer4: "#ffcc80",
+  layer3: "#ffb74d",
+  layer2: "#ffa726",
+  layer1: "#ff9800",
+};
+const coldColors = {
+  layer4: "#80dfff",
+  layer3: "#4dcfff",
+  layer2: "#26bfff",
+  layer1: "#00aaff",
+};
+const whiteColor = "#ffffff";
+const cupColors = ref({
+  layer1: whiteColor,
+  layer2: whiteColor,
+  layer3: whiteColor,
+  layer4: whiteColor,
+});
 
 const fillLevel = ref(0);
 const maxLayers = ref(3);
@@ -59,7 +84,7 @@ const scaleCup = (size) => {
 
 // ฟังก์ชันเปลี่ยนสีแก้ว
 function changeColor(type) {
-  backgroundColor.value = type === "ร้อน" ? '#fff7b7' : '#b1e0ff';
+  backgroundColor.value = type === "ร้อน" ? "#fff7b7" : "#b1e0ff";
   activeColors = type === "ร้อน" ? hotColors : coldColors;
   isColorSelected.value = true;
   fillLevel.value = 0;
@@ -68,9 +93,10 @@ function changeColor(type) {
 
 // ฟังก์ชันอัปเดตสีแก้ว
 function updateCupColors() {
-  const levels = ['layer1', 'layer2', 'layer3', 'layer4'];
+  const levels = ["layer1", "layer2", "layer3", "layer4"];
   levels.forEach((layer, index) => {
-    cupColors.value[layer] = index < fillLevel.value ? activeColors[layer] : whiteColor;
+    cupColors.value[layer] =
+      index < fillLevel.value ? activeColors[layer] : whiteColor;
   });
 }
 
@@ -94,16 +120,15 @@ const selectOption = (option) => {
   }
 
   // เพิ่มจำนวนการกดปุ่ม
-  
+
   clickCount.value++;
-  console.log(clickCount.value)
+  console.log(clickCount.value);
 
   // ไปยังคำถามถัดไป
   if (currentQuestionIndex.value < questions.value.length - 1) {
     currentQuestionIndex.value++;
   }
 };
-
 
 const goBack = () => {
   if (currentQuestionIndex.value > 0) {
@@ -128,62 +153,88 @@ const goBack = () => {
 
     // ถ้าย้อนกลับไปที่คำถาม id1 (เลือกขนาดแก้ว) ให้เปลี่ยนสีพื้นหลังเป็น '#fad168'
     if (currentQuestionIndex.value === 0) {
-      backgroundColor.value = '#fad168';
+      backgroundColor.value = "#fad168";
     }
 
     // ลดจำนวนการกดปุ่ม
     clickCount.value--;
-    console.log(clickCount.value)
+    console.log(clickCount.value);
   }
 };
-
-
-
-
 
 // Watch currentQuestionIndex และ scale เพื่อข้ามคำถาม Flavor เมื่อเลือก Medium
 watch([currentQuestionIndex, scale], () => {
   // ตรวจสอบว่า currentQuestionIndex < 4 เพื่อป้องกันการข้ามแบบผิดๆ
-  if (isFlavorSkipped.value && currentQuestionIndex.value === 4 && scale.value === 0.7) {
+  if (
+    isFlavorSkipped.value &&
+    currentQuestionIndex.value === 4 &&
+    scale.value === 0.7
+  ) {
     currentQuestionIndex.value += 1; // ข้ามคำถาม Flavor
   }
 });
-
 </script>
-
 
 <template>
   <div class="wrapper">
     <div class="background" :style="{ backgroundColor: backgroundColor }">
       <div class="container" :style="{ transform: `scale(${scale})` }">
         <div class="cup">
-          <div class="cup-layer" v-if="maxLayers === 4" :style="{ height: '25%', backgroundColor: cupColors.layer4 }"></div>
-          <div class="cup-layer" :style="{ height: maxLayers === 4 ? '25%' : '33.33%', backgroundColor: cupColors.layer3 }"></div>
-          <div class="cup-layer" :style="{ height: maxLayers === 4 ? '25%' : '33.33%', backgroundColor: cupColors.layer2 }"></div>
-          <div class="cup-layer" :style="{ height: maxLayers === 4 ? '25%' : '33.33%', backgroundColor: cupColors.layer1 }"></div>
+          <div
+            class="cup-layer"
+            v-if="maxLayers === 4"
+            :style="{ height: '25%', backgroundColor: cupColors.layer4 }"
+          ></div>
+          <div
+            class="cup-layer"
+            :style="{
+              height: maxLayers === 4 ? '25%' : '33.33%',
+              backgroundColor: cupColors.layer3,
+            }"
+          ></div>
+          <div
+            class="cup-layer"
+            :style="{
+              height: maxLayers === 4 ? '25%' : '33.33%',
+              backgroundColor: cupColors.layer2,
+            }"
+          ></div>
+          <div
+            class="cup-layer"
+            :style="{
+              height: maxLayers === 4 ? '25%' : '33.33%',
+              backgroundColor: cupColors.layer1,
+            }"
+          ></div>
         </div>
       </div>
     </div>
 
-<!-- ข้ามคำถาม id 5 (Flavor) ถ้าเลือกแก้ว Medium -->
-<div v-if="currentQuestionIndex < questions.length && clickCount != 6 && !(scale.value === 0.7 && questions[currentQuestionIndex].id === 5)" class="question-container">
-  <h2>{{ questions[currentQuestionIndex].question }}</h2>
-  <div class="options">
-    <button
-      v-for="option in questions[currentQuestionIndex].options"
-      :key="option"
-      class="btn"
-      @click="selectOption(option)"
+    <!-- ข้ามคำถาม id 5 (Flavor) ถ้าเลือกแก้ว Medium -->
+    <div
+      v-if="
+        currentQuestionIndex < questions.length &&
+        clickCount != 6 &&
+        !(scale.value === 0.7 && questions[currentQuestionIndex].id === 5)
+      "
+      class="question-container"
     >
-      {{ option }}
-    </button>
-  </div>
-</div>
+      <h2>{{ questions[currentQuestionIndex].question }}</h2>
+      <div class="options">
+        <button
+          v-for="option in questions[currentQuestionIndex].options"
+          :key="option"
+          class="btn"
+          @click="selectOption(option)"
+        >
+          {{ option }}
+        </button>
+      </div>
+    </div>
 
-<div v-else>
-  <h2>การตั้งค่าของคุณเสร็จสมบูรณ์แล้ว</h2>
-</div>
-
+    <div v-else>
+      <h2>การตั้งค่าของคุณเสร็จสมบูรณ์แล้ว</h2>
+    </div>
 
     <!-- ปุ่มย้อนกลับ -->
     <div v-if="currentQuestionIndex > 0">

@@ -1,101 +1,110 @@
 <script setup>
 import { ref } from "vue";
-import { useRoute, useRouter } from "vue-router"
+import { useRoute, useRouter } from "vue-router";
 
-const router = useRouter()
+const router = useRouter();
 </script>
 
 <template>
-    <div class="flex flex-col h-screen">
-      <!-- Header Section -->
-      <div class="navbar bg-orange-400">
-        <div class="drawer w-20">
-          <input id="my-drawer" type="checkbox" class="drawer-toggle" />
-          <div class="drawer-content">
-            <label for="my-drawer" class="btn drawer-button btn-outline bg-white">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                class="inline-block h-5 w-5 stroke-current"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M4 6h16M4 12h16M4 18h16"
-                ></path>
-              </svg>
-            </label>
-          </div>
-          <div class="drawer-side z-30">
-            <label for="my-drawer" class="drawer-overlay"></label>
-            <ul class="menu bg-base-200 text-base-content min-h-full w-80 p-4">
-              <label for="my-drawer" class="cursor-pointer">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke-width="1.5"
-                  stroke="currentColor"
-                  class="size-6"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
-              </label>
-              <!-- Sidebar Slot -->
-              <slot name="sidebar"></slot>
-            </ul>
-          </div>
+  <div class="flex flex-col h-screen">
+    <!-- Header Section -->
+    <div class="navbar bg-orange-400">
+      <div class="drawer w-20">
+        <input id="my-drawer" type="checkbox" class="drawer-toggle" />
+        <div class="drawer-content">
+          <label for="my-drawer" class="btn drawer-button btn-outline bg-white">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              class="inline-block h-5 w-5 stroke-current"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M4 6h16M4 12h16M4 18h16"
+              ></path>
+            </svg>
+          </label>
         </div>
-  
-        <div class="flex-1">
-          <!-- Title Slot -->
-          <slot name="title">
-            <a class="btn btn-ghost text-xl text-white justify-start" @click="router.push({name: 'home'})">Monkeys-Fresh</a>
-          </slot>
-        </div>
-  
-        <!-- Cart Button Slot -->
-        <div class="flex-none">
-          <slot name="cart">
-            <button class="btn btn-square btn-ghost bg-white rounded-xl" @click="router.push({name: 'cart'})">
+        <div class="drawer-side z-30">
+          <label for="my-drawer" class="drawer-overlay"></label>
+          <ul class="menu bg-base-200 text-base-content min-h-full w-80 p-4">
+            <label for="my-drawer" class="cursor-pointer">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke-width="1.5"
                 stroke="currentColor"
-                class="size-6 justify-end"
+                class="size-6"
               >
                 <path
                   stroke-linecap="round"
                   stroke-linejoin="round"
-                  d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"
+                  d="M6 18L18 6M6 6l12 12"
                 />
               </svg>
-            </button>
-          </slot>
+            </label>
+            <!-- Sidebar Slot -->
+            <slot name="sidebar"></slot>
+          </ul>
         </div>
       </div>
-  
-      <!-- Main Content Slot -->
-      <div class="flex-grow">
-        <slot></slot>
-      </div>
-  
-      <!-- Footer Section -->
-      <footer class="footer footer-center text-base-content p-4 bg-orange-400 mt-auto">
-        <slot name="footer">
-          <p class="text-white">Monkeys-Fresh Group ©</p>
+
+      <div class="flex-1">
+        <!-- Title Slot -->
+        <slot name="title">
+          <a
+            class="btn btn-ghost text-xl text-white justify-start"
+            @click="router.push({ name: 'home' })"
+            >Monkeys-Fresh</a
+          >
         </slot>
-      </footer>
+      </div>
+
+      <!-- Cart Button Slot -->
+      <div class="flex-none">
+        <slot name="cart">
+          <button
+            class="btn btn-square btn-ghost bg-white rounded-xl"
+            @click="router.push({ name: 'cart' })"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="size-6 justify-end"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"
+              />
+            </svg>
+          </button>
+        </slot>
+      </div>
     </div>
-  </template>
+
+    <!-- Main Content Slot -->
+    <div class="flex-grow">
+      <slot></slot>
+    </div>
+
+    <!-- Footer Section -->
+    <footer
+      class="footer footer-center text-base-content p-4 bg-orange-400 mt-auto"
+    >
+      <slot name="footer">
+        <p class="text-white">Monkeys-Fresh Group ©</p>
+      </slot>
+    </footer>
+  </div>
+</template>
 
 <style scoped>
 .drink-options-image {

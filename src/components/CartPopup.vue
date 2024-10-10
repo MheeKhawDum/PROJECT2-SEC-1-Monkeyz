@@ -1,178 +1,113 @@
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
+import { useRouter } from "vue-router";
 
-// State for popup and cart items
-const cartPopup = ref(false);
-const cartItems = ref([]);
-const totalPrice = ref(0);
-const selectedMenuItem = ref({
-  id: null,
-  name: null,
-  description: null,
-  image: null,
-  drinkType: null,
-  sweetness: null,
-  quantity: null,
-});
+const router = useRouter();
+const cartPopup = ref(true); // Control visibility of cart popup
+const cartItems = ref([]); // Array holding cart items
+
+// Computed total price based on cart items
+const totalPrice = computed(() =>
+  cartItems.value.reduce((total, item) => total + item.price * item.quantity, 0)
+);
+
+// Function to add item quantity
+function addQuantity(id) {
+  const item = cartItems.value.find((item) => item.id === id);
+  if (item) item.quantity++;
+}
+
+// Function to decrease item quantity
+function decreaseQuantity(id) {
+  const item = cartItems.value.find((item) => item.id === id);
+  if (item && item.quantity > 1) item.quantity--;
+}
+
+// Function to remove item from cart
+function removeItem(id) {
+  cartItems.value = cartItems.value.filter((item) => item.id !== id);
+}
+
+// Function to place order
+function placeOrder() {
+  // Implement your order logic
+  alert("Order placed!");
+  cartItems.value = []; // Clear cart after order
+  openCartPopup();
+}
 
 // Toggle cart popup visibility
 function openCartPopup() {
   cartPopup.value = !cartPopup.value;
 }
-
-// Generate unique ID for items
-let tempId = 0;
-function generateUniqueId() {
-  return ++tempId;
-}
-
-// Add a drink to the cart
-function addDrinkToCart() {
-  if (!selectedMenuItem.value.drinkType || !selectedMenuItem.value.sweetness) {
-    alert("Please select an option.");
-    return;
-  }
-
-  const itemPrice = priceEdit();
-  const existingItem = cartItems.value.find(
-    item =>
-      item.name === selectedMenuItem.value.name &&
-      item.drinkType === selectedMenuItem.value.drinkType &&
-      item.sweetness === selectedMenuItem.value.sweetness
-  );
-
-  if (existingItem) {
-    updateExistingItem(existingItem, itemPrice);
-  } else {
-    addNewItem(itemPrice);
-  }
-
-  clearSelectedMenuItem();
-  updateTotalPrice();
-  openCartPopup();
-}
-
-// Add new item to the cart
-function addNewItem(itemPrice) {
-  const newItem = {
-    ...selectedMenuItem.value,
-    id: generateUniqueId(),
-    price: itemPrice,
-    quantity: 1,
-    totalpriceByOrder: itemPrice,
-  };
-  cartItems.value.push(newItem);
-}
-
-// Update quantity for existing item
-function updateExistingItem(existingItem, itemPrice) {
-  existingItem.quantity++;
-  existingItem.totalpriceByOrder += itemPrice;
-}
-
-// Edit an item in the cart
-function editCartItem(index) {
-  selectedMenuItem.value = { ...cartItems.value[index] };
-  openCartPopup();
-}
-
-// Save edited item back to cart
-function saveEdit() {
-  const indexToEdit = cartItems.value.findIndex(
-    (item) => item.id === selectedMenuItem.value.id
-  );
-
-  if (indexToEdit !== -1) {
-    const updatedPrice = priceEdit();
-    const editedItem = {
-      ...selectedMenuItem.value,
-      price: updatedPrice,
-      totalpriceByOrder: updatedPrice * selectedMenuItem.value.quantity,
-    };
-    cartItems.value[indexToEdit] = editedItem;
-    updateTotalPrice();
-  }
-
-  clearSelectedMenuItem();
-  openCartPopup();
-}
-
-// Remove an order from cart
-function removeOrder(orderId) {
-  cartItems.value = cartItems.value.filter((item) => item.id !== orderId);
-  updateTotalPrice();
-}
-
-// Increase quantity of an item
-function addQuantity(checkId) {
-  const item = cartItems.value.find(item => item.id === checkId);
-  if (item) {
-    item.quantity++;
-    item.totalpriceByOrder += item.price;
-    updateTotalPrice();
-  }
-}
-
-// Decrease quantity of an item
-function deleteQuantity(checkId) {
-  const item = cartItems.value.find(item => item.id === checkId);
-  if (item) {
-    item.quantity--;
-    item.totalpriceByOrder -= item.price;
-    if (item.quantity === 0) {
-      removeOrder(checkId);
-    }
-    updateTotalPrice();
-  }
-}
-
-// Calculate price difference based on drink type
-function priceEdit() {
-  return selectedMenuItem.value.drinkType === "cold"
-    ? selectedMenuItem.value.price + 10
-    : selectedMenuItem.value.price;
-}
-
-// Update total price
-function updateTotalPrice() {
-  totalPrice.value = cartItems.value.reduce(
-    (sum, item) => sum + item.totalpriceByOrder,
-    0
-  );
-}
-
-// Clear selected item for new selections
-function clearSelectedMenuItem() {
-  selectedMenuItem.value = {
-    id: null,
-    name: null,
-    description: null,
-    image: null,
-    drinkType: null,
-    sweetness: null,
-    quantity: null,
-  };
-}
-
-// Handle closing modal
-function handleClose() {
-  openCartPopup();
-}
-
-// Place order function
-function placeOrder() {
-  if (cartItems.value.length > 0) {
-    alert("Order placed successfully");
-    cartItems.value = []; // Clear cart after placing order
-    totalPrice.value = 0;
-    openCartPopup();
-  }
-}
-
 </script>
 
 <template>
-  <div>
-    <p>popup cart</p>
+  <div
+    v-show="cartPopup"
+    class="fixed inset-0 z-20 flex items-center justify-center"
+  >
+    <!-- Overlay for background -->
+    <div
+      class="bg-black bg-opacity-50 absolute inset-0"
+      @click="openCartPopup"
+    ></div>
+
+    <!-- Modal content for cart -->
+    <div
+      class="modal-box relative z-30 p-5 bg-white rounded shadow-lg w-[35%] h-[50%]"
+    >
+      <div class="flex flex-col space-y-2">
+        <h2 class="text-lg font-bold">Your Cart</h2>
+        <p>Number of Items: {{ cartItems.length }}</p>
+
+        <!-- List all items in the cart -->
+        <div
+          v-for="(item, index) in cartItems"
+          :key="index"
+          class="bg-gray-300 flex justify-between items-center p-2"
+        >
+          <div class="flex items-center">
+            <img
+              :src="item.image"
+              :alt="item.name"
+              class="w-12 h-12 object-cover"
+            />
+            <div class="ml-2">
+              <p>{{ item.name }}</p>
+              <p>{{ item.drinkType }}, {{ item.sweetness }}</p>
+              <p>{{ item.price }} THB</p>
+            </div>
+          </div>
+          <div class="flex items-center">
+            <button @click="addQuantity(item.id)" class="px-2">+</button>
+            <span class="mx-2">Qty: {{ item.quantity }}</span>
+            <button @click="decreaseQuantity(item.id)" class="px-2">-</button>
+          </div>
+          <button @click="removeItem(item.id)" class="text-red-600">
+            Remove
+          </button>
+        </div>
+
+        <!-- Display total price -->
+        <div class="text-right">Total Price: {{ totalPrice }} THB</div>
+
+        <!-- Action buttons -->
+        <div class="mt-4 flex justify-between">
+          <button
+            @click="placeOrder"
+            class="bg-green-500 text-white px-4 py-2 rounded"
+          >
+            Place Order
+          </button>
+          <button
+            @click="openCartPopup"
+            class="bg-gray-500 text-white px-4 py-2 rounded"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
