@@ -39,8 +39,7 @@ const router = createRouter({
       path: '/cart',
       name: 'CartPopup',
       component: CartPopup
-    },
-
+    },{
       path: '/edit',
       name: 'edit',
       component: EditPage

@@ -116,7 +116,7 @@ fetchData();
           </div>
         </div>
       </div>
-      
+      </div>
 
       <!-- Milk Menu -->
       <div v-if="listMilk.length">
@@ -128,6 +128,7 @@ fetchData();
           </div>
         </div>
       </div>
+    </div>
     </div>
   </HeaderFooterLayout>
 </template>
