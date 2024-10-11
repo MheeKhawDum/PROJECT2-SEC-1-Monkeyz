@@ -1,178 +1,65 @@
-<script setup>
-import { ref } from "vue";
 
-// State for popup and cart items
-const cartPopup = ref(false);
-const cartItems = ref([]);
-const totalPrice = ref(0);
-const selectedMenuItem = ref({
-  id: null,
-  name: null,
-  description: null,
-  image: null,
-  drinkType: null,
-  sweetness: null,
-  quantity: null,
+<script setup>
+import { ref, onMounted } from "vue";
+import { getOrders, deleteOrder } from '../lib/fetch.js'; // นำเข้าฟังก์ชัน getOrders จาก fetch.js
+import HeaderFooterLayout from './Header.vue'
+
+// สร้างตัวแปรสำหรับเก็บข้อมูลคำสั่งซื้อ
+const orders = ref([]);
+
+// เมื่อ component ถูก mount ให้ดึงข้อมูลคำสั่งซื้อจากฐานข้อมูล
+onMounted(async () => {
+  await loadOrders();
 });
 
-// Toggle cart popup visibility
-function openCartPopup() {
-  cartPopup.value = !cartPopup.value;
-}
-
-// Generate unique ID for items
-let tempId = 0;
-function generateUniqueId() {
-  return ++tempId;
-}
-
-// Add a drink to the cart
-function addDrinkToCart() {
-  if (!selectedMenuItem.value.drinkType || !selectedMenuItem.value.sweetness) {
-    alert("Please select an option.");
-    return;
+// ฟังก์ชันสำหรับโหลดคำสั่งซื้อ
+const loadOrders = async () => {
+  try {
+    const data = await getOrders(); // เรียกใช้ฟังก์ชัน getOrders เพื่อดึงข้อมูล
+    orders.value = data; // เก็บข้อมูลที่ได้ลงใน orders
+  } catch (error) {
+    console.error("Error loading orders:", error);
   }
+};
 
-  const itemPrice = priceEdit();
-  const existingItem = cartItems.value.find(
-    item =>
-      item.name === selectedMenuItem.value.name &&
-      item.drinkType === selectedMenuItem.value.drinkType &&
-      item.sweetness === selectedMenuItem.value.sweetness
-  );
-
-  if (existingItem) {
-    updateExistingItem(existingItem, itemPrice);
-  } else {
-    addNewItem(itemPrice);
+// ฟังก์ชันสำหรับลบคำสั่งซื้อ
+const removeOrder = async (orderId) => {
+  try {
+    await deleteOrder(orderId); // เรียกใช้ฟังก์ชัน deleteOrder
+    orders.value = orders.value.filter(order => order.id !== orderId); // อัปเดต orders หลังจากลบ
+  } catch (error) {
+    console.error("Error deleting order:", error);
   }
-
-  clearSelectedMenuItem();
-  updateTotalPrice();
-  openCartPopup();
-}
-
-// Add new item to the cart
-function addNewItem(itemPrice) {
-  const newItem = {
-    ...selectedMenuItem.value,
-    id: generateUniqueId(),
-    price: itemPrice,
-    quantity: 1,
-    totalpriceByOrder: itemPrice,
-  };
-  cartItems.value.push(newItem);
-}
-
-// Update quantity for existing item
-function updateExistingItem(existingItem, itemPrice) {
-  existingItem.quantity++;
-  existingItem.totalpriceByOrder += itemPrice;
-}
-
-// Edit an item in the cart
-function editCartItem(index) {
-  selectedMenuItem.value = { ...cartItems.value[index] };
-  openCartPopup();
-}
-
-// Save edited item back to cart
-function saveEdit() {
-  const indexToEdit = cartItems.value.findIndex(
-    (item) => item.id === selectedMenuItem.value.id
-  );
-
-  if (indexToEdit !== -1) {
-    const updatedPrice = priceEdit();
-    const editedItem = {
-      ...selectedMenuItem.value,
-      price: updatedPrice,
-      totalpriceByOrder: updatedPrice * selectedMenuItem.value.quantity,
-    };
-    cartItems.value[indexToEdit] = editedItem;
-    updateTotalPrice();
-  }
-
-  clearSelectedMenuItem();
-  openCartPopup();
-}
-
-// Remove an order from cart
-function removeOrder(orderId) {
-  cartItems.value = cartItems.value.filter((item) => item.id !== orderId);
-  updateTotalPrice();
-}
-
-// Increase quantity of an item
-function addQuantity(checkId) {
-  const item = cartItems.value.find(item => item.id === checkId);
-  if (item) {
-    item.quantity++;
-    item.totalpriceByOrder += item.price;
-    updateTotalPrice();
-  }
-}
-
-// Decrease quantity of an item
-function deleteQuantity(checkId) {
-  const item = cartItems.value.find(item => item.id === checkId);
-  if (item) {
-    item.quantity--;
-    item.totalpriceByOrder -= item.price;
-    if (item.quantity === 0) {
-      removeOrder(checkId);
-    }
-    updateTotalPrice();
-  }
-}
-
-// Calculate price difference based on drink type
-function priceEdit() {
-  return selectedMenuItem.value.drinkType === "cold"
-    ? selectedMenuItem.value.price + 10
-    : selectedMenuItem.value.price;
-}
-
-// Update total price
-function updateTotalPrice() {
-  totalPrice.value = cartItems.value.reduce(
-    (sum, item) => sum + item.totalpriceByOrder,
-    0
-  );
-}
-
-// Clear selected item for new selections
-function clearSelectedMenuItem() {
-  selectedMenuItem.value = {
-    id: null,
-    name: null,
-    description: null,
-    image: null,
-    drinkType: null,
-    sweetness: null,
-    quantity: null,
-  };
-}
-
-// Handle closing modal
-function handleClose() {
-  openCartPopup();
-}
-
-// Place order function
-function placeOrder() {
-  if (cartItems.value.length > 0) {
-    alert("Order placed successfully");
-    cartItems.value = []; // Clear cart after placing order
-    totalPrice.value = 0;
-    openCartPopup();
-  }
-}
-
+};
 </script>
 
 <template>
-  <div>
-    <p>popup cart</p>
+    <HeaderFooterLayout>
+        <div>
+         <p>popup cart</p>
+        </div>
+
+        <div class="cart-wrapper">
+    <h2>รายการคำสั่งซื้อของคุณ</h2>
+
+    <!-- ตรวจสอบว่ามีคำสั่งซื้อหรือไม่ -->
+    <div v-if="orders.length > 0">
+      <div v-for="(order, index) in orders" :key="index" class="order-item">
+        <p><strong>ประเภทเครื่องดื่ม:</strong> {{ order.temp }}</p>
+        <p><strong>Bottoming:</strong> {{ order.bottoming }}</p>
+        <p><strong>Base:</strong> {{ order.base }}</p>
+        <p><strong>Flavor:</strong> {{ order.flavor }}</p>
+        <p><strong>Topping:</strong> {{ order.topping }}</p>
+        <button @click="removeOrder(order.id)" class="btn">ลบ</button> <!-- ปุ่มลบ -->
+        <button @click="editOrder(order.id)" class="btn">ลบ</button> <!-- ปุ่มแก้ไข -->
+        <hr>
+      </div>
+    </div>
+
+    <!-- กรณีไม่มีคำสั่งซื้อ -->
+    <div v-else>
+      <p>ยังไม่มีคำสั่งซื้อ</p>
+    </div>
   </div>
+    </HeaderFooterLayout>
 </template>
