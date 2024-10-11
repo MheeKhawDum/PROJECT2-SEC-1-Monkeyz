@@ -3,9 +3,11 @@
 import { ref, onMounted } from "vue";
 import { getOrders, deleteOrder } from '../lib/fetch.js'; // นำเข้าฟังก์ชัน getOrders จาก fetch.js
 import HeaderFooterLayout from './Header.vue'
+import { useRouter } from "vue-router";
 
 // สร้างตัวแปรสำหรับเก็บข้อมูลคำสั่งซื้อ
 const orders = ref([]);
+const router = useRouter()
 
 // เมื่อ component ถูก mount ให้ดึงข้อมูลคำสั่งซื้อจากฐานข้อมูล
 onMounted(async () => {
@@ -31,6 +33,11 @@ const removeOrder = async (orderId) => {
     console.error("Error deleting order:", error);
   }
 };
+
+function editOrder(id) {
+  router.push({name:'edit',params:{id}})
+}
+
 </script>
 
 <template>
@@ -51,7 +58,7 @@ const removeOrder = async (orderId) => {
         <p><strong>Flavor:</strong> {{ order.flavor }}</p>
         <p><strong>Topping:</strong> {{ order.topping }}</p>
         <button @click="removeOrder(order.id)" class="btn">ลบ</button> <!-- ปุ่มลบ -->
-        <button @click="editOrder(order.id)" class="btn">ลบ</button> <!-- ปุ่มแก้ไข -->
+        <button @click="editOrder(order.id)" class="btn">แก้ไข</button> <!-- ปุ่มแก้ไข -->
         <hr>
       </div>
     </div>

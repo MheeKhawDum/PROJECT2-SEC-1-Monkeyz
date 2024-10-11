@@ -113,5 +113,26 @@ async function getOrders() {
   }
 }
 
+async function getOrdersbyId(id) {
+  try {
+    const res = await fetch(`${url}/cart/${id}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
 
-export { getMenu, getItems, deleteOrder, editOrder, addOrder, getOrders }
+    if (!res.ok) {
+      throw new Error("Failed to fetch orders");
+    }
+
+    const data = await res.json();
+    return data; // ส่งกลับข้อมูลที่ได้จากฐานข้อมูล
+  } catch (error) {
+    console.error("Error fetching orders:", error);
+    throw error;
+  }
+}
+
+
+export { getMenu, getItems, deleteOrder, editOrder, addOrder, getOrders ,getOrdersbyId}
