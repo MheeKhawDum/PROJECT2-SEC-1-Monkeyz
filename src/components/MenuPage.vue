@@ -8,20 +8,22 @@ const router = useRouter();
 const isLoading = ref(true);
 const errorMessage = ref("");
 
-const listCoffee = ref({})
-const listTea = ref({})
+const listCoffee = ref({});
+const listTea = ref({});
 const listMilk = ref({});
 
-// ฟังก์ชันดึงข้อมูลจาก db.json
+// ฟังก์ชันดึงข้อมูลจาก API
 async function fetchData() {
   try {
     // isLoading.value = true;
 
-    listCoffee.value = await getItems(`${import.meta.env.VITE_BASE_URL}/coffeeMenu`)
-    listTea.value = await getItems(`${import.meta.env.VITE_BASE_URL}/teaMenu`)
-    listMilk.value = await getItems(`${import.meta.env.VITE_BASE_URL}/milkMenu`)
-
-
+    listCoffee.value = await getItems(
+      `${import.meta.env.VITE_BASE_URL}/coffeeMenu`
+    );
+    listTea.value = await getItems(`${import.meta.env.VITE_BASE_URL}/teaMenu`);
+    listMilk.value = await getItems(
+      `${import.meta.env.VITE_BASE_URL}/milkMenu`
+    );
   } catch (error) {
     console.error(error);
     errorMessage.value = "Failed to load menu items. Please try again.";
@@ -30,12 +32,12 @@ async function fetchData() {
   }
 }
 
-function openDrinkOption(menuItem) {  
-        router.push({
-        name: "drinkOption",
-        params: { name: menuItem},
-    })
-  }
+function openDrinkOption(menuItem) {
+  router.push({
+    name: "drinkOption",
+    params: { name: menuItem },
+  });
+}
 fetchData();
 </script>
 
@@ -59,17 +61,14 @@ fetchData();
       <div v-if="listCoffee.length">
         <h1>Coffee</h1>
         <div class="menu-grid">
-          <div >
-            <div
-              v-for="(item, index) in listCoffee"
-              :key="index"
-              class="menu-item"
-              @click="openDrinkOption(item.name)"
-            >
-              <p>{{ item.name }} - {{ item.price }} THB</p>
-            </div>
+          <div
+            v-for="(item, index) in listCoffee"
+            :key="index"
+            class="menu-item"
+            @click="openDrinkOption(item.name)"
+          >
+            <p>{{ item.name }} - {{ item.price }} THB</p>
           </div>
-
         </div>
       </div>
 
@@ -77,7 +76,12 @@ fetchData();
       <div v-if="listTea.length">
         <h1>Tea</h1>
         <div class="menu-grid">
-          <div v-for="(item, index) in listTea" :key="index" class="menu-item" @click="openDrinkOption(item.name)">
+          <div
+            v-for="(item, index) in listTea"
+            :key="index"
+            class="menu-item"
+            @click="openDrinkOption(item.name)"
+          >
             <p>{{ item.name }} - {{ item.price }} THB</p>
           </div>
         </div>
@@ -87,7 +91,12 @@ fetchData();
       <div v-if="listMilk.length">
         <h1>Milk</h1>
         <div class="menu-grid">
-          <div v-for="(item, index) in listMilk" :key="index" class="menu-item" @click="openDrinkOption(item.name)">
+          <div
+            v-for="(item, index) in listMilk"
+            :key="index"
+            class="menu-item"
+            @click="openDrinkOption(item.name)"
+          >
             <p>{{ item.name }} - {{ item.price }} THB</p>
           </div>
         </div>

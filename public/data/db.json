@@ -152,20 +152,31 @@
   ],
   "cart": [
     {
-      "id": "d94e",
-      "temp": "ร้อน",
-      "bottoming": "ถั่วแดง",
-      "base": "ชาเขียว",
-      "flavor": "นม",
-      "topping": "เยลลี่"
+      "id": "c384",
+      "category": "Coffee",
+      "name": "Capuccino",
+      "image": "../picture/cappuccino coffee.png",
+      "price": 40,
+      "sweetness": "75%",
+      "drinkType": "hot"
     },
     {
-      "id": "6d6d",
-      "temp": "ร้อน",
-      "bottoming": "ถั่วแดง",
-      "base": "ชาเขียว",
-      "flavor": "นม",
-      "topping": "เยลลี่"
+      "id": "5b19",
+      "category": "Coffee",
+      "name": "Latte",
+      "image": "../picture/latte coffee.png",
+      "price": 50,
+      "sweetness": "100%",
+      "drinkType": "hot"
+    },
+    {
+      "id": "aa23",
+      "category": "Tea",
+      "name": "Green Tea",
+      "image": "../picture/green tea.png",
+      "price": 50,
+      "sweetness": "25%",
+      "drinkType": "hot"
     }
   ]
 }
