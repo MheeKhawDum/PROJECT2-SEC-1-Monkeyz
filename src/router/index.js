@@ -5,6 +5,7 @@ import MenuPage from '@/components/MenuPage.vue'
 import CustomPage from '@/components/CustomPage.vue'
 import CartPopup from '@/components/CartPopup.vue'
 import EditPage from '@/components/EditPage.vue'
+import EditPageCustom from '../components/EditPageCustom.vue'
 import DrinkOptions from '@/components/DrinkOptions.vue'
 
 const router = createRouter({
@@ -34,7 +35,7 @@ const router = createRouter({
       component: CustomPage
     },
     {
-      path: '/edit',
+      path: '/edit/:id',
       name: 'edit',
       component: EditPage
     },
@@ -48,6 +49,11 @@ const router = createRouter({
       name: 'drinkOption' ,
       component: DrinkOptions
     },
+    {
+      path: '/editcustom/:id',
+      name: 'editCustom',
+      component: EditPageCustom
+    },    
     {
       path: '/',
       redirect: {name: 'home'}

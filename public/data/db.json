@@ -152,20 +152,24 @@
   ],
   "cart": [
     {
-      "id": "8bda",
-      "temp": "ร้อน",
-      "bottoming": "ถั่วแดง",
-      "base": "ชาเขียว",
-      "flavor": "นม",
-      "topping": "เยลลี่"
+      "id": "c384",
+      "category": "Coffee",
+      "name": "Capuccino",
+      "image": "../picture/cappuccino coffee.png",
+      "price": 40,
+      "sweetness": "50%",
+      "drinkType": "hot",
+      "type": "normal"
     },
     {
-      "id": "d94e",
-      "temp": "ร้อน",
-      "bottoming": "ถั่วแดง",
-      "base": "ชาเขียว",
-      "flavor": "นม",
-      "topping": "เยลลี่"
+      "id": "d5df",
+      "drinkType": "hot",
+      "sweetness": "100%",
+      "category": "tea",
+      "flavor": "strawberry",
+      "topping": "gummy",
+      "type": "custom",
+      "name": "custom"
     }
   ]
 }

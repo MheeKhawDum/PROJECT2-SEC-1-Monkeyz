@@ -1,22 +1,20 @@
-
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { getOrders, deleteOrder } from '../lib/fetch.js'; // นำเข้าฟังก์ชัน getOrders จาก fetch.js
-import HeaderFooterLayout from './Header.vue'
+import { useRouter } from "vue-router";
 
-// สร้างตัวแปรสำหรับเก็บข้อมูลคำสั่งซื้อ
-const orders = ref([]);
+const router = useRouter();
+const cartPopup = ref(true); // Control visibility of cart popup
+const cartItems = ref([]); // Array holding cart items
 
-// เมื่อ component ถูก mount ให้ดึงข้อมูลคำสั่งซื้อจากฐานข้อมูล
 onMounted(async () => {
   await loadOrders();
 });
 
-// ฟังก์ชันสำหรับโหลดคำสั่งซื้อ
 const loadOrders = async () => {
   try {
     const data = await getOrders(); // เรียกใช้ฟังก์ชัน getOrders เพื่อดึงข้อมูล
-    orders.value = data; // เก็บข้อมูลที่ได้ลงใน orders
+    cartItems.value = data; // เก็บข้อมูลที่ได้ลงใน orders
   } catch (error) {
     console.error("Error loading orders:", error);
   }
@@ -26,40 +24,129 @@ const loadOrders = async () => {
 const removeOrder = async (orderId) => {
   try {
     await deleteOrder(orderId); // เรียกใช้ฟังก์ชัน deleteOrder
-    orders.value = orders.value.filter(order => order.id !== orderId); // อัปเดต orders หลังจากลบ
+    cartItems.value = cartItems.value.filter(order => order.id !== orderId); // อัปเดต orders หลังจากลบ
+    loadOrders();
   } catch (error) {
     console.error("Error deleting order:", error);
   }
 };
+
+// ฟังก์ชันแก้ไขคำสั่งซื้อ
+function editOrder(item) {
+  // Check the type of the order
+  if (item.type === 'custom') {
+    // Navigate to custom edit page (ensure the name matches your router)
+    router.push({ name: 'editCustom', params: { id: item.id } });
+  } else {
+    // Navigate to normal edit page
+    router.push({ name: 'edit', params: { id: item.id } });
+  }
+}
+
+
+// คำนวณราคารวม
+const totalPrice = computed(() =>
+  cartItems.value.reduce((total, item) => total + item.price * item.quantity, 0)
+);
+
+// ฟังก์ชันเพิ่มจำนวนสินค้า
+function addQuantity(id) {
+  const item = cartItems.value.find((item) => item.id === id);
+  if (item) item.quantity++;
+}
+
+// ฟังก์ชันลดจำนวนสินค้า
+function decreaseQuantity(id) {
+  const item = cartItems.value.find((item) => item.id === id);
+  if (item && item.quantity > 1) item.quantity--;
+}
+
+// ฟังก์ชันสั่งซื้อ
+function placeOrder() {
+  // Implement your order logic
+  alert("Order placed!");
+  cartItems.value = []; // Clear cart after order
+  openCartPopup();
+}
+
+// เปิด/ปิด popup cart
+function openCartPopup() {
+  cartPopup.value = !cartPopup.value;
+}
+function closeCartPopup() {
+  router.push({ name: 'menuPage' });
+}
 </script>
 
 <template>
-    <HeaderFooterLayout>
-        <div>
-         <p>popup cart</p>
+  <div
+    v-show="cartPopup"
+    class="fixed inset-0 z-20 flex items-center justify-center"
+  >
+    <!-- Overlay for background -->
+    <div
+      class="bg-black bg-opacity-50 absolute inset-0"
+      @click="openCartPopup"
+    ></div>
+
+    <!-- Modal content for cart -->
+    <div
+      class="modal-box relative z-30 p-5 bg-white rounded shadow-lg w-[35%] h-[50%]"
+    >
+      <div class="flex flex-col space-y-2">
+        <h2 class="text-lg font-bold">Your Cart</h2>
+        <p>Number of Items: {{ cartItems.length }}</p>
+
+        <!-- List all items in the cart -->
+        <div
+          v-for="(item, index) in cartItems"
+          :key="index"
+          class="bg-gray-300 flex justify-between items-center p-2"
+        >
+          <div class="flex items-center">
+            <img
+              :src="item.image"
+              :alt="item.name"
+              class="w-12 h-12 object-cover"
+            />
+            <div class="ml-2">
+              <p>{{ item.name }}</p>
+              <p>{{ item.drinkType }}, {{ item.sweetness }}</p>
+              <p>{{ item.price }} THB</p>
+            </div>
+          </div>
+          <div class="flex items-center">
+            <button @click="addQuantity(item.id)" class="px-2">+</button>
+            <span class="mx-2">Qty: {{ item.quantity }}</span>
+            <button @click="decreaseQuantity(item.id)" class="px-2">-</button>
+          </div>
+          <button @click="removeOrder(item.id)" class="text-red-600">
+            Remove
+          </button>
+          <button @click="editOrder(item)" class="text-blue-600">
+            Edit
+          </button>
         </div>
 
-        <div class="cart-wrapper">
-    <h2>รายการคำสั่งซื้อของคุณ</h2>
+        <!-- Display total price -->
+        <div class="text-right">Total Price: {{ totalPrice }} THB</div>
 
-    <!-- ตรวจสอบว่ามีคำสั่งซื้อหรือไม่ -->
-    <div v-if="orders.length > 0">
-      <div v-for="(order, index) in orders" :key="index" class="order-item">
-        <p><strong>ประเภทเครื่องดื่ม:</strong> {{ order.temp }}</p>
-        <p><strong>Bottoming:</strong> {{ order.bottoming }}</p>
-        <p><strong>Base:</strong> {{ order.base }}</p>
-        <p><strong>Flavor:</strong> {{ order.flavor }}</p>
-        <p><strong>Topping:</strong> {{ order.topping }}</p>
-        <button @click="removeOrder(order.id)" class="btn">ลบ</button> <!-- ปุ่มลบ -->
-        <button @click="editOrder(order.id)" class="btn">ลบ</button> <!-- ปุ่มแก้ไข -->
-        <hr>
+        <!-- Action buttons -->
+        <div class="mt-4 flex justify-between">
+          <button
+            @click="placeOrder"
+            class="bg-green-500 text-white px-4 py-2 rounded"
+          >
+            Place Order
+          </button>
+          <button
+            @click="closeCartPopup"
+            class="bg-gray-500 text-white px-4 py-2 rounded"
+          >
+            Close
+          </button>
+        </div>
       </div>
     </div>
-
-    <!-- กรณีไม่มีคำสั่งซื้อ -->
-    <div v-else>
-      <p>ยังไม่มีคำสั่งซื้อ</p>
-    </div>
   </div>
-    </HeaderFooterLayout>
 </template>
