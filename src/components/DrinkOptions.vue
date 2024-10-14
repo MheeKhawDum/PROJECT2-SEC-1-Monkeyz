@@ -53,32 +53,40 @@ async function openCart() {
 </script>
 
 <template>
-  <div v-if="selectedMenuItem" class="drink-option">
-    <h1>{{ selectedMenuItem.name }}</h1>
-    <img :src="selectedMenuItem.image" :alt="selectedMenuItem.name" />
-    <p>Price: {{ selectedMenuItem.price }} THB</p>
+  <div v-if="selectedMenuItem" class="drink-option-container">
+    <div class="drink-option">
+      <h1>{{ selectedMenuItem.name }}</h1>
+      <img
+        :src="selectedMenuItem.image"
+        :alt="selectedMenuItem.name"
+        class="drink-image"
+      />
+      <p class="drink-price">Price: {{ selectedMenuItem.price }} THB</p>
 
-    <p>
-      Select Sweetness:
-      <select v-model="selectedSweetness">
-        <option value="0%">0%</option>
-        <option value="25%">25%</option>
-        <option value="50%" selected>50%</option>
-        <option value="75%">75%</option>
-        <option value="100%">100%</option>
-      </select>
-    </p>
+      <div class="option-group">
+        <label>Select Sweetness:</label>
+        <select v-model="selectedSweetness" class="custom-select">
+          <option value="0%">0%</option>
+          <option value="25%">25%</option>
+          <option value="50%">50%</option>
+          <option value="75%">75%</option>
+          <option value="100%">100%</option>
+        </select>
+      </div>
 
-    <p>
-      Select Drink Type:
-      <select v-model="selectedDrinkType">
-        <option value="hot">Hot</option>
-        <option value="cold">Cold</option>
-      </select>
-    </p>
+      <div class="option-group">
+        <label>Select Drink Type:</label>
+        <select v-model="selectedDrinkType" class="custom-select">
+          <option value="hot">Hot</option>
+          <option value="cold">Cold</option>
+        </select>
+      </div>
 
-    <button @click="openMenu">Back</button>
-    <button @click="openCart">Submit</button>
+      <div class="button-group">
+        <button @click="openMenu" class="back-btn">Back</button>
+        <button @click="openCart" class="submit-btn">Submit</button>
+      </div>
+    </div>
   </div>
   <div v-else>
     <p>Drink not found.</p>
@@ -86,4 +94,84 @@ async function openCart() {
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.drink-option-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f4f4f4;
+}
+
+.drink-option {
+  background: white;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  width: 400px;
+}
+
+.drink-image {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+.drink-price {
+  font-size: 1.2em;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.option-group {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 1em;
+  color: #555;
+}
+
+.custom-select {
+  width: 100%;
+  padding: 10px;
+  font-size: 1em;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.custom-select:focus {
+  outline: none;
+  border-color: #ff9900;
+}
+
+.button-group {
+  display: flex;
+  justify-content: space-between;
+}
+
+button {
+  padding: 10px 20px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+}
+
+.back-btn {
+  background-color: #ccc;
+  color: black;
+}
+
+.submit-btn {
+  background-color: #ff9900;
+  color: white;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+</style>

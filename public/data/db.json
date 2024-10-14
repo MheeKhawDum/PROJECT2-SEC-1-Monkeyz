@@ -150,5 +150,26 @@
       "id": "d58b"
     }
   ],
-  "cart": []
+  "cart": [
+    {
+      "id": "18fc",
+      "category": "Coffee",
+      "name": "Espresso",
+      "image": "../picture/espresso coffee.png",
+      "price": 50,
+      "sweetness": "50%",
+      "drinkType": "hot",
+      "type": "normal"
+    },
+    {
+      "id": "5b19",
+      "category": "Coffee",
+      "name": "Latte",
+      "image": "../picture/latte coffee.png",
+      "price": 50,
+      "sweetness": "50%",
+      "drinkType": "hot",
+      "type": "normal"
+    }
+  ]
 }
