@@ -9,7 +9,6 @@ const selectedMenuItem = ref(null);
 const menuItems = ref([]);
 const selectedSweetness = ref("50%"); // Default sweetness
 const selectedDrinkType = ref("hot"); // Default drink type
-const Quantity = ref("1"); //deafult = 1
 
 // Fetch menu items
 async function fetchMenu() {
@@ -36,21 +35,15 @@ function openMenu() {
 }
 
 // Function to submit and open cart popup
-async function openCart() {
+function openCart() {
   const orderDetails = {
     ...selectedMenuItem.value,
     sweetness: selectedSweetness.value,
     drinkType: selectedDrinkType.value,
-    type: "normal",
-    qunatity: Quantity.value,
   };
-  try {
-    const response = await addOrder(orderDetails); // เรียกใช้ฟังก์ชัน addOrder ที่ดึงมาจาก fetch.js
-    console.log(response.message);
-    router.push({ name: "cart" });
-  } catch (error) {
-    console.error("Error submitting order:", error);
-  }
+  const response = addOrder(orderDetails);
+
+  router.push({ name: "cart" }); // Pass the order details to cart
 }
 </script>
 

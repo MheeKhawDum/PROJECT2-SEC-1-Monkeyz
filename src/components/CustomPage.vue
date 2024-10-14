@@ -1,32 +1,55 @@
 <script setup>
-import { ref, watch } from "vue";
+import { ref } from "vue";
+import { addOrder } from "../lib/fetch";
+import { useRoute, useRouter } from "vue-router";
+
+const router = useRouter();
 
 // ตัวแปรสำหรับคำถามและตัวเลือก
 const questions = ref([
-  { id: 1, question: "เลือกขนาดแก้ว", options: ["Medium", "Extra"] },
-  { id: 2, question: "เลือกประเภทเครื่องดื่ม", options: ["ร้อน", "เย็น"] },
   {
-    id: 3,
+    id: 1,
+    question: "เลือกประเภทเครื่องดื่ม",
+    key: "temp",
+    options: ["ร้อน", "เย็น"],
+  },
+  {
+    id: 2,
     question: "เลือก Bottoming",
+    key: "bottoming",
     options: ["ไข่มุกดำ", "ถั่วแดง", "คอนยัค"],
   },
-  { id: 4, question: "เลือก Base", options: ["ชานม", "ชาเขียว", "โกโก้"] },
   {
-    id: 5,
+    id: 3,
+    question: "เลือก Base",
+    key: "base",
+    options: ["ชานม", "ชาเขียว", "โกโก้"],
+  },
+  {
+    id: 4,
     question: "เลือก Flavor",
+    key: "flavor",
     options: ["ช็อคโกแลต", "นม", "สตอเบอร์รี่"],
   },
   {
-    id: 6,
+    id: 5,
     question: "เลือก Topping",
+    key: "topping",
     options: ["ไข่มุก", "เยลลี่", "วิปครีม"],
   },
 ]);
 
 // เก็บคำตอบของผู้ใช้
-const answers = ref([]);
+const answers = ref({
+  temp: null,
+  bottoming: null,
+  base: null,
+  flavor: null,
+  topping: null,
+});
 const currentQuestionIndex = ref(0);
 const clickCount = ref(0);
+const isFinished = ref(false); // ตัวแปรเช็คว่าเลือกเสร็จแล้วหรือไม่
 
 // ตัวแปรสำหรับจัดการสีพื้นหลังและแก้ว
 const backgroundColor = ref("#fad168");
@@ -51,42 +74,13 @@ const cupColors = ref({
 });
 
 const fillLevel = ref(0);
-const maxLayers = ref(3);
+const maxLayers = ref(4); // กำหนดให้มี 4 เลเยอร์เสมอ
 let activeColors = null;
-const isColorSelected = ref(false);
-const scale = ref(0.7); // ขนาดเริ่มต้นเป็น Medium
-const isFlavorSkipped = ref(false); // ตัวแปรบอกว่าข้ามคำถาม Flavor หรือไม่
-
-// ฟังก์ชันเปลี่ยนขนาดแก้ว
-const scaleCup = (size) => {
-  if (size === "Medium") {
-    if (clickCount.value === 0 || clickCount.value % 3 === 1) {
-      clickCount.value += 1; // ถ้ายังไม่ได้กด Medium ก่อนหน้า บวก 1
-    }
-    clickCount.value += 1; // เพิ่มอีก 1 รวมเป็นบวก 2
-    scale.value = 0.7;
-    maxLayers.value = 3;
-    isFlavorSkipped.value = true; // ข้ามคำถาม Flavor เมื่อเลือก Medium
-  } else if (size === "Extra") {
-    // ถ้าเลือก Extra แล้วเคยกด Medium ก่อนหน้า ให้ลบ 2 และบวก 1
-    if (clickCount.value % 3 === 0 || clickCount.value % 3 === 2) {
-      clickCount.value -= 2;
-    }
-    clickCount.value += 1; // บวก 1 เมื่อเลือก Extra
-    scale.value = 1;
-    maxLayers.value = 4;
-    isFlavorSkipped.value = false;
-  }
-
-  fillLevel.value = Math.min(fillLevel.value, maxLayers.value);
-  updateCupColors();
-};
 
 // ฟังก์ชันเปลี่ยนสีแก้ว
 function changeColor(type) {
   backgroundColor.value = type === "ร้อน" ? "#fff7b7" : "#b1e0ff";
   activeColors = type === "ร้อน" ? hotColors : coldColors;
-  isColorSelected.value = true;
   fillLevel.value = 0;
   updateCupColors();
 }
@@ -102,121 +96,85 @@ function updateCupColors() {
 
 // ฟังก์ชันสำหรับเลือกตัวเลือกและไปยังคำถามถัดไป
 const selectOption = (option) => {
-  answers.value[currentQuestionIndex.value] = option;
+  const questionKey = questions.value[currentQuestionIndex.value].key;
+  answers.value[questionKey] = option;
 
-  // อัปเดตการเปลี่ยนแปลงตามคำถามที่เลือก
   if (currentQuestionIndex.value === 0) {
-    scaleCup(option);
-  } else if (currentQuestionIndex.value === 1) {
-    changeColor(option);
-  } else if (currentQuestionIndex.value >= 2) {
+    changeColor(option); // เปลี่ยนสีแก้ว
+  } else if (currentQuestionIndex.value >= 1) {
     fillLevel.value = Math.min(fillLevel.value + 1, maxLayers.value);
     updateCupColors();
   }
 
-  // ข้ามคำถาม Flavor ถ้าเลือก Medium
-  if (isFlavorSkipped.value && currentQuestionIndex.value === 4) {
-    currentQuestionIndex.value += 1;
-  }
-
   // เพิ่มจำนวนการกดปุ่ม
-
   clickCount.value++;
-  console.log(clickCount.value);
 
-  // ไปยังคำถามถัดไป
+  // ไปยังคำถามถัดไปหรือจบการเลือก
   if (currentQuestionIndex.value < questions.value.length - 1) {
     currentQuestionIndex.value++;
+  } else {
+    isFinished.value = true; // ตั้งค่าเป็น true เมื่อเลือกเสร็จแล้ว
   }
 };
 
 const goBack = () => {
   if (currentQuestionIndex.value > 0) {
-    // ลบคำตอบในคำถามปัจจุบันก่อนย้อนกลับ
-    answers.value.splice(currentQuestionIndex.value, 1);
+    const questionKey = questions.value[currentQuestionIndex.value].key;
+    answers.value[questionKey] = null; // ลบคำตอบเมื่อย้อนกลับ
     currentQuestionIndex.value--;
 
-    // ถ้าย้อนกลับไปเจอคำถาม Flavor ให้ข้ามเมื่อเลือก Medium
-    if (isFlavorSkipped.value && currentQuestionIndex.value === 4) {
-      currentQuestionIndex.value--;
-    }
-
-    // ลบ layer ของแก้วตามคำถามที่ย้อนกลับ
-    if (currentQuestionIndex.value >= 2) {
-      fillLevel.value = Math.max(0, fillLevel.value - 1); // ลดระดับแก้ว
-      updateCupColors(); // อัปเดตสีแก้วใหม่
+    if (currentQuestionIndex.value >= 1) {
+      fillLevel.value = Math.max(0, fillLevel.value - 1);
+      updateCupColors();
     } else {
-      // ถ้าย้อนกลับไปถึงคำถาม id1 หรือ id2 ให้รีเซ็ตแก้ว
       fillLevel.value = 0;
-      updateCupColors(); // รีเซ็ตสีแก้วใหม่
+      updateCupColors();
     }
 
-    // ถ้าย้อนกลับไปที่คำถาม id1 (เลือกขนาดแก้ว) ให้เปลี่ยนสีพื้นหลังเป็น '#fad168'
-    if (currentQuestionIndex.value === 0) {
-      backgroundColor.value = "#fad168";
-    }
-
-    // ลดจำนวนการกดปุ่ม
     clickCount.value--;
-    console.log(clickCount.value);
+    isFinished.value = false; // หากย้อนกลับให้ตั้งเป็น false
   }
 };
 
-// Watch currentQuestionIndex และ scale เพื่อข้ามคำถาม Flavor เมื่อเลือก Medium
-watch([currentQuestionIndex, scale], () => {
-  // ตรวจสอบว่า currentQuestionIndex < 4 เพื่อป้องกันการข้ามแบบผิดๆ
-  if (
-    isFlavorSkipped.value &&
-    currentQuestionIndex.value === 4 &&
-    scale.value === 0.7
-  ) {
-    currentQuestionIndex.value += 1; // ข้ามคำถาม Flavor
+// ฟังก์ชันสำหรับส่งคำสั่งซื้อ
+const submitOrder = async () => {
+  try {
+    const response = await addOrder(answers.value); // เรียกใช้ฟังก์ชัน addOrder ที่ดึงมาจาก fetch.js
+    console.log(response.message);
+    router.push({ name: "cart" });
+  } catch (error) {
+    console.error("Error submitting order:", error);
   }
-});
+};
 </script>
 
 <template>
   <div class="wrapper">
     <div class="background" :style="{ backgroundColor: backgroundColor }">
-      <div class="container" :style="{ transform: `scale(${scale})` }">
+      <div class="container">
         <div class="cup">
           <div
             class="cup-layer"
-            v-if="maxLayers === 4"
             :style="{ height: '25%', backgroundColor: cupColors.layer4 }"
           ></div>
           <div
             class="cup-layer"
-            :style="{
-              height: maxLayers === 4 ? '25%' : '33.33%',
-              backgroundColor: cupColors.layer3,
-            }"
+            :style="{ height: '25%', backgroundColor: cupColors.layer3 }"
           ></div>
           <div
             class="cup-layer"
-            :style="{
-              height: maxLayers === 4 ? '25%' : '33.33%',
-              backgroundColor: cupColors.layer2,
-            }"
+            :style="{ height: '25%', backgroundColor: cupColors.layer2 }"
           ></div>
           <div
             class="cup-layer"
-            :style="{
-              height: maxLayers === 4 ? '25%' : '33.33%',
-              backgroundColor: cupColors.layer1,
-            }"
+            :style="{ height: '25%', backgroundColor: cupColors.layer1 }"
           ></div>
         </div>
       </div>
     </div>
 
-    <!-- ข้ามคำถาม id 5 (Flavor) ถ้าเลือกแก้ว Medium -->
     <div
-      v-if="
-        currentQuestionIndex < questions.length &&
-        clickCount != 6 &&
-        !(scale.value === 0.7 && questions[currentQuestionIndex].id === 5)
-      "
+      v-if="!isFinished && currentQuestionIndex < questions.length"
       class="question-container"
     >
       <h2>{{ questions[currentQuestionIndex].question }}</h2>
@@ -234,9 +192,9 @@ watch([currentQuestionIndex, scale], () => {
 
     <div v-else>
       <h2>การตั้งค่าของคุณเสร็จสมบูรณ์แล้ว</h2>
+      <button @click="submitOrder" class="btn">ยืนยันคำสั่งซื้อ</button>
     </div>
-
-    <!-- ปุ่มย้อนกลับ -->
+    {{ answers }}
     <div v-if="currentQuestionIndex > 0">
       <button @click="goBack" class="btn">ย้อนกลับ</button>
     </div>
@@ -286,7 +244,6 @@ watch([currentQuestionIndex, scale], () => {
   height: 37.5em;
   width: 31.25em;
   position: relative;
-  transition: transform 0.3s;
 }
 
 .cup {

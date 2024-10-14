@@ -31,39 +31,33 @@ const removeOrder = async (orderId) => {
   }
 };
 
-// ฟังก์ชันแก้ไขคำสั่งซื้อ
-function editOrder(item) {
-  // Check the type of the order
-  if (item.type === "custom") {
-    // Navigate to custom edit page (ensure the name matches your router)
-    router.push({ name: "editCustom", params: { id: item.id } });
-  } else {
-    // Navigate to normal edit page
-    router.push({ name: "edit", params: { id: item.id } });
-  }
+function editOrder(id) {
+  router.push({ name: "edit", params: { id } });
 }
 
-// คำนวณราคารวม
+// Computed total price based on cart items
 const totalPrice = computed(() =>
-  cartItems.value.reduce((total, item) => {
-    const price = item.price; // Default to 0 if price is undefined
-    return total + price;
-  }, 0)
+  cartItems.value.reduce((total, item) => total + item.price * item.quantity, 0)
 );
 
-// ฟังก์ชันเพิ่มจำนวนสินค้า
+// Function to add item quantity
 function addQuantity(id) {
   const item = cartItems.value.find((item) => item.id === id);
   if (item) item.quantity++;
 }
 
-// ฟังก์ชันลดจำนวนสินค้า
+// Function to decrease item quantity
 function decreaseQuantity(id) {
   const item = cartItems.value.find((item) => item.id === id);
   if (item && item.quantity > 1) item.quantity--;
 }
 
-// ฟังก์ชันสั่งซื้อ
+// Function to remove item from cart
+// function removeItem(id) {
+//   cartItems.value = cartItems.value.filter((item) => item.id !== id);
+// }
+
+// Function to place order
 function placeOrder() {
   // Implement your order logic
   alert("Order placed!");
@@ -71,7 +65,7 @@ function placeOrder() {
   openCartPopup();
 }
 
-// เปิด/ปิด popup cart
+// Toggle cart popup visibility
 function openCartPopup() {
   cartPopup.value = !cartPopup.value;
 }
@@ -125,7 +119,7 @@ function closeCartPopup() {
           <button @click="removeOrder(item.id)" class="text-red-600">
             Remove
           </button>
-          <button @click="editOrder(item)" class="text-blue-600">Edit</button>
+          <button @click="editOrder(item.id)" class="text-red-600">Edit</button>
         </div>
 
         <!-- Display total price -->

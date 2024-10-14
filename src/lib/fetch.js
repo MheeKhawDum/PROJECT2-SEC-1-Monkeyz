@@ -46,9 +46,28 @@ async function getItems(url) {
     }
 }
 
-async function editOrder() {
+async function editOrder(orderId, updatedData) {
+  try {
+    const res = await fetch(`${url}/cart/${orderId}`, {
+        method: 'PUT', // ใช้ PUT หรือ PATCH สำหรับการอัปเดต
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(updatedData) // ส่งข้อมูลที่อัปเดตใน body
+    });
 
+    if (!res.ok) {
+        throw new Error("Failed to update the order");
+    }
+
+    const data = await res.json();
+    return { resCode: res.status, message: 'Order updated successfully', data: data };
+  } catch (error) {
+    console.error("Error updating order:", error);
+    throw error;
+  }
 }
+
 
 
 async function addOrder(orderData) {
@@ -73,4 +92,47 @@ async function addOrder(orderData) {
   }
 }
 
-export { getMenu, getItems, deleteOrder, editOrder, addOrder }
+async function getOrders() {
+  try {
+    const res = await fetch(`${url}/cart`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!res.ok) {
+      throw new Error("Failed to fetch orders");
+    }
+
+    const data = await res.json();
+    return data; // ส่งกลับข้อมูลที่ได้จากฐานข้อมูล
+  } catch (error) {
+    console.error("Error fetching orders:", error);
+    throw error;
+  }
+}
+
+async function getOrdersbyId(id) {
+  try {
+    const res = await fetch(`${url}/cart/${id}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!res.ok) {
+      throw new Error("Failed to fetch orders");
+    }
+
+    const data = await res.json();
+    return data; // ส่งกลับข้อมูลที่ได้จากฐานข้อมูล
+  } catch (error) {
+    console.error("Error fetching orders:", error);
+    throw error;
+  }
+}
+
+
+export { getMenu, getItems, deleteOrder, editOrder, addOrder, getOrders ,getOrdersbyId}

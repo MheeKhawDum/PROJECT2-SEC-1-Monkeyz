@@ -12,7 +12,7 @@ const listCoffee = ref({});
 const listTea = ref({});
 const listMilk = ref({});
 
-// ฟังก์ชันดึงข้อมูลจาก db.json
+// ฟังก์ชันดึงข้อมูลจาก API
 async function fetchData() {
   try {
     // isLoading.value = true;
@@ -61,15 +61,13 @@ fetchData();
       <div v-if="listCoffee.length">
         <h1>Coffee</h1>
         <div class="menu-grid">
-          <div>
-            <div
-              v-for="(item, index) in listCoffee"
-              :key="index"
-              class="menu-item"
-              @click="openDrinkOption(item.name)"
-            >
-              <p>{{ item.name }} - {{ item.price }} THB</p>
-            </div>
+          <div
+            v-for="(item, index) in listCoffee"
+            :key="index"
+            class="menu-item"
+            @click="openDrinkOption(item.name)"
+          >
+            <p>{{ item.name }} - {{ item.price }} THB</p>
           </div>
         </div>
       </div>
