@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import { getItems } from "../lib/fetch";
+import { getItems, addOrder } from "../lib/fetch";
 
 const route = useRoute();
 const router = useRouter();
@@ -41,7 +41,9 @@ function openCart() {
     sweetness: selectedSweetness.value,
     drinkType: selectedDrinkType.value,
   };
-  router.push({ name: "cart", params: { orderDetails } }); // Pass the order details to cart
+  const response = addOrder(orderDetails);
+
+  router.push({ name: "cart" }); // Pass the order details to cart
 }
 </script>
 

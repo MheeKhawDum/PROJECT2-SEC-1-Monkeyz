@@ -6,7 +6,6 @@ import CustomPage from '@/components/CustomPage.vue'
 import CartPopup from '@/components/CartPopup.vue'
 import EditPage from '@/components/EditPage.vue'
 import DrinkOptions from '@/components/DrinkOptions.vue'
-import CartPage from '../components/CartPage.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -35,7 +34,7 @@ const router = createRouter({
       component: CustomPage
     },
     {
-      path: '/edit/:name',
+      path: '/edit/:id',
       name: 'edit',
       component: EditPage
     },

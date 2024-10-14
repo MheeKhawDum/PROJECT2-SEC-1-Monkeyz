@@ -1,63 +1,69 @@
 <script setup>
 import { ref } from "vue";
-import { useRoute } from "vue-router"; // Import useRoute to access route params
-import { getItems } from "../lib/fetch"; // Import getItems to fetch data
-
-// Variables
+import { useRoute, useRouter } from "vue-router";
+import { getOrdersbyId, editOrder } from "../lib/fetch";
 const route = useRoute();
+const router = useRouter();
+const editId = route.params.id;
+const menuItems = ref([]); // ตัวแปรสำหรับเก็บรายการเครื่องดื่มทั้งหมด
+const cartmenu = ref(null);
+// Data for the selected menu item (this would likely be passed as a prop or fetched from a store)
 const selectedMenuItem = ref(null);
-const menuItems = ref([]);
 
-// Function to fetch menu items
-async function fetchMenu() {
-  const coffeeMenu = await getItems(
-    `${import.meta.env.VITE_BASE_URL}/coffeeMenu`
-  );
-  const teaMenu = await getItems(`${import.meta.env.VITE_BASE_URL}/teaMenu`);
-  const milkMenu = await getItems(`${import.meta.env.VITE_BASE_URL}/milkMenu`);
+// Function to calculate the total price based on the drink type
+const priceEdit = () => {
+  let price = selectedMenuItem.value.basePrice;
 
-  menuItems.value = [...coffeeMenu, ...teaMenu, ...milkMenu];
+  if (selectedMenuItem.value.drinkType === "cold") {
+    price += 10; // add 10 THB for cold drinks
+  }
 
-  // Find the selected drink based on route params
-  const drinkName = route.params.name;
-  selectedMenuItem.value = menuItems.value.find(
-    (item) => item.name === drinkName
-  );
-}
-
-// Fetch menu on component load
-fetchMenu();
-
-// Save and cancel functions
-const saveEdit = () => {
-  console.log("Changes saved:", selectedMenuItem.value);
-  alert("Changes saved successfully.");
+  return price;
 };
 
+// Function to save the edited changes
+const saveEdit = () => {
+  // Logic to save the edited drink (could involve updating a store or making an API call)
+  const editOrderbyId = editOrder(editId, cartmenu.value);
+  console.log(editOrderbyId);
+  router.push({ name: "cart" });
+  // alert("Changes saved successfully.");
+};
+
+// Function to cancel the edit and revert changes
 const cancelEdit = () => {
+  // Logic to handle cancellation (could involve resetting the data or navigating to a different page)
   console.log("Edit canceled");
   alert("Edit canceled.");
 };
+
+async function fetchOrder() {
+  cartmenu.value = await getOrdersbyId(editId);
+
+  console.log(cartmenu);
+  console.log(cartmenu.id);
+}
+fetchOrder();
 </script>
 
 <template>
-  <div v-if="selectedMenuItem" class="edit-page">
+  <div v-if="cartmenu" class="edit-page">
     <h1>Edit Drink</h1>
     <div>
-      <img :src="selectedMenuItem.image" :alt="selectedMenuItem.name" />
+      <img :src="cartmenu.image" :alt="cartmenu.name" />
       <p>
-        Name: <strong>{{ selectedMenuItem.name }}</strong>
+        Name: <strong>{{ cartmenu.name }}</strong>
       </p>
       <p>
         Drink Type:
-        <select v-model="selectedMenuItem.drinkType">
+        <select v-model="cartmenu.drinkType">
           <option value="hot">Hot</option>
           <option value="cold">Cold</option>
         </select>
       </p>
       <p>
         Sweetness:
-        <select v-model="selectedMenuItem.sweetness">
+        <select v-model="cartmenu.sweetness">
           <option value="0%">0%</option>
           <option value="25%">25%</option>
           <option value="50%">50%</option>
@@ -73,13 +79,3 @@ const cancelEdit = () => {
     <p>Loading...</p>
   </div>
 </template>
-
-<style scoped>
-.edit-page {
-  padding: 20px;
-}
-.edit-page img {
-  max-width: 100%;
-  height: auto;
-}
-</style>

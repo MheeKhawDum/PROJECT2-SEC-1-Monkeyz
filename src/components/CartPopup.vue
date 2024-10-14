@@ -1,10 +1,39 @@
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
+import { getOrders, deleteOrder } from "../lib/fetch.js"; // นำเข้าฟังก์ชัน getOrders จาก fetch.js
 import { useRouter } from "vue-router";
 
 const router = useRouter();
 const cartPopup = ref(true); // Control visibility of cart popup
 const cartItems = ref([]); // Array holding cart items
+
+onMounted(async () => {
+  await loadOrders();
+});
+
+const loadOrders = async () => {
+  try {
+    const data = await getOrders(); // เรียกใช้ฟังก์ชัน getOrders เพื่อดึงข้อมูล
+    cartItems.value = data; // เก็บข้อมูลที่ได้ลงใน orders
+  } catch (error) {
+    console.error("Error loading orders:", error);
+  }
+};
+
+// ฟังก์ชันสำหรับลบคำสั่งซื้อ
+const removeOrder = async (orderId) => {
+  try {
+    await deleteOrder(orderId); // เรียกใช้ฟังก์ชัน deleteOrder
+    cartItems.value = cartItems.value.filter((order) => order.id !== orderId); // อัปเดต orders หลังจากลบ
+    loadOrders();
+  } catch (error) {
+    console.error("Error deleting order:", error);
+  }
+};
+
+function editOrder(id) {
+  router.push({ name: "edit", params: { id } });
+}
 
 // Computed total price based on cart items
 const totalPrice = computed(() =>
@@ -24,9 +53,9 @@ function decreaseQuantity(id) {
 }
 
 // Function to remove item from cart
-function removeItem(id) {
-  cartItems.value = cartItems.value.filter((item) => item.id !== id);
-}
+// function removeItem(id) {
+//   cartItems.value = cartItems.value.filter((item) => item.id !== id);
+// }
 
 // Function to place order
 function placeOrder() {
@@ -39,6 +68,9 @@ function placeOrder() {
 // Toggle cart popup visibility
 function openCartPopup() {
   cartPopup.value = !cartPopup.value;
+}
+function closeCartPopup() {
+  router.push({ name: "menuPage" });
 }
 </script>
 
@@ -84,9 +116,10 @@ function openCartPopup() {
             <span class="mx-2">Qty: {{ item.quantity }}</span>
             <button @click="decreaseQuantity(item.id)" class="px-2">-</button>
           </div>
-          <button @click="removeItem(item.id)" class="text-red-600">
+          <button @click="removeOrder(item.id)" class="text-red-600">
             Remove
           </button>
+          <button @click="editOrder(item.id)" class="text-red-600">Edit</button>
         </div>
 
         <!-- Display total price -->
@@ -101,7 +134,7 @@ function openCartPopup() {
             Place Order
           </button>
           <button
-            @click="openCartPopup"
+            @click="closeCartPopup"
             class="bg-gray-500 text-white px-4 py-2 rounded"
           >
             Close
