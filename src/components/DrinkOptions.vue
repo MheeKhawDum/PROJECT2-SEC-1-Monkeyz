@@ -35,15 +35,20 @@ function openMenu() {
 }
 
 // Function to submit and open cart popup
-function openCart() {
+async function openCart() {
   const orderDetails = {
     ...selectedMenuItem.value,
     sweetness: selectedSweetness.value,
     drinkType: selectedDrinkType.value,
+    type: "normal",
   };
-  const response = addOrder(orderDetails);
-
-  router.push({ name: "cart" }); // Pass the order details to cart
+  try {
+    const response = await addOrder(orderDetails); // เรียกใช้ฟังก์ชัน addOrder ที่ดึงมาจาก fetch.js
+    console.log(response.message);
+    router.push({ name: "cart" });
+  } catch (error) {
+    console.error("Error submitting order:", error);
+  }
 }
 </script>
 

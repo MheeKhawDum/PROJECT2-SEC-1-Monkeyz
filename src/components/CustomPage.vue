@@ -10,42 +10,44 @@ const questions = ref([
   {
     id: 1,
     question: "เลือกประเภทเครื่องดื่ม",
-    key: "temp",
-    options: ["ร้อน", "เย็น"],
+    key: "drinkType",
+    options: ["hot", "cold"],
   },
   {
     id: 2,
-    question: "เลือก Bottoming",
-    key: "bottoming",
-    options: ["ไข่มุกดำ", "ถั่วแดง", "คอนยัค"],
+    question: "เลือก ความหวาน",
+    key: "sweetness",
+    options: ["50%", "75%", "100%"],
   },
   {
     id: 3,
     question: "เลือก Base",
-    key: "base",
-    options: ["ชานม", "ชาเขียว", "โกโก้"],
+    key: "category",
+    options: ["coffee", "tea", "milk"],
   },
   {
     id: 4,
     question: "เลือก Flavor",
     key: "flavor",
-    options: ["ช็อคโกแลต", "นม", "สตอเบอร์รี่"],
+    options: ["chocolate", "strawberry", "vanilla"],
   },
   {
     id: 5,
     question: "เลือก Topping",
     key: "topping",
-    options: ["ไข่มุก", "เยลลี่", "วิปครีม"],
+    options: ["gummy", "whip cream", "cookie"],
   },
 ]);
 
 // เก็บคำตอบของผู้ใช้
 const answers = ref({
-  temp: null,
-  bottoming: null,
-  base: null,
+  drinkType: null,
+  sweetness: null,
+  category: null,
   flavor: null,
   topping: null,
+  type: "custom",
+  name: "custom",
 });
 const currentQuestionIndex = ref(0);
 const clickCount = ref(0);
@@ -79,8 +81,8 @@ let activeColors = null;
 
 // ฟังก์ชันเปลี่ยนสีแก้ว
 function changeColor(type) {
-  backgroundColor.value = type === "ร้อน" ? "#fff7b7" : "#b1e0ff";
-  activeColors = type === "ร้อน" ? hotColors : coldColors;
+  backgroundColor.value = type === "hot" ? "#fff7b7" : "#b1e0f0";
+  activeColors = type === "hot" ? hotColors : coldColors;
   fillLevel.value = 0;
   updateCupColors();
 }
