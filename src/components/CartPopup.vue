@@ -80,13 +80,10 @@ function closeCartPopup() {
 <template>
   <div
     v-show="cartPopup"
-    class="fixed inset-0 z-20 flex items-center justify-center"
+    class="fixed inset-0 z-20 flex items-center justify-center bg-orange-100"
   >
     <!-- Overlay for background -->
-    <div
-      class="bg-black bg-opacity-50 absolute inset-0"
-      @click="openCartPopup"
-    ></div>
+    <div class="absolute inset-0" @click="openCartPopup"></div>
 
     <!-- Modal content for cart -->
     <div

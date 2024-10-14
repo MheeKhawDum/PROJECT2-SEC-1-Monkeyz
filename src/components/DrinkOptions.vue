@@ -53,9 +53,11 @@ async function openCart() {
 </script>
 
 <template>
-  <div v-if="selectedMenuItem" class="drink-option-container">
+  <div v-if="selectedMenuItem" class="drink-option-container bg-orange-100">
     <div class="drink-option">
-      <h1>{{ selectedMenuItem.name }}</h1>
+      <h1 class="text-slate-950 text-xl font-bold">
+        {{ selectedMenuItem.name }}
+      </h1>
       <img
         :src="selectedMenuItem.image"
         :alt="selectedMenuItem.name"
@@ -100,7 +102,6 @@ async function openCart() {
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background-color: #f4f4f4;
 }
 
 .drink-option {

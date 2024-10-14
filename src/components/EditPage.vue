@@ -40,11 +40,11 @@ function cancelEdit() {
 onMounted(fetchMenu);
 </script>
 <template>
-  <div v-if="menubyId" class="edit-page">
+  <div v-if="menubyId" class="edit-page bg-orange-100">
     <!-- <h1>Edit Drink</h1> -->
     <div class="edit-container">
       <img :src="menubyId.image" :alt="menubyId.name" class="drink-image" />
-      <p>
+      <p class="text-slate-950">
         Name: <strong>{{ menubyId.name }}</strong>
       </p>
 
@@ -84,7 +84,6 @@ onMounted(fetchMenu);
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background-color: #f4f4f4;
 }
 
 .edit-container {

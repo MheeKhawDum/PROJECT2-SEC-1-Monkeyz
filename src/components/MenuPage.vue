@@ -50,14 +50,14 @@ fetchData();
     </template>
 
     <!-- Main content -->
-    <div class="menu-page h-full">
+    <div class="menu-page h-full bg-orange-100">
       <!-- Loading and Error Messages -->
       <div v-if="isLoading" class="loading">Loading menu...</div>
       <div v-if="errorMessage" class="error-message">{{ errorMessage }}</div>
 
       <!-- Coffee Menu -->
       <div v-if="listCoffee.length" class="menu-section">
-        <h2 class="text-2xl font-bold">Coffee</h2>
+        <h2 class="text-2xl font-bold text-slate-950">Coffee</h2>
         <div class="menu-slider">
           <div
             v-for="(item, index) in listCoffee"
@@ -74,7 +74,7 @@ fetchData();
 
       <!-- Tea Menu -->
       <div v-if="listTea.length" class="menu-section">
-        <h2 class="text-2xl font-bold">Tea</h2>
+        <h2 class="text-2xl font-bold text-slate-950">Tea</h2>
         <div class="menu-slider">
           <div
             v-for="(item, index) in listTea"
@@ -91,7 +91,7 @@ fetchData();
 
       <!-- Milk Menu -->
       <div v-if="listMilk.length" class="menu-section">
-        <h2 class="text-2xl font-bold">Milk</h2>
+        <h2 class="text-2xl font-bold text-slate-950">Milk</h2>
         <div class="menu-slider">
           <div
             v-for="(item, index) in listMilk"
@@ -112,7 +112,6 @@ fetchData();
 <style scoped>
 .menu-page {
   padding: 20px;
-  background-color: #f8f8f8;
 }
 
 .loading,

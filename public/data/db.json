@@ -152,20 +152,10 @@
   ],
   "cart": [
     {
-      "id": "18fc",
+      "id": "bcc5",
       "category": "Coffee",
-      "name": "Espresso",
-      "image": "../picture/espresso coffee.png",
-      "price": 50,
-      "sweetness": "50%",
-      "drinkType": "hot",
-      "type": "normal"
-    },
-    {
-      "id": "5b19",
-      "category": "Coffee",
-      "name": "Latte",
-      "image": "../picture/latte coffee.png",
+      "name": "Mocha",
+      "image": "../picture/Mocha_coffe.png",
       "price": 50,
       "sweetness": "50%",
       "drinkType": "hot",
