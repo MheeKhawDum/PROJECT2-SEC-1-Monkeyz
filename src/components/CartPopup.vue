@@ -47,8 +47,8 @@ function editOrder(item) {
 // คำนวณราคารวม
 const totalPrice = computed(() =>
   cartItems.value.reduce((total, item) => {
-    const price = item.price;  // Default to 0 if price is undefined
-    return total + price;
+    const priceWithDiscount = applyDiscount(item.price, item.quantity); // ใช้ฟังก์ชัน applyDiscount
+    return total + priceWithDiscount * item.quantity;
   }, 0)
 );
 
@@ -56,6 +56,16 @@ const totalPrice = computed(() =>
 function addQuantity(id) {
   const item = cartItems.value.find((item) => item.id === id);
   if (item) item.quantity++;
+}
+
+//disscount
+function applyDiscount(price, quantity) {
+  if (quantity === 3) {
+    return price - (price * 15 / 100); // ลด 15%
+  } else if (quantity === 5) {
+    return price - (price * 20 / 100); // ลด 20%
+  }
+  return price; // ถ้าไม่เข้าเงื่อนไข ไม่ลดราคา
 }
 
 // ฟังก์ชันลดจำนวนสินค้า
@@ -115,7 +125,9 @@ function closeCartPopup() {
             <div class="ml-2">
               <p>{{ item.name }}</p>
               <p>{{ item.drinkType }}, {{ item.sweetness }}</p>
-              <p>{{ item.price }} THB</p>
+              <p>
+                {{ applyDiscount(item.price, item.quantity) }} THB ({{ item.price }} THB without discount)
+              </p>
             </div>
           </div>
           <div class="flex items-center">
