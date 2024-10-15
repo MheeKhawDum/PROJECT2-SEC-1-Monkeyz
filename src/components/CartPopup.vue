@@ -47,7 +47,7 @@ function editOrder(item) {
 // คำนวณราคารวม
 const totalPrice = computed(() =>
   cartItems.value.reduce((total, item) => {
-    const price = item.price;  // Default to 0 if price is undefined
+    const price = item.price * item.quantity;  // Default to 0 if price is undefined
     return total + price;
   }, 0)
 );

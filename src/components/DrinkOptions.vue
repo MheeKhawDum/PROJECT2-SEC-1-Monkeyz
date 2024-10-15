@@ -41,6 +41,7 @@ async function openCart() {
     sweetness: selectedSweetness.value,
     drinkType: selectedDrinkType.value,
     type: "normal",
+    quantity: 1
   };
   try {
     const response = await addOrder(orderDetails); // เรียกใช้ฟังก์ชัน addOrder ที่ดึงมาจาก fetch.js

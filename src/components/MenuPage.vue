@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import { useRouter } from "vue-router";
 import HeaderFooterLayout from "./Header.vue";
 import { getMenu, getItems } from "../lib/fetch";
@@ -11,19 +11,22 @@ const errorMessage = ref("");
 const listCoffee = ref({});
 const listTea = ref({});
 const listMilk = ref({});
+const listRecommended = ref({});
 
 // ฟังก์ชันดึงข้อมูลจาก API
 async function fetchData() {
   try {
     // isLoading.value = true;
 
-    listCoffee.value = await getItems(
-      `${import.meta.env.VITE_BASE_URL}/coffeeMenu`
-    );
+    listCoffee.value = await getItems(`${import.meta.env.VITE_BASE_URL}/coffeeMenu`);
     listTea.value = await getItems(`${import.meta.env.VITE_BASE_URL}/teaMenu`);
-    listMilk.value = await getItems(
-      `${import.meta.env.VITE_BASE_URL}/milkMenu`
-    );
+    listMilk.value = await getItems(`${import.meta.env.VITE_BASE_URL}/milkMenu`);
+    listRecommended.value = await getItems(`${import.meta.env.VITE_BASE_URL}/history`);
+
+    // console.log(listCoffee.value)
+    // console.log("------recommended item array-------")
+    // console.log(listRecommended.value)
+
   } catch (error) {
     console.error(error);
     errorMessage.value = "Failed to load menu items. Please try again.";
@@ -31,6 +34,13 @@ async function fetchData() {
     isLoading.value = false;
   }
 }
+
+// const topOrderedItems = computed(() => {
+//   return listRecommended.value
+//     // .filter(item => item.name.startsWith('Custom')) // Filter only custom items
+//     .sort((a, b) => b.quantity - a.quantity)
+//     .slice(0, 3);
+// })
 
 function openDrinkOption(menuItem) {
   router.push({
@@ -95,6 +105,23 @@ fetchData();
         <div class="menu-slider">
           <div
             v-for="(item, index) in listMilk"
+            :key="index"
+            class="menu-item"
+            @click="openDrinkOption(item.name)"
+          >
+            <img :src="item.image" :alt="item.name" class="menu-item-image" />
+            <p class="menu-item-name">{{ item.name }}</p>
+            <p class="menu-item-price">{{ item.price }} THB</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recommended Menu -->
+      <div v-if="listRecommended.length" class="menu-section">
+        <h2 class="text-2xl font-bold text-slate-950">Milk</h2>
+        <div class="menu-slider">
+          <div
+            v-for="(item, index) in listRecommended"
             :key="index"
             class="menu-item"
             @click="openDrinkOption(item.name)"
