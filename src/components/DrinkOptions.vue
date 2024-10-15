@@ -2,6 +2,7 @@
 import { ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { getItems, addOrder } from "../lib/fetch";
+import Notification from './notification/Notification.vue'; // Import the notification component
 
 const route = useRoute();
 const router = useRouter();
@@ -9,6 +10,8 @@ const selectedMenuItem = ref(null);
 const menuItems = ref([]);
 const selectedSweetness = ref("50%"); // Default sweetness
 const selectedDrinkType = ref("hot"); // Default drink type
+const notificationVisible = ref(false); // Notification visibility
+const notificationMessage = ref(''); // Notification message
 
 // Fetch menu items
 async function fetchMenu() {
@@ -43,9 +46,18 @@ async function openCart() {
     type: "normal",
   };
   try {
-    const response = await addOrder(orderDetails); // เรียกใช้ฟังก์ชัน addOrder ที่ดึงมาจาก fetch.js
+    const response = await addOrder(orderDetails);
     console.log(response.message);
-    router.push({ name: "cart" });
+
+    // Show notification
+    notificationMessage.value = response.message; // Set the message from response
+    notificationVisible.value = true; // Show the notification
+
+    // Redirect to cart after a short delay
+    setTimeout(() => {
+      router.push({ name: "cart" });
+    }, 2000); // 2 seconds delay for user to see the notification
+
   } catch (error) {
     console.error("Error submitting order:", error);
   }
@@ -94,6 +106,19 @@ async function openCart() {
     <p>Drink not found.</p>
     <button @click="openMenu">Back</button>
   </div>
+  
+  <!-- Notification Component -->
+  <Notification
+    :visible="notificationVisible"
+    @close="notificationVisible = false"
+  >
+    <template #icon>
+      <span>🔔</span>
+    </template>
+    <template #content>
+      <p>{{ notificationMessage }}</p>
+    </template>
+  </Notification>
 </template>
 
 <style scoped>

@@ -152,10 +152,40 @@
   ],
   "cart": [
     {
-      "id": "bcc5",
-      "category": "Coffee",
-      "name": "Mocha",
-      "image": "../picture/Mocha_coffe.png",
+      "id": "b220",
+      "category": "Tea",
+      "name": "Milk Tea",
+      "image": "../picture/milk tea.png",
+      "price": 50,
+      "sweetness": "50%",
+      "drinkType": "hot",
+      "type": "normal"
+    },
+    {
+      "id": "b220",
+      "category": "Tea",
+      "name": "Milk Tea",
+      "image": "../picture/milk tea.png",
+      "price": 50,
+      "sweetness": "50%",
+      "drinkType": "hot",
+      "type": "normal"
+    },
+    {
+      "id": "7377",
+      "category": "Tea",
+      "name": "Thai Tea",
+      "image": "../picture/Thai_tea.png",
+      "price": 50,
+      "sweetness": "50%",
+      "drinkType": "hot",
+      "type": "normal"
+    },
+    {
+      "id": "7377",
+      "category": "Tea",
+      "name": "Thai Tea",
+      "image": "../picture/Thai_tea.png",
       "price": 50,
       "sweetness": "50%",
       "drinkType": "hot",
