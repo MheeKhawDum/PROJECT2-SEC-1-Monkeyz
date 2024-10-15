@@ -23,9 +23,7 @@ async function fetchData() {
     listMilk.value = await getItems(`${import.meta.env.VITE_BASE_URL}/milkMenu`);
     listRecommended.value = await getItems(`${import.meta.env.VITE_BASE_URL}/history`);
 
-    // console.log(listCoffee.value)
-    // console.log("------recommended item array-------")
-    // console.log(listRecommended.value)
+    
 
   } catch (error) {
     console.error(error);
@@ -118,7 +116,7 @@ fetchData();
 
       <!-- Recommended Menu -->
       <div v-if="listRecommended.length" class="menu-section">
-        <h2 class="text-2xl font-bold text-slate-950">Milk</h2>
+        <h2 class="text-2xl font-bold text-slate-950">Recommended Custom Menu</h2>
         <div class="menu-slider">
           <div
             v-for="(item, index) in listRecommended"
@@ -127,10 +125,8 @@ fetchData();
             @click="openDrinkOption(item.name)"
           >
             <img :src="item.image" :alt="item.name" class="menu-item-image" />
-            <!-- {{ item[0].name }} -->
-            <!-- {{ item }} -->
-            <p class="menu-item-name">{{ item.name }}</p>
-            <p class="menu-item-price">{{ item.price }} THB</p>
+            <p class="menu-item-name">{{ item[0].name }}</p>
+            <p class="menu-item-price">{{ item[0].price }} THB</p>
           </div>
         </div>
       </div>
