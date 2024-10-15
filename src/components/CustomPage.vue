@@ -168,9 +168,23 @@ const submitOrder = async () => {
   }
 };
 
-const totalPriceCustom = computed(() => {
-  return answers.value.price * answers.value.quantity;
+//discount 
+const getDiscount = (quantity) => {
+  if (quantity >= 5) {
+    return 0.20; // ลด 20% เมื่อ quantity >= 5
+  } else if (quantity >= 3) {
+    return 0.15; // ลด 15% เมื่อ quantity >= 3
+  }
+  return 0; // ไม่มีส่วนลด
+};
+  
+// ใช้ computed เพื่อคำนวณราคาสุดท้ายรวมส่วนลด
+const totalPrice = computed(() => {
+  const basePrice = answers.value.price * answers.value.quantity;
+  const discount = getDiscount(answers.value.quantity);
+  return basePrice - (basePrice * discount); // ราคาหลังหักส่วนลด
 });
+  
 </script>
 
 <template>
