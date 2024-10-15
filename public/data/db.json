@@ -150,26 +150,7 @@
       "id": "d58b"
     }
   ],
-  "cart": [
-    {
-      "id": "c384",
-      "category": "Coffee",
-      "name": "Capuccino",
-      "image": "../picture/cappuccino coffee.png",
-      "price": 40,
-      "sweetness": "50%",
-      "drinkType": "hot",
-      "type": "normal"
-    },
-    {
-      "id": "d5df",
-      "drinkType": "hot",
-      "sweetness": "100%",
-      "category": "tea",
-      "flavor": "strawberry",
-      "topping": "gummy",
-      "type": "custom",
-      "name": "custom"
-    }
+  "cart": [],
+  "history": [
   ]
 }
