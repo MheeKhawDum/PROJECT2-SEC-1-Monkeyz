@@ -127,6 +127,8 @@ fetchData();
             @click="openDrinkOption(item.name)"
           >
             <img :src="item.image" :alt="item.name" class="menu-item-image" />
+            <!-- {{ item[0].name }} -->
+            <!-- {{ item }} -->
             <p class="menu-item-name">{{ item.name }}</p>
             <p class="menu-item-price">{{ item.price }} THB</p>
           </div>
