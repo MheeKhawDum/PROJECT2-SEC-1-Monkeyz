@@ -11,7 +11,9 @@ const errorMessage = ref("");
 const listCoffee = ref({});
 const listTea = ref({});
 const listMilk = ref({});
-const listRecommended = ref({});
+const listHistory = ref({});
+const listTempHistory = ref([]);
+const listRecommended = ref([]);
 
 // ฟังก์ชันดึงข้อมูลจาก API
 async function fetchData() {
@@ -21,9 +23,45 @@ async function fetchData() {
     listCoffee.value = await getItems(`${import.meta.env.VITE_BASE_URL}/coffeeMenu`);
     listTea.value = await getItems(`${import.meta.env.VITE_BASE_URL}/teaMenu`);
     listMilk.value = await getItems(`${import.meta.env.VITE_BASE_URL}/milkMenu`);
-    listRecommended.value = await getItems(`${import.meta.env.VITE_BASE_URL}/history`);
+    listHistory.value = await getItems(`${import.meta.env.VITE_BASE_URL}/history`);
+
+    listHistory.value.forEach(item => {
+      listTempHistory.value.push(item[0])
+    });
+
+    console.log(listTempHistory.value)
+
+    listTempHistory.value.forEach(item => {
+      if(item.name == "custom"){
+        const existingItem = listTempHistory.value.find(
+         (tempItem) => 
+            tempItem.drinkType === item.drinkType &&
+            tempItem.sweetness === item.sweetness &&
+            tempItem.category === item.category &&
+            tempItem.flavor === item.flavor &&
+            tempItem.topping === item.topping
+        )
+
+
+        if(existingItem){
+          console.log("there is duplicate item")
+          console.log(item.quantity)
+          item.quantity = item.quantity + existingItem.quantity
+          console.log(item.quantity)
+          listRecommended.value.push(item)
+        }else{
+          console.log("there is no duplicate item")
+          listRecommended.value.push(item)
+        }
+
+      }
+
+
+    });
 
     
+    console.log(listRecommended.value)
+
 
   } catch (error) {
     console.error(error);
@@ -125,8 +163,8 @@ fetchData();
             @click="openDrinkOption(item.name)"
           >
             <img :src="item.image" :alt="item.name" class="menu-item-image" />
-            <p class="menu-item-name">{{ item[0].name }}</p>
-            <p class="menu-item-price">{{ item[0].price }} THB</p>
+            <p class="menu-item-name">{{ item.name }}</p>
+            <p class="menu-item-price">{{ item.price }} THB</p>
           </div>
         </div>
       </div>

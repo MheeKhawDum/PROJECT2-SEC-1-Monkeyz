@@ -85,6 +85,7 @@ function decreaseQuantity(id) {
 
 async function placeOrder() {
   const addHistoryResponse = await addHistory(cartItems.value); // เพิ่มข้อมูลไปยัง history
+  
   if (addHistoryResponse.resCode === 201) { // เช็คว่าเพิ่มสำเร็จหรือไม่
     for (let item of cartItems.value) {
       await deleteOrder(item.id); // ลบออเดอร์ในตะกร้า
