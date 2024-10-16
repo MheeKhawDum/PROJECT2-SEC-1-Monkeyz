@@ -1,6 +1,6 @@
 <script setup>
 import { ref, computed, onMounted } from "vue";
-import { getOrders, deleteOrder, addHistory } from '../lib/fetch.js'; // นำเข้าฟังก์ชัน getOrders จาก fetch.js
+import { getOrders, deleteOrder } from '../lib/fetch.js'; // นำเข้าฟังก์ชัน getOrders จาก fetch.js
 import { useRouter } from "vue-router";
 
 const router = useRouter();
@@ -38,135 +38,130 @@ function editOrder(item) {
     // Navigate to custom edit page (ensure the name matches your router)
     router.push({ name: 'editCustom', params: { id: item.id } });
   } else {
-    addNewItem(itemPrice);
-  }
-
-  clearSelectedMenuItem();
-  updateTotalPrice();
-  openCartPopup();
-}
-
-// Add new item to the cart
-function addNewItem(itemPrice) {
-  const newItem = {
-    ...selectedMenuItem.value,
-    id: generateUniqueId(),
-    price: itemPrice,
-    quantity: 1,
-    totalpriceByOrder: itemPrice,
-  };
-  cartItems.value.push(newItem);
-}
-
-// Update quantity for existing item
-function updateExistingItem(existingItem, itemPrice) {
-  existingItem.quantity++;
-  existingItem.totalpriceByOrder += itemPrice;
-}
-
-// Edit an item in the cart
-function editCartItem(index) {
-  selectedMenuItem.value = { ...cartItems.value[index] };
-  openCartPopup();
-}
-
-// Save edited item back to cart
-function saveEdit() {
-  const indexToEdit = cartItems.value.findIndex(
-    (item) => item.id === selectedMenuItem.value.id
-  );
-
-  if (indexToEdit !== -1) {
-    const updatedPrice = priceEdit();
-    const editedItem = {
-      ...selectedMenuItem.value,
-      price: updatedPrice,
-      totalpriceByOrder: updatedPrice * selectedMenuItem.value.quantity,
-    };
-    cartItems.value[indexToEdit] = editedItem;
-    updateTotalPrice();
-  }
-
-  clearSelectedMenuItem();
-  openCartPopup();
-}
-
-// Remove an order from cart
-function removeOrder(orderId) {
-  cartItems.value = cartItems.value.filter((item) => item.id !== orderId);
-  updateTotalPrice();
-}
-
-// Increase quantity of an item
-function addQuantity(checkId) {
-  const item = cartItems.value.find(item => item.id === checkId);
-  if (item) {
-    item.quantity++;
-    item.totalpriceByOrder += item.price;
-    updateTotalPrice();
+    // Navigate to normal edit page
+    router.push({ name: 'edit', params: { id: item.id } });
   }
 }
 
-// Decrease quantity of an item
-function deleteQuantity(checkId) {
-  const item = cartItems.value.find(item => item.id === checkId);
-  if (item) {
-    item.quantity--;
-    item.totalpriceByOrder -= item.price;
-    if (item.quantity === 0) {
-      removeOrder(checkId);
-    }
-    updateTotalPrice();
+
+// คำนวณราคารวม
+const totalPrice = computed(() =>
+  cartItems.value.reduce((total, item) => {
+    const priceWithDiscount = applyDiscount(item.price, item.quantity); // ใช้ฟังก์ชัน applyDiscount
+    return total + priceWithDiscount * item.quantity;
+  }, 0)
+);
+
+// ฟังก์ชันเพิ่มจำนวนสินค้า
+function addQuantity(id) {
+  const item = cartItems.value.find((item) => item.id === id);
+  if (item) item.quantity++;
+}
+
+//disscount
+function applyDiscount(price, quantity) {
+  if (quantity === 3) {
+    return price - (price * 15 / 100); // ลด 15%
+  } else if (quantity === 5) {
+    return price - (price * 20 / 100); // ลด 20%
   }
+  return price; // ถ้าไม่เข้าเงื่อนไข ไม่ลดราคา
 }
 
-// Calculate price difference based on drink type
-function priceEdit() {
-  return selectedMenuItem.value.drinkType === "cold"
-    ? selectedMenuItem.value.price + 10
-    : selectedMenuItem.value.price;
+// ฟังก์ชันลดจำนวนสินค้า
+function decreaseQuantity(id) {
+  const item = cartItems.value.find((item) => item.id === id);
+  if (item && item.quantity > 1) item.quantity--;
 }
 
-// Update total price
-function updateTotalPrice() {
-  totalPrice.value = cartItems.value.reduce(
-    (sum, item) => sum + item.totalpriceByOrder,
-    0
-  );
-}
-
-// Clear selected item for new selections
-function clearSelectedMenuItem() {
-  selectedMenuItem.value = {
-    id: null,
-    name: null,
-    description: null,
-    image: null,
-    drinkType: null,
-    sweetness: null,
-    quantity: null,
-  };
-}
-
-// Handle closing modal
-function handleClose() {
-  openCartPopup();
-}
-
-// Place order function
+// ฟังก์ชันสั่งซื้อ
 function placeOrder() {
-  if (cartItems.value.length > 0) {
-    alert("Order placed successfully");
-    cartItems.value = []; // Clear cart after placing order
-    totalPrice.value = 0;
-    openCartPopup();
-  }
+  // Implement your order logic
+  alert("Order placed!");
+  cartItems.value = []; // Clear cart after order
+  openCartPopup();
 }
 
+// เปิด/ปิด popup cart
+function openCartPopup() {
+  cartPopup.value = !cartPopup.value;
+}
+function closeCartPopup() {
+  router.push({ name: 'menuPage' });
+}
 </script>
 
 <template>
-  <div>
-    <p>popup cart</p>
+  <div
+    v-show="cartPopup"
+    class="fixed inset-0 z-20 flex items-center justify-center"
+  >
+    <!-- Overlay for background -->
+    <div
+      class="bg-black bg-opacity-50 absolute inset-0"
+      @click="openCartPopup"
+    ></div>
+
+    <!-- Modal content for cart -->
+    <div
+      class="modal-box relative z-30 p-5 bg-white rounded shadow-lg w-[35%] h-[50%]"
+    >
+      <div class="flex flex-col space-y-2">
+        <h2 class="text-lg font-bold">Your Cart</h2>
+        <p>Number of Items: {{ cartItems.length }}</p>
+
+        <!-- List all items in the cart -->
+        <div
+          v-for="(item, index) in cartItems"
+          :key="index"
+          class="bg-gray-300 flex justify-between items-center p-2"
+        >
+          <div class="flex items-center">
+            <img
+              :src="item.image"
+              :alt="item.name"
+              class="w-12 h-12 object-cover"
+            />
+            <div class="ml-2">
+              <p>{{ item.name }}</p>
+              <p>{{ item.drinkType }}, {{ item.sweetness }}</p>
+              <p>
+                {{ applyDiscount(item.price, item.quantity) }} THB ({{ item.price }} THB without discount)
+              </p>
+            </div>
+          </div>
+          <div class="flex items-center">
+            <button @click="addQuantity(item.id)" class="px-2">+</button>
+            <span class="mx-2">Qty: {{ item.quantity }}</span>
+            <button @click="decreaseQuantity(item.id)" class="px-2">-</button>
+          </div>
+          <button @click="removeOrder(item.id)" class="text-red-600">
+            Remove
+          </button>
+          <button @click="editOrder(item)" class="text-blue-600">
+            Edit
+          </button>
+        </div>
+
+        <!-- Display total price -->
+        <div class="text-right">Total Price: {{ totalPrice }} THB</div>
+
+        <!-- Action buttons -->
+        <div class="mt-4 flex justify-between">
+          <button
+            @click="placeOrder"
+            class="bg-green-500 text-white px-4 py-2 rounded"
+          >
+            Place Order
+          </button>
+          <button
+            @click="closeCartPopup"
+            class="bg-gray-500 text-white px-4 py-2 rounded"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
