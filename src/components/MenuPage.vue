@@ -17,9 +17,48 @@ async function fetchData() {
   try {
     // isLoading.value = true;
 
-    listCoffee.value = await getItems(`${import.meta.env.VITE_BASE_URL}/coffeeMenu`)
-    listTea.value = await getItems(`${import.meta.env.VITE_BASE_URL}/teaMenu`)
-    listMilk.value = await getItems(`${import.meta.env.VITE_BASE_URL}/milkMenu`)
+    listCoffee.value = await getItems(`${import.meta.env.VITE_BASE_URL}/coffeeMenu`);
+    listTea.value = await getItems(`${import.meta.env.VITE_BASE_URL}/teaMenu`);
+    listMilk.value = await getItems(`${import.meta.env.VITE_BASE_URL}/milkMenu`);
+    listHistory.value = await getItems(`${import.meta.env.VITE_BASE_URL}/history`);
+
+    listHistory.value.forEach(item => {
+      listTempHistory.value.push(item[0])
+    });
+
+    console.log(listTempHistory.value)
+
+    listTempHistory.value.forEach(item => {
+      if(item.name == "custom"){
+        const existingItem = listTempHistory.value.find(
+         (tempItem) => 
+            tempItem.drinkType === item.drinkType &&
+            tempItem.sweetness === item.sweetness &&
+            tempItem.category === item.category &&
+            tempItem.flavor === item.flavor &&
+            tempItem.topping === item.topping
+        )
+
+
+        if(existingItem){
+          //console.log("there is duplicate item")
+          console.log(`before item quantity ${item.quantity}`)
+          console.log(`before existingItem quantity ${existingItem.quantity}`)
+          item.quantity = item.quantity + existingItem.quantity
+          console.log(`after ${item.quantity}`)
+          listRecommended.value.push(item)
+        }else{
+          //console.log("there is no duplicate item")
+          listRecommended.value.push(item)
+        }
+
+      }
+
+
+    });
+
+    
+    console.log(listRecommended.value)
 
 
   } catch (error) {
