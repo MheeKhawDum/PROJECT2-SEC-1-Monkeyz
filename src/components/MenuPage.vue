@@ -44,13 +44,14 @@ async function fetchData() {
 
 
         if(existingItem){
-          console.log("there is duplicate item")
-          console.log(item.quantity)
+          //console.log("there is duplicate item")
+          console.log(`before item quantity ${item.quantity}`)
+          console.log(`before existingItem quantity ${existingItem.quantity}`)
           item.quantity = item.quantity + existingItem.quantity
-          console.log(item.quantity)
+          console.log(`after ${item.quantity}`)
           listRecommended.value.push(item)
         }else{
-          console.log("there is no duplicate item")
+          //console.log("there is no duplicate item")
           listRecommended.value.push(item)
         }
 

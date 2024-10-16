@@ -150,19 +150,7 @@
       "id": "d58b"
     }
   ],
-  "cart": [
-    {
-      "id": "c384",
-      "category": "Coffee",
-      "name": "Capuccino",
-      "image": "../picture/cappuccino coffee.png",
-      "price": 40,
-      "sweetness": "50%",
-      "drinkType": "hot",
-      "type": "normal",
-      "quantity": 1
-    }
-  ],
+  "cart": [],
   "history": [
     {
       "0": {
@@ -250,20 +238,6 @@
     },
     {
       "0": {
-        "id": "c384",
-        "category": "Coffee",
-        "name": "Capuccino",
-        "image": "../picture/cappuccino coffee.png",
-        "price": 40,
-        "sweetness": "50%",
-        "drinkType": "hot",
-        "type": "normal",
-        "quantity": 4
-      },
-      "id": "0127"
-    },
-    {
-      "0": {
         "id": "6c72",
         "drinkType": "cold",
         "sweetness": "100%",
@@ -274,7 +248,35 @@
         "name": "custom",
         "quantity": 5
       },
-      "id": "8661"
+      "id": "8662"
+    },
+    {
+      "0": {
+        "id": "5b19",
+        "category": "Coffee",
+        "name": "Latte",
+        "image": "../picture/latte coffee.png",
+        "price": 50,
+        "sweetness": "50%",
+        "drinkType": "hot",
+        "type": "normal",
+        "quantity": 1
+      },
+      "id": "d20f"
+    },
+    {
+      "0": {
+        "id": "faa0",
+        "drinkType": "cold",
+        "sweetness": "100%",
+        "category": "milk",
+        "flavor": "vanilla",
+        "topping": "cookie",
+        "type": "custom",
+        "name": "custom",
+        "quantity": 1
+      },
+      "id": "e4f2"
     }
   ]
 }
