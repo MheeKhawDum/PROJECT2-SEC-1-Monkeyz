@@ -37,30 +37,24 @@ async function fetchData() {
 
     console.log(listTempHistory.value);
 
-    listTempHistory.value.forEach((item) => {
-      if (item.name == "custom") {
-        const existingItem = listTempHistory.value.find(
-          (tempItem) =>
-            tempItem.drinkType === item.drinkType &&
-            tempItem.sweetness === item.sweetness &&
-            tempItem.category === item.category &&
-            tempItem.flavor === item.flavor &&
-            tempItem.topping === item.topping
-        );
+    const customItemCount = {};
 
-        if (existingItem) {
-          //console.log("there is duplicate item")
-          console.log(`before item quantity ${item.quantity}`);
-          console.log(`before existingItem quantity ${existingItem.quantity}`);
-          item.quantity = item.quantity + existingItem.quantity;
-          console.log(`after ${item.quantity}`);
-          listRecommended.value.push(item);
+    listTempHistory.value.forEach((item) => {
+      if (item.name === "custom") {
+        const key = `${item.drinkType}-${item.sweetness}-${item.category}-${item.flavor}-${item.topping}`;
+
+        // เพิ่มจำนวนถ้ารายการมีอยู่แล้วหรือตั้งเป็น 1 ถ้าไม่มี
+        if (customItemCount[key]) {
+          customItemCount[key].quantity += item.quantity;
         } else {
-          //console.log("there is no duplicate item")
-          listRecommended.value.push(item);
+          customItemCount[key] = { ...item, quantity: item.quantity };
         }
       }
     });
+    // Filter items that have been ordered more than 3 times
+    listRecommended.value = Object.values(customItemCount).filter(
+      (item) => item.quantity > 3
+    );
 
     console.log(listRecommended.value);
   } catch (error) {
@@ -217,8 +211,8 @@ fetchData();
 }
 
 .menu-item-image {
-  width: 100%;
-  height: auto;
+  width: 125px;
+  height: 140px;
   margin-bottom: 10px;
   border-radius: 8px;
 }

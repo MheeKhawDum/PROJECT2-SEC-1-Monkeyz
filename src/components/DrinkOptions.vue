@@ -115,10 +115,11 @@ async function openCart() {
 }
 
 .drink-image {
-  width: 100%;
-  height: auto;
-  border-radius: 10px;
-  margin-bottom: 20px;
+  object-position: center;
+  width: 500px;
+  height: 300px;
+  margin-bottom: 10px;
+  border-radius: 8px;
 }
 
 .drink-price {
