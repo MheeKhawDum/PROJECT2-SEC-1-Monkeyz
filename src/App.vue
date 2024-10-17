@@ -1,14 +1,14 @@
 <script setup>
 import { ref } from "vue";
-import homepage from "@/components/HomePage.vue"
-import { useRoute, useRouter } from "vue-router"
+import homepage from "@/components/HomePage.vue";
+import { useRoute, useRouter } from "vue-router";
 
 // State variables for page management
 const home = ref(true);
 const menu = ref(false);
 const custom = ref(false);
 const cartPopupVisible = ref(false);
-const router = useRouter()
+const router = useRouter();
 
 // Function to open different pages
 const openPage = (page) => {
@@ -36,15 +36,14 @@ const closeCartPopup = () => {
   cartPopupVisible.value = false;
 };
 
-function routeNa(){
-    router.push({name: 'menuPage'})
-    console.log('1')
+function routeNa() {
+  router.push({ name: "menuPage" });
+  console.log("1");
 }
 </script>
 
 <template>
-    <router-view></router-view>
-  
+  <router-view></router-view>
 </template>
 
 <style scoped>
