@@ -32,26 +32,11 @@ const clickCount = ref(0);
 const isFinished = ref(false); // ตัวแปรเช็คว่าเลือกเสร็จแล้วหรือไม่
 
 // ตัวแปรสำหรับจัดการสีพื้นหลังและแก้ว
-const backgroundColor = ref("#fad168");
-const hotColors = {
-  layer4: "#ffcc80",
-  layer3: "#ffb74d",
-  layer2: "#ffa726",
-  layer1: "#ff9800",
-};
-const coldColors = {
-  layer4: "#80dfff",
-  layer3: "#4dcfff",
-  layer2: "#26bfff",
-  layer1: "#00aaff",
-};
-const whiteColor = "#ffffff";
-const cupColors = ref({
-  layer1: whiteColor,
-  layer2: whiteColor,
-  layer3: whiteColor,
-  layer4: whiteColor,
-});
+const backgroundColor = ref('#fad168');
+const hotColors = { layer4: '#ffcc80', layer3: '#ffb74d', layer2: '#ffa726', layer1: '#ff9800' };
+const coldColors = { layer4: '#80dfff', layer3: '#4dcfff', layer2: '#26bfff', layer1: '#00aaff' };
+const whiteColor = '#ffffff';
+const cupColors = ref({ layer1: whiteColor, layer2: whiteColor, layer3: whiteColor, layer4: whiteColor });
 
 const fillLevel = ref(0);
 const maxLayers = ref(4);  // กำหนดให้มี 4 เลเยอร์เสมอ
@@ -67,10 +52,9 @@ function changeColor(type) {
 
 // ฟังก์ชันอัปเดตสีแก้ว
 function updateCupColors() {
-  const levels = ["layer1", "layer2", "layer3", "layer4"];
+  const levels = ['layer1', 'layer2', 'layer3', 'layer4'];
   levels.forEach((layer, index) => {
-    cupColors.value[layer] =
-      index < fillLevel.value ? activeColors[layer] : whiteColor;
+    cupColors.value[layer] = index < fillLevel.value ? activeColors[layer] : whiteColor;
   });
 }
 
