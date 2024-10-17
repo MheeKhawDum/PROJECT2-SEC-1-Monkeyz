@@ -51,7 +51,6 @@ async function openCart() {
     console.error("Error submitting order:", error);
   }
 }
-
 </script>
 
 <template>
