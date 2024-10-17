@@ -48,6 +48,7 @@ const answers = ref({
   topping: null,
   type: "custom",
   name: "custom",
+  quantity: 1,
 });
 const currentQuestionIndex = ref(0);
 const clickCount = ref(0);

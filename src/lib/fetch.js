@@ -134,5 +134,48 @@ async function getOrdersbyId(id) {
   }
 }
 
+async function addHistory(orderData) {
+  try {
+      const res = await fetch(`${url}/history`, {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(orderData)
+      });
 
-export { getMenu, getItems, deleteOrder, editOrder, addOrder, getOrders ,getOrdersbyId}
+      if (!res.ok) {
+          throw new Error("Failed to add the order to the cart");
+      }
+
+      const data = await res.json();
+      return { resCode: res.status, message: 'Order added successfully', data: data };
+  } catch (error) {
+      console.error("Error adding order:", error);
+      throw error;
+  }
+}
+
+async function getHistory() {
+  try {
+    const res = await fetch(`${url}/history`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!res.ok) {
+      throw new Error("Failed to fetch orders");
+    }
+
+    const data = await res.json();
+    return data; // ส่งกลับข้อมูลที่ได้จากฐานข้อมูล
+  } catch (error) {
+    console.error("Error fetching orders:", error);
+    throw error;
+  }
+}
+
+
+export { getMenu, getItems, deleteOrder, editOrder, addOrder, getOrders ,getOrdersbyId, addHistory, getHistory}

@@ -25,7 +25,7 @@ function saveEdit() {
     const editOrderID = editOrder(drinkId, menubyId.value);
     console.log("Order saved:", editOrderID);
     alert("Changes saved successfully.");
-    router.push({ name: "menuPage" });
+    router.push({ name: "cart" });
   } catch (error) {
     console.error("Error saving order:", error);
   }

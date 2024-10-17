@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import { useRouter } from "vue-router";
 import HeaderFooterLayout from "./Header.vue";
 import { getMenu, getItems } from "../lib/fetch";
@@ -11,6 +11,9 @@ const errorMessage = ref("");
 const listCoffee = ref({});
 const listTea = ref({});
 const listMilk = ref({});
+const listHistory = ref({});
+const listTempHistory = ref([]);
+const listRecommended = ref([]);
 
 // ฟังก์ชันดึงข้อมูลจาก API
 async function fetchData() {
@@ -24,6 +27,42 @@ async function fetchData() {
     listMilk.value = await getItems(
       `${import.meta.env.VITE_BASE_URL}/milkMenu`
     );
+    listHistory.value = await getItems(
+      `${import.meta.env.VITE_BASE_URL}/history`
+    );
+
+    listHistory.value.forEach((item) => {
+      listTempHistory.value.push(item[0]);
+    });
+
+    console.log(listTempHistory.value);
+
+    listTempHistory.value.forEach((item) => {
+      if (item.name == "custom") {
+        const existingItem = listTempHistory.value.find(
+          (tempItem) =>
+            tempItem.drinkType === item.drinkType &&
+            tempItem.sweetness === item.sweetness &&
+            tempItem.category === item.category &&
+            tempItem.flavor === item.flavor &&
+            tempItem.topping === item.topping
+        );
+
+        if (existingItem) {
+          //console.log("there is duplicate item")
+          console.log(`before item quantity ${item.quantity}`);
+          console.log(`before existingItem quantity ${existingItem.quantity}`);
+          item.quantity = item.quantity + existingItem.quantity;
+          console.log(`after ${item.quantity}`);
+          listRecommended.value.push(item);
+        } else {
+          //console.log("there is no duplicate item")
+          listRecommended.value.push(item);
+        }
+      }
+    });
+
+    console.log(listRecommended.value);
   } catch (error) {
     console.error(error);
     errorMessage.value = "Failed to load menu items. Please try again.";
@@ -31,6 +70,13 @@ async function fetchData() {
     isLoading.value = false;
   }
 }
+
+// const topOrderedItems = computed(() => {
+//   return listRecommended.value
+//     // .filter(item => item.name.startsWith('Custom')) // Filter only custom items
+//     .sort((a, b) => b.quantity - a.quantity)
+//     .slice(0, 3);
+// })
 
 function openDrinkOption(menuItem) {
   router.push({
@@ -95,6 +141,25 @@ fetchData();
         <div class="menu-slider">
           <div
             v-for="(item, index) in listMilk"
+            :key="index"
+            class="menu-item"
+            @click="openDrinkOption(item.name)"
+          >
+            <img :src="item.image" :alt="item.name" class="menu-item-image" />
+            <p class="menu-item-name">{{ item.name }}</p>
+            <p class="menu-item-price">{{ item.price }} THB</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recommended Menu -->
+      <div v-if="listRecommended.length" class="menu-section">
+        <h2 class="text-2xl font-bold text-slate-950">
+          Recommended Custom Menu
+        </h2>
+        <div class="menu-slider">
+          <div
+            v-for="(item, index) in listRecommended"
             :key="index"
             class="menu-item"
             @click="openDrinkOption(item.name)"
