@@ -25,6 +25,7 @@ const openPage = (page) => {
   }
 };
 
+// eiei
 // Function to open cart popup
 const openCartPopup = () => {
   cartPopupVisible.value = !cartPopupVisible.value; // Toggle the cart popup visibility
