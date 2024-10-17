@@ -3,28 +3,28 @@
     {
       "category": "Coffee",
       "name": "Capuccino",
-      "image": "../picture/cappuccino coffee.png",
+      "image": "./picture/cappuccino coffee.png",
       "price": 40,
       "id": "c384"
     },
     {
       "category": "Coffee",
       "name": "Espresso",
-      "image": "../picture/espresso coffee.png",
+      "image": "./picture/espresso coffee.png",
       "price": 50,
       "id": "18fc"
     },
     {
       "category": "Coffee",
       "name": "Latte",
-      "image": "../picture/latte coffee.png",
+      "image": "./picture/latte coffee.png",
       "price": 50,
       "id": "5b19"
     },
     {
       "category": "Coffee",
       "name": "Mocha",
-      "image": "../picture/Mocha_coffe.png",
+      "image": "./picture/Mocha_coffe.png",
       "price": 50,
       "id": "bcc5"
     }
@@ -33,49 +33,49 @@
     {
       "category": "Tea",
       "name": "Green Tea",
-      "image": "../picture/green tea.png",
+      "image": "./picture/green tea.png",
       "price": 50,
       "id": "aa23"
     },
     {
       "category": "Tea",
       "name": "Matcha Latte",
-      "image": "../picture/matcha latte.png",
+      "image": "./picture/matcha latte.png",
       "price": 55,
       "id": "3654"
     },
     {
       "category": "Tea",
       "name": "Black Tea",
-      "image": "../picture/black tea.png",
+      "image": "./picture/black tea.png",
       "price": 40,
       "id": "d806"
     },
     {
       "category": "Tea",
       "name": "Hojicha Tea",
-      "image": "../picture/hojicha tea.png",
+      "image": "./picture/hojicha tea.png",
       "price": 50,
       "id": "fcac"
     },
     {
       "category": "Tea",
       "name": "Milk Tea",
-      "image": "../picture/milk tea.png",
+      "image": "./picture/milk tea.png",
       "price": 50,
       "id": "b220"
     },
     {
       "category": "Tea",
       "name": "Lemon Tea",
-      "image": "../picture/Lemontea.png",
+      "image": "./picture/Lemontea.png",
       "price": 50,
       "id": "870f"
     },
     {
       "category": "Tea",
       "name": "Thai Tea",
-      "image": "../picture/Thai_tea.png",
+      "image": "./picture/Thai_tea.png",
       "price": 50,
       "id": "7377"
     }
@@ -84,14 +84,14 @@
     {
       "category": "Milk",
       "name": "Fresh Milk",
-      "image": "../picture/fresh milk.png",
+      "image": "./picture/fresh milk.png",
       "price": 50,
       "id": "096f"
     },
     {
       "category": "Milk",
       "name": "Pink Milk",
-      "image": "../picture/Pink Milk.png",
+      "image": "./picture/Pink Milk.png",
       "price": 50,
       "id": "0ac2"
     }
@@ -150,170 +150,5 @@
       "id": "d58b"
     }
   ],
-<<<<<<< HEAD
-  "cart": [],
-=======
-  "cart": [
-    {
-      "id": "c384",
-      "category": "Coffee",
-      "name": "Capuccino",
-      "image": "../picture/cappuccino coffee.png",
-      "price": 40,
-      "sweetness": "50%",
-      "drinkType": "hot",
-      "type": "normal",
-      "quantity": 1
-    }
-  ],
->>>>>>> parent of b310ec6 (Revert "Merge branch 'Bimmer-RecommendedMenu'")
-  "history": [
-    {
-      "0": {
-        "id": "18fc",
-        "category": "Coffee",
-        "name": "Espresso",
-        "image": "../picture/espresso coffee.png",
-        "price": 50,
-        "sweetness": "50%",
-        "drinkType": "hot",
-        "type": "normal",
-        "quantity": 1
-      },
-      "id": "c98a"
-    },
-    {
-      "0": {
-        "id": "c384",
-        "category": "Coffee",
-        "name": "Capuccino",
-        "image": "../picture/cappuccino coffee.png",
-        "price": 40,
-        "sweetness": "50%",
-        "drinkType": "hot",
-        "type": "normal",
-        "quantity": 1
-      },
-      "id": "cbca"
-    },
-    {
-      "0": {
-        "id": "bcc5",
-        "category": "Coffee",
-        "name": "Mocha",
-        "image": "../picture/Mocha_coffe.png",
-        "price": 50,
-        "sweetness": "75%",
-        "drinkType": "cold",
-        "type": "normal",
-        "quantity": 5
-      },
-      "id": "b54b"
-    },
-    {
-      "0": {
-        "id": "bcc5",
-        "category": "Coffee",
-        "name": "Mocha",
-        "image": "../picture/Mocha_coffe.png",
-        "price": 50,
-        "sweetness": "25%",
-        "drinkType": "hot",
-        "type": "normal",
-        "quantity": 1
-      },
-      "id": "fa85"
-    },
-    {
-      "0": {
-        "id": "bcc5",
-        "category": "Coffee",
-        "name": "Mocha",
-        "image": "../picture/Mocha_coffe.png",
-        "price": 50,
-        "sweetness": "25%",
-        "drinkType": "hot",
-        "type": "normal",
-        "quantity": 1
-      },
-      "id": "9adc"
-    },
-    {
-      "0": {
-        "id": "6c72",
-        "drinkType": "cold",
-        "sweetness": "100%",
-        "category": "milk",
-        "flavor": "vanilla",
-        "topping": "cookie",
-        "type": "custom",
-        "name": "custom",
-        "quantity": 1
-      },
-      "id": "8661"
-    },
-    {
-      "0": {
-<<<<<<< HEAD
-=======
-        "id": "c384",
-        "category": "Coffee",
-        "name": "Capuccino",
-        "image": "../picture/cappuccino coffee.png",
-        "price": 40,
-        "sweetness": "50%",
-        "drinkType": "hot",
-        "type": "normal",
-        "quantity": 4
-      },
-      "id": "0127"
-    },
-    {
-      "0": {
->>>>>>> parent of b310ec6 (Revert "Merge branch 'Bimmer-RecommendedMenu'")
-        "id": "6c72",
-        "drinkType": "cold",
-        "sweetness": "100%",
-        "category": "milk",
-        "flavor": "vanilla",
-        "topping": "cookie",
-        "type": "custom",
-        "name": "custom",
-        "quantity": 5
-      },
-<<<<<<< HEAD
-      "id": "8662"
-    },
-    {
-      "0": {
-        "id": "5b19",
-        "category": "Coffee",
-        "name": "Latte",
-        "image": "../picture/latte coffee.png",
-        "price": 50,
-        "sweetness": "50%",
-        "drinkType": "hot",
-        "type": "normal",
-        "quantity": 1
-      },
-      "id": "d20f"
-    },
-    {
-      "0": {
-        "id": "faa0",
-        "drinkType": "cold",
-        "sweetness": "100%",
-        "category": "milk",
-        "flavor": "vanilla",
-        "topping": "cookie",
-        "type": "custom",
-        "name": "custom",
-        "quantity": 1
-      },
-      "id": "e4f2"
-=======
-      "id": "8661"
->>>>>>> parent of b310ec6 (Revert "Merge branch 'Bimmer-RecommendedMenu'")
-    }
-  ]
+  "cart": []
 }
