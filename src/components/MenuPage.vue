@@ -20,60 +20,49 @@ async function fetchData() {
   try {
     // isLoading.value = true;
 
-    listCoffee.value = await getItems(`${import.meta.env.VITE_BASE_URL}/coffeeMenu`);
+    listCoffee.value = await getItems(
+      `${import.meta.env.VITE_BASE_URL}/coffeeMenu`
+    );
     listTea.value = await getItems(`${import.meta.env.VITE_BASE_URL}/teaMenu`);
-    listMilk.value = await getItems(`${import.meta.env.VITE_BASE_URL}/milkMenu`);
-    listHistory.value = await getItems(`${import.meta.env.VITE_BASE_URL}/history`);
+    listMilk.value = await getItems(
+      `${import.meta.env.VITE_BASE_URL}/milkMenu`
+    );
+    listHistory.value = await getItems(
+      `${import.meta.env.VITE_BASE_URL}/history`
+    );
 
-    listHistory.value.forEach(item => {
-      listTempHistory.value.push(item[0])
+    listHistory.value.forEach((item) => {
+      listTempHistory.value.push(item[0]);
     });
 
-    console.log(listTempHistory.value)
+    console.log(listTempHistory.value);
 
-    listTempHistory.value.forEach(item => {
-      if(item.name == "custom"){
+    listTempHistory.value.forEach((item) => {
+      if (item.name == "custom") {
         const existingItem = listTempHistory.value.find(
-         (tempItem) => 
+          (tempItem) =>
             tempItem.drinkType === item.drinkType &&
             tempItem.sweetness === item.sweetness &&
             tempItem.category === item.category &&
             tempItem.flavor === item.flavor &&
             tempItem.topping === item.topping
-        )
+        );
 
-
-        if(existingItem){
-<<<<<<< HEAD
+        if (existingItem) {
           //console.log("there is duplicate item")
-          console.log(`before item quantity ${item.quantity}`)
-          console.log(`before existingItem quantity ${existingItem.quantity}`)
-          item.quantity = item.quantity + existingItem.quantity
-          console.log(`after ${item.quantity}`)
-          listRecommended.value.push(item)
-        }else{
+          console.log(`before item quantity ${item.quantity}`);
+          console.log(`before existingItem quantity ${existingItem.quantity}`);
+          item.quantity = item.quantity + existingItem.quantity;
+          console.log(`after ${item.quantity}`);
+          listRecommended.value.push(item);
+        } else {
           //console.log("there is no duplicate item")
-=======
-          console.log("there is duplicate item")
-          console.log(item.quantity)
-          item.quantity = item.quantity + existingItem.quantity
-          console.log(item.quantity)
-          listRecommended.value.push(item)
-        }else{
-          console.log("there is no duplicate item")
->>>>>>> parent of b310ec6 (Revert "Merge branch 'Bimmer-RecommendedMenu'")
-          listRecommended.value.push(item)
+          listRecommended.value.push(item);
         }
-
       }
-
-
     });
 
-    
-    console.log(listRecommended.value)
-
-
+    console.log(listRecommended.value);
   } catch (error) {
     console.error(error);
     errorMessage.value = "Failed to load menu items. Please try again.";
@@ -165,7 +154,9 @@ fetchData();
 
       <!-- Recommended Menu -->
       <div v-if="listRecommended.length" class="menu-section">
-        <h2 class="text-2xl font-bold text-slate-950">Recommended Custom Menu</h2>
+        <h2 class="text-2xl font-bold text-slate-950">
+          Recommended Custom Menu
+        </h2>
         <div class="menu-slider">
           <div
             v-for="(item, index) in listRecommended"
