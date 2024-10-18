@@ -83,6 +83,7 @@ const reorder = async (drink) => {
       </ul>
     </div>
   </div>
+  x
 </template>
 
 <style scoped>
@@ -92,8 +93,8 @@ const reorder = async (drink) => {
 
 .empty-message {
   text-align: center;
-  font-size: 1.5rem;
-  color: #888;
+  font-size: x-large;
+  color: #ff0000;
 }
 
 .history-list {
