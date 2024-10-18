@@ -14,6 +14,7 @@ onMounted(async () => {
 const loadOrders = async () => {
   try {
     const data = await getOrders(); // เรียกใช้ฟังก์ชัน getOrders เพื่อดึงข้อมูล
+    console.log("Loaded Orders", data);
     cartItems.value = data; // เก็บข้อมูลที่ได้ลงใน orders
   } catch (error) {
     console.error("Error loading orders:", error);
@@ -43,13 +44,15 @@ function editOrder(item) {
   }
 }
 
-// คำนวณราคารวม
-const totalPrice = computed(() =>
-  cartItems.value.reduce((total, item) => {
-    const price = item.price * item.quantity; // Default to 0 if price is undefined
-    return total + price;
-  }, 0)
-);
+const totalPrice = computed(() => {
+  return cartItems.value.reduce((total, item) => {
+    const price = item.price ? item.price : 0; // ตรวจสอบว่ามี price หรือไม่ ถ้าไม่มีให้ใช้ 0
+    console.log(
+      `Item: ${item.name}, Price: ${price}, Quantity: ${item.quantity}`
+    );
+    return total + price * item.quantity;
+  }, 0);
+});
 
 // ฟังก์ชันเพิ่มจำนวนสินค้า
 function addQuantity(id) {

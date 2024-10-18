@@ -70,6 +70,11 @@ loadOrders();
             @click="router.push({ name: 'home' })"
             >Monkeys-Fresh</a
           >
+          <a
+            class="btn btn-ghost text-xl text-white justify-start"
+            @click="router.push({ name: 'history' })"
+            >History</a
+          >
         </slot>
       </div>
 

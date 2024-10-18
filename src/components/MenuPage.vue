@@ -14,7 +14,7 @@ const listMilk = ref({});
 const listHistory = ref({});
 const listTempHistory = ref([]);
 const listCustomAndQuantityFilter = ref([]);
-const listRecommended = ref([])
+const listRecommended = ref([]);
 
 // ฟังก์ชันดึงข้อมูลจาก API
 async function fetchData() {
@@ -33,7 +33,7 @@ async function fetchData() {
     );
 
     listHistory.value.forEach((item) => {
-      listTempHistory.value.push(item[0]);
+      listTempHistory.value.push(item.items[0]);
     });
 
     console.log(listTempHistory.value);
@@ -54,14 +54,15 @@ async function fetchData() {
     });
 
     // add the calculated value to ListCustomAndQuantityFilter
-    listCustomAndQuantityFilter.value = Object.values(customItemCount)
+    listCustomAndQuantityFilter.value = Object.values(customItemCount);
 
-    listRecommended.value = listCustomAndQuantityFilter.value.sort((a, b) => b.quantity - a.quantity).slice(0, 5);
+    listRecommended.value = listCustomAndQuantityFilter.value
+      .sort((a, b) => b.quantity - a.quantity)
+      .slice(0, 5);
 
     console.log(listCustomAndQuantityFilter.value);
-    console.log("↑ all custom items ------- top 5 most ordered custom item ↓")
+    console.log("↑ all custom items ------- top3 most ordered custom item ↓");
     console.log(listRecommended.value);
-    
   } catch (error) {
     console.error(error);
     errorMessage.value = "Failed to load menu items. Please try again.";
@@ -69,8 +70,6 @@ async function fetchData() {
     isLoading.value = false;
   }
 }
-
-
 
 function openDrinkOption(menuItem) {
   router.push({
