@@ -151,5 +151,23 @@
     }
   ],
   "cart": [],
-  "history": []
+  "history": [
+    {
+      "id": "rw9xw66ee",
+      "items": [
+        {
+          "id": "00ff",
+          "drinkType": "cold",
+          "sweetness": "100%",
+          "category": "milk",
+          "flavor": "vanilla",
+          "topping": "cookie",
+          "type": "custom",
+          "name": "custom",
+          "quantity": 5,
+          "price": 110
+        }
+      ]
+    }
+  ]
 }

@@ -33,7 +33,7 @@ async function fetchData() {
     );
 
     listHistory.value.forEach((item) => {
-      listTempHistory.value.push(item[0]);
+      listTempHistory.value.push(item.items[0]);
     });
 
     console.log(listTempHistory.value);
