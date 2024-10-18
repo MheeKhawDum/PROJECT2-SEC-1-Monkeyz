@@ -41,7 +41,7 @@ async function openCart() {
     sweetness: selectedSweetness.value,
     drinkType: selectedDrinkType.value,
     type: "normal",
-    quantity: 1
+    quantity: 1,
   };
   try {
     const response = await addOrder(orderDetails); // เรียกใช้ฟังก์ชัน addOrder ที่ดึงมาจาก fetch.js
@@ -51,7 +51,6 @@ async function openCart() {
     console.error("Error submitting order:", error);
   }
 }
-
 </script>
 
 <template>
@@ -116,10 +115,11 @@ async function openCart() {
 }
 
 .drink-image {
-  width: 100%;
-  height: auto;
-  border-radius: 10px;
-  margin-bottom: 20px;
+  object-position: center;
+  width: 500px;
+  height: 300px;
+  margin-bottom: 10px;
+  border-radius: 8px;
 }
 
 .drink-price {

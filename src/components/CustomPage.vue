@@ -1,19 +1,42 @@
 <script setup>
 import { ref } from "vue";
 import { addOrder } from "../lib/fetch";
-import { useRoute, useRouter } from "vue-router"
+import { useRoute, useRouter } from "vue-router";
 
-
-const router = useRouter()
+const router = useRouter();
 
 // ตัวแปรสำหรับคำถามและตัวเลือก
 const questions = ref([
-  { id: 1, question: "เลือกประเภทเครื่องดื่ม", key: 'drinkType', options: ["hot", "cold"] },
-  { id: 2, question: "เลือก ความหวาน", key: 'sweetness', options: ["50%", "75%", "100%"] },
-  { id: 3, question: "เลือก Base", key: 'category', options: ["coffee", "tea", "milk"] },
-  { id: 4, question: "เลือก Flavor", key: 'flavor', options: ["chocolate", "strawberry", "vanilla"] },
-  { id: 5, question: "เลือก Topping", key: 'topping', options: ["gummy", "whip cream", "cookie"] },
-
+  {
+    id: 1,
+    question: "เลือกประเภทเครื่องดื่ม",
+    key: "drinkType",
+    options: ["hot", "cold"],
+  },
+  {
+    id: 2,
+    question: "เลือก ความหวาน",
+    key: "sweetness",
+    options: ["50%", "75%", "100%"],
+  },
+  {
+    id: 3,
+    question: "เลือก Base",
+    key: "category",
+    options: ["coffee", "tea", "milk"],
+  },
+  {
+    id: 4,
+    question: "เลือก Flavor",
+    key: "flavor",
+    options: ["chocolate", "strawberry", "vanilla"],
+  },
+  {
+    id: 5,
+    question: "เลือก Topping",
+    key: "topping",
+    options: ["gummy", "whip cream", "cookie"],
+  },
 ]);
 
 // เก็บคำตอบของผู้ใช้
@@ -23,9 +46,9 @@ const answers = ref({
   category: null,
   flavor: null,
   topping: null,
-  type: 'custom',
-  name: 'custom',
-  quantity: 1
+  type: "custom",
+  name: "custom",
+  quantity: 1,
 });
 const currentQuestionIndex = ref(0);
 const clickCount = ref(0);
@@ -54,12 +77,12 @@ const cupColors = ref({
 });
 
 const fillLevel = ref(0);
-const maxLayers = ref(4);  // กำหนดให้มี 4 เลเยอร์เสมอ
+const maxLayers = ref(4); // กำหนดให้มี 4 เลเยอร์เสมอ
 let activeColors = null;
 
 // ฟังก์ชันเปลี่ยนสีแก้ว
 function changeColor(type) {
-  backgroundColor.value = type === "hot" ? '#fff7b7' : '#b1e0f0';
+  backgroundColor.value = type === "hot" ? "#fff7b7" : "#b1e0f0";
   activeColors = type === "hot" ? hotColors : coldColors;
   fillLevel.value = 0;
   updateCupColors();
@@ -80,7 +103,7 @@ const selectOption = (option) => {
   answers.value[questionKey] = option;
 
   if (currentQuestionIndex.value === 0) {
-    changeColor(option);  // เปลี่ยนสีแก้ว
+    changeColor(option); // เปลี่ยนสีแก้ว
   } else if (currentQuestionIndex.value >= 1) {
     fillLevel.value = Math.min(fillLevel.value + 1, maxLayers.value);
     updateCupColors();
@@ -121,7 +144,7 @@ const submitOrder = async () => {
   try {
     const response = await addOrder(answers.value); // เรียกใช้ฟังก์ชัน addOrder ที่ดึงมาจาก fetch.js
     console.log(response.message);
-    router.push({name: 'cart'})
+    router.push({ name: "cart" });
   } catch (error) {
     console.error("Error submitting order:", error);
   }
@@ -133,15 +156,30 @@ const submitOrder = async () => {
     <div class="background" :style="{ backgroundColor: backgroundColor }">
       <div class="container">
         <div class="cup">
-          <div class="cup-layer" :style="{ height: '25%', backgroundColor: cupColors.layer4 }"></div>
-          <div class="cup-layer" :style="{ height: '25%', backgroundColor: cupColors.layer3 }"></div>
-          <div class="cup-layer" :style="{ height: '25%', backgroundColor: cupColors.layer2 }"></div>
-          <div class="cup-layer" :style="{ height: '25%', backgroundColor: cupColors.layer1 }"></div>
+          <div
+            class="cup-layer"
+            :style="{ height: '25%', backgroundColor: cupColors.layer4 }"
+          ></div>
+          <div
+            class="cup-layer"
+            :style="{ height: '25%', backgroundColor: cupColors.layer3 }"
+          ></div>
+          <div
+            class="cup-layer"
+            :style="{ height: '25%', backgroundColor: cupColors.layer2 }"
+          ></div>
+          <div
+            class="cup-layer"
+            :style="{ height: '25%', backgroundColor: cupColors.layer1 }"
+          ></div>
         </div>
       </div>
     </div>
 
-    <div v-if="!isFinished && currentQuestionIndex < questions.length" class="question-container">
+    <div
+      v-if="!isFinished && currentQuestionIndex < questions.length"
+      class="question-container"
+    >
       <h2>{{ questions[currentQuestionIndex].question }}</h2>
       <div class="options">
         <button
@@ -159,7 +197,7 @@ const submitOrder = async () => {
       <h2>การตั้งค่าของคุณเสร็จสมบูรณ์แล้ว</h2>
       <button @click="submitOrder" class="btn">ยืนยันคำสั่งซื้อ</button>
     </div>
-{{ answers }}
+    {{ answers }}
     <div v-if="currentQuestionIndex > 0">
       <button @click="goBack" class="btn">ย้อนกลับ</button>
     </div>
