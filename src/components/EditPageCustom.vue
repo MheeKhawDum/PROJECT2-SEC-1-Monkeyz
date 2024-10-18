@@ -16,25 +16,39 @@ const cartData = ref({
   topping: "",
   type: "",
   name: "",
+  quantity:"",
+  price: 0
   // Add other keys as necessary
 });
+
+// ฟังก์ชันดึงข้อมูลจาก cart
+// async function fetchCartData() {
+//   const orders = await getOrdersbyId(editId); // Fetch cart data
+//   console.log("Orders:", orders);
+
+//   // Update the cartData properties
+//   cartData.value.id = orders.id;
+//   cartData.value.drinkType = orders.drinkType;
+//   cartData.value.sweetness = orders.sweetness;
+//   cartData.value.category = orders.category;
+//   cartData.value.flavor = orders.flavor;
+//   cartData.value.topping = orders.topping;
+//   cartData.value.type = orders.type;
+//   cartData.value.name = orders.name;
+//   cartData.value.quantity = orders.quantity;
+//   cartData.value.price = orders.price;
+
+//   changeDrinkType(cartData.value.drinkType);
+// }
 
 // ฟังก์ชันดึงข้อมูลจาก cart
 async function fetchCartData() {
   const orders = await getOrdersbyId(editId); // Fetch cart data
   console.log("Orders:", orders);
 
-  // Update the cartData properties
-  cartData.value.id = orders.id;
-  cartData.value.drinkType = orders.drinkType;
-  cartData.value.sweetness = orders.sweetness;
-  cartData.value.category = orders.category;
-  cartData.value.flavor = orders.flavor;
-  cartData.value.topping = orders.topping;
-  cartData.value.type = orders.type;
-  cartData.value.name = orders.name;
-  // Add other keys as necessary
-  changeDrinkType(cartData.value.drinkType);
+  // Update the cartData properties with the fetched order data
+  cartData.value = { ...orders }; // Use spread operator to map values
+  changeDrinkType(cartData.value.drinkType); // Update cup colors based on the drink type
 }
 
 // เรียกใช้งานตอนโหลดหน้า
@@ -45,45 +59,52 @@ const questions = ref([
     id: 1,
     question: "เลือกประเภทเครื่องดื่ม",
     key: "drinkType",
-    options: ["hot", "cold"],
+    options: [
+      { option: "hot", price: 0 },
+      { option: "cold", price: 10 },
+    ],
   },
   {
     id: 2,
     question: "เลือก ความหวาน",
     key: "sweetness",
-    options: ["50%", "75%", "100%"],
+    options: [
+      { option: "50%", price: 0 },
+      { option: "75%", price: 0 },
+      { option: "100%", price: 0 },
+    ],
   },
   {
     id: 3,
     question: "เลือก Base",
     key: "category",
-    options: ["coffee", "tea", "milk"],
+    options: [
+      { option: "coffee", price: 40 },
+      { option: "tea", price: 40 },
+      { option: "milk", price: 40 },
+    ],
   },
   {
     id: 4,
     question: "เลือก Flavor",
     key: "flavor",
-    options: ["chocolate", "strawberry", "vanilla"],
+    options: [
+      { option: "chocolate", price: 10 },
+      { option: "strawberry", price: 10 },
+      { option: "vanilla", price: 10 },
+    ],
   },
   {
     id: 5,
     question: "เลือก Topping",
     key: "topping",
-    options: ["gummy", "whip cream", "cookie"],
+    options: [
+      { option: "gummy", price: 10 },
+      { option: "whip cream", price: 15 },
+      { option: "cookie", price: 20 },
+    ],
   },
 ]);
-
-// const answers = ref({
-//   drinkType: "hot",
-//   bottoming: "black pearl",
-//   category: "coffee",
-//   flavor: "chocolate",
-//   topping: "whip cream",
-//   sweetness: "50%",
-//   type: 'custom',
-//   name: 'custom'
-// });
-
 const backgroundColor = ref("#fff7b7"); // สีพื้นหลังเมื่อเป็นเครื่องดื่มร้อน
 const hotColors = {
   layer4: "#ffcc80",
@@ -134,6 +155,9 @@ updateCupColors();
 
 const saveEdit = () => {
   try {
+    // Convert price to a valid number
+    cartData.value.price = parseFloat(cartData.value.price) || 0;
+
     const editOrderID = editOrder(editId, cartData.value);
     console.log("Order Edited:", editOrderID);
     router.push({ name: "cart" });
@@ -181,19 +205,22 @@ function cancelEdit() {
       <div v-for="question in questions" :key="question.id" class="form-group">
         <label>{{ question.question }}</label>
         <div class="options">
-          <div v-for="option in question.options" :key="option" class="option">
+          <div
+            v-for="option in question.options"
+            :key="option.option" class="option"
+          >
             <input
               type="radio"
-              :id="`${question.key}-${option}`"
+              :id="`${question.key}-${option.option}`"
               :name="question.key"
-              :value="option"
+              :value="option.option"
               v-model="cartData[question.key]"
               @change="
                 question.key === 'drinkType' &&
                   changeDrinkType(cartData.drinkType)
               "
             />
-            <label :for="`${question.key}-${option}`">{{ option }}</label>
+            <label :for="`${question.key}-${option.option}`">{{ option.option }}</label>
           </div>
         </div>
       </div>
