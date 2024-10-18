@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import { addOrder } from "../lib/fetch";
 import { useRoute, useRouter } from "vue-router";
 
@@ -11,7 +11,10 @@ const questions = ref([
     id: 1,
     question: "เลือกประเภทเครื่องดื่ม",
     key: "drinkType",
-    options: ["hot", "cold"],
+    options: [
+      { label: "hot", price: 50 },
+      { label: "cold", price: 60 },
+    ],
   },
   {
     id: 2,
@@ -23,7 +26,11 @@ const questions = ref([
     id: 3,
     question: "เลือก Base",
     key: "category",
-    options: ["coffee", "tea", "milk"],
+    options: [
+      { label: "coffee", price: 30 },
+      { label: "tea", price: 30 },
+      { label: "milk", price: 30 },
+    ],
   },
   {
     id: 4,
@@ -35,7 +42,11 @@ const questions = ref([
     id: 5,
     question: "เลือก Topping",
     key: "topping",
-    options: ["gummy", "whip cream", "cookie"],
+    options: [
+      { label: "gummy", price: 10 },
+      { label: "whip cream", price: 15 },
+      { label: "cookie", price: 20 },
+    ],
   },
 ]);
 
@@ -49,6 +60,7 @@ const answers = ref({
   type: "custom",
   name: "custom",
   quantity: 1,
+  price: 0,
 });
 const currentQuestionIndex = ref(0);
 const clickCount = ref(0);
@@ -100,10 +112,16 @@ function updateCupColors() {
 // ฟังก์ชันสำหรับเลือกตัวเลือกและไปยังคำถามถัดไป
 const selectOption = (option) => {
   const questionKey = questions.value[currentQuestionIndex.value].key;
-  answers.value[questionKey] = option;
+
+  if (typeof option === "object") {
+    answers.value[questionKey] = option.label;
+    answers.value.price = (answers.value.price || 0) + option.price;
+  } else {
+    answers.value[questionKey] = option;
+  }
 
   if (currentQuestionIndex.value === 0) {
-    changeColor(option); // เปลี่ยนสีแก้ว
+    changeColor(option.label); // เปลี่ยนสีแก้ว
   } else if (currentQuestionIndex.value >= 1) {
     fillLevel.value = Math.min(fillLevel.value + 1, maxLayers.value);
     updateCupColors();
@@ -149,6 +167,23 @@ const submitOrder = async () => {
     console.error("Error submitting order:", error);
   }
 };
+
+//discount
+const getDiscount = (quantity) => {
+  if (quantity >= 5) {
+    return 0.2; // ลด 20% เมื่อ quantity >= 5
+  } else if (quantity >= 3) {
+    return 0.15; // ลด 15% เมื่อ quantity >= 3
+  }
+  return 0; // ไม่มีส่วนลด
+};
+
+// ใช้ computed เพื่อคำนวณราคาสุดท้ายรวมส่วนลด
+const totalPrice = computed(() => {
+  const basePrice = answers.value.price * answers.value.quantity;
+  const discount = getDiscount(answers.value.quantity);
+  return basePrice - basePrice * discount; // ราคาหลังหักส่วนลด
+});
 </script>
 
 <template>
@@ -195,6 +230,7 @@ const submitOrder = async () => {
 
     <div v-else>
       <h2>การตั้งค่าของคุณเสร็จสมบูรณ์แล้ว</h2>
+      <p>ราคาทั้งหมด {{ totalPriceCustom }}</p>
       <button @click="submitOrder" class="btn">ยืนยันคำสั่งซื้อ</button>
     </div>
     {{ answers }}

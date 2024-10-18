@@ -150,63 +150,19 @@
       "id": "d58b"
     }
   ],
-  "cart": [],
-  "history": [
+  "cart": [
     {
-      "0": {
-        "id": "07e5",
-        "drinkType": "hot",
-        "sweetness": "50%",
-        "category": "coffee",
-        "flavor": "chocolate",
-        "topping": "gummy",
-        "type": "custom",
-        "name": "custom",
-        "quantity": 1
-      },
-      "id": "1e6d"
-    },
-    {
-      "0": {
-        "id": "5337",
-        "drinkType": "hot",
-        "sweetness": "50%",
-        "category": "coffee",
-        "flavor": "chocolate",
-        "topping": "gummy",
-        "type": "custom",
-        "name": "custom",
-        "quantity": 1
-      },
-      "id": "e13c"
-    },
-    {
-      "0": {
-        "id": "811a",
-        "drinkType": "hot",
-        "sweetness": "50%",
-        "category": "coffee",
-        "flavor": "chocolate",
-        "topping": "gummy",
-        "type": "custom",
-        "name": "custom",
-        "quantity": 1
-      },
-      "id": "ecb8"
-    },
-    {
-      "0": {
-        "id": "d53b",
-        "drinkType": "hot",
-        "sweetness": "50%",
-        "category": "coffee",
-        "flavor": "chocolate",
-        "topping": "gummy",
-        "type": "custom",
-        "name": "custom",
-        "quantity": 1
-      },
-      "id": "a101"
+      "id": "b1f2",
+      "drinkType": "hot",
+      "sweetness": "75%",
+      "category": "tea",
+      "flavor": "strawberry",
+      "topping": "whip cream",
+      "type": "custom",
+      "name": "custom"
     }
+  ],
+  "history": [
+    
   ]
 }
