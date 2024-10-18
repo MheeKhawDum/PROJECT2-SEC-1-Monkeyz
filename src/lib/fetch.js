@@ -134,27 +134,37 @@ async function getOrdersbyId(id) {
   }
 }
 
+function generateUniqueId() {
+  return Math.random().toString(36).substr(2, 9); // สร้าง string ที่เป็น unique id
+}
+
 async function addHistory(orderData) {
   try {
+      const historyData = {
+        id: generateUniqueId(), // สร้าง id สำหรับ order ใหม่
+        items: orderData // เก็บข้อมูลทั้งหมดใน array ชื่อ items
+      };
+
       const res = await fetch(`${url}/history`, {
           method: 'POST',
           headers: {
               'Content-Type': 'application/json'
           },
-          body: JSON.stringify(orderData)
+          body: JSON.stringify(historyData) // ส่งข้อมูลในรูปแบบใหม่
       });
 
       if (!res.ok) {
-          throw new Error("Failed to add the order to the cart");
+          throw new Error("Failed to add the order to the history");
       }
 
       const data = await res.json();
-      return { resCode: res.status, message: 'Order added successfully', data: data };
+      return { resCode: res.status, message: 'Order added to history successfully', data: data };
   } catch (error) {
-      console.error("Error adding order:", error);
+      console.error("Error adding order to history:", error);
       throw error;
   }
 }
+
 
 async function getHistory() {
   try {

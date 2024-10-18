@@ -1,6 +1,6 @@
 <script setup>
 import { ref, computed, onMounted } from "vue";
-import { getOrders, deleteOrder, addHistory } from '../lib/fetch.js'; // นำเข้าฟังก์ชัน getOrders จาก fetch.js
+import { getOrders, deleteOrder, addHistory } from "../lib/fetch.js"; // นำเข้าฟังก์ชัน getOrders จาก fetch.js
 import { useRouter } from "vue-router";
 
 const router = useRouter();
@@ -14,6 +14,7 @@ onMounted(async () => {
 const loadOrders = async () => {
   try {
     const data = await getOrders(); // เรียกใช้ฟังก์ชัน getOrders เพื่อดึงข้อมูล
+    console.log("Loaded Orders", data);
     cartItems.value = data; // เก็บข้อมูลที่ได้ลงใน orders
   } catch (error) {
     console.error("Error loading orders:", error);
@@ -24,7 +25,7 @@ const loadOrders = async () => {
 const removeOrder = async (orderId) => {
   try {
     await deleteOrder(orderId); // เรียกใช้ฟังก์ชัน deleteOrder
-    cartItems.value = cartItems.value.filter(order => order.id !== orderId); // อัปเดต orders หลังจากลบ
+    cartItems.value = cartItems.value.filter((order) => order.id !== orderId); // อัปเดต orders หลังจากลบ
     loadOrders();
   } catch (error) {
     console.error("Error deleting order:", error);
@@ -34,23 +35,22 @@ const removeOrder = async (orderId) => {
 // ฟังก์ชันแก้ไขคำสั่งซื้อ
 function editOrder(item) {
   // Check the type of the order
-  if (item.type === 'custom') {
+  if (item.type === "custom") {
     // Navigate to custom edit page (ensure the name matches your router)
-    router.push({ name: 'editCustom', params: { id: item.id } });
+    router.push({ name: "editCustom", params: { id: item.id } });
   } else {
     // Navigate to normal edit page
-    router.push({ name: 'edit', params: { id: item.id } });
+    router.push({ name: "edit", params: { id: item.id } });
   }
 }
 
-
-// คำนวณราคารวม
-const totalPrice = computed(() =>
-  cartItems.value.reduce((total, item) => {
-    const price = item.price;  // Default to 0 if price is undefined
-    return total + price;
-  }, 0)
-);
+const totalPrice = computed(() => {
+  return cartItems.value.reduce((total, item) => {
+    const price = item.price ? item.price : 0; // ตรวจสอบว่ามี price หรือไม่ ถ้าไม่มีให้ใช้ 0
+    console.log(`Item: ${item.name}, Price: ${price}, Quantity: ${item.quantity}`);
+    return total + price * item.quantity;
+  }, 0);
+});
 
 // ฟังก์ชันเพิ่มจำนวนสินค้า
 function addQuantity(id) {
@@ -61,9 +61,9 @@ function addQuantity(id) {
 //disscount
 function applyDiscount(price, quantity) {
   if (quantity === 3) {
-    return price - (price * 15 / 100); // ลด 15%
+    return price - (price * 15) / 100; // ลด 15%
   } else if (quantity === 5) {
-    return price - (price * 20 / 100); // ลด 20%
+    return price - (price * 20) / 100; // ลด 20%
   }
   return price; // ถ้าไม่เข้าเงื่อนไข ไม่ลดราคา
 }
@@ -79,13 +79,15 @@ function decreaseQuantity(id) {
 //   // Implement your order logic
 //   alert("Order placed!");
 //   addHistory(cartItems.value)
-//   // cartItems.value = []; 
+//   // cartItems.value = [];
 //   openCartPopup();
 // }
 
 async function placeOrder() {
   const addHistoryResponse = await addHistory(cartItems.value); // เพิ่มข้อมูลไปยัง history
-  if (addHistoryResponse.resCode === 201) { // เช็คว่าเพิ่มสำเร็จหรือไม่
+
+  if (addHistoryResponse.resCode === 201) {
+    // เช็คว่าเพิ่มสำเร็จหรือไม่
     for (let item of cartItems.value) {
       await deleteOrder(item.id); // ลบออเดอร์ในตะกร้า
     }
@@ -99,10 +101,10 @@ async function placeOrder() {
 
 // เปิด/ปิด popup cart
 function openCartPopup() {
-  router.push({ name: 'menuPage' });
+  router.push({ name: "menuPage" });
 }
 function closeCartPopup() {
-  router.push({ name: 'menuPage' });
+  router.push({ name: "menuPage" });
 }
 </script>
 
@@ -154,24 +156,26 @@ function closeCartPopup() {
         <!-- Display total price -->
         <div class="text-right">Total Price: {{ totalPrice }} THB</div>
 
-<!-- Action buttons -->
-<div class="mt-4 flex justify-between">
-  <button
-    @click="placeOrder()"
-    :disabled="cartItems.length === 0"
-    :class="{'bg-gray-300 cursor-not-allowed': cartItems.length === 0, 'bg-green-500': cartItems.length > 0}"
-    class="text-white px-4 py-2 rounded"
-  >
-    Place Order
-  </button>
-  <button
-    @click="closeCartPopup"
-    class="bg-gray-500 text-white px-4 py-2 rounded"
-  >
-    Close
-  </button>
-</div>
-
+        <!-- Action buttons -->
+        <div class="mt-4 flex justify-between">
+          <button
+            @click="placeOrder()"
+            :disabled="cartItems.length === 0"
+            :class="{
+              'bg-gray-300 cursor-not-allowed': cartItems.length === 0,
+              'bg-green-500': cartItems.length > 0,
+            }"
+            class="text-white px-4 py-2 rounded"
+          >
+            Place Order
+          </button>
+          <button
+            @click="closeCartPopup"
+            class="bg-gray-500 text-white px-4 py-2 rounded"
+          >
+            Close
+          </button>
+        </div>
       </div>
     </div>
   </div>

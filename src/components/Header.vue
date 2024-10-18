@@ -57,8 +57,11 @@ const router = useRouter()
           <!-- Title Slot -->
           <slot name="title">
             <a class="btn btn-ghost text-xl text-white justify-start" @click="router.push({name: 'home'})">Monkeys-Fresh</a>
+            <a class="btn btn-ghost text-xl text-white justify-start" @click="router.push({name: 'history'})">History</a>
           </slot>
         </div>
+
+
   
         <!-- Cart Button Slot -->
         <div class="flex-none">
