@@ -13,7 +13,8 @@ const listTea = ref({});
 const listMilk = ref({});
 const listHistory = ref({});
 const listTempHistory = ref([]);
-const listRecommended = ref([]);
+const listCustomAndQuantityFilter = ref([]);
+const listRecommended = ref([])
 
 // ฟังก์ชันดึงข้อมูลจาก API
 async function fetchData() {
@@ -51,12 +52,16 @@ async function fetchData() {
         }
       }
     });
-    // Filter items that have been ordered more than 3 times
-    listRecommended.value = Object.values(customItemCount).filter(
-      (item) => item.quantity > 2
-    );
 
+    // add the calculated value to ListCustomAndQuantityFilter
+    listCustomAndQuantityFilter.value = Object.values(customItemCount)
+
+    listRecommended.value = listCustomAndQuantityFilter.value.sort((a, b) => b.quantity - a.quantity).slice(0, 5);
+
+    console.log(listCustomAndQuantityFilter.value);
+    console.log("↑ all custom items ------- top 5 most ordered custom item ↓")
     console.log(listRecommended.value);
+    
   } catch (error) {
     console.error(error);
     errorMessage.value = "Failed to load menu items. Please try again.";
@@ -65,12 +70,7 @@ async function fetchData() {
   }
 }
 
-// const topOrderedItems = computed(() => {
-//   return listRecommended.value
-//     // .filter(item => item.name.startsWith('Custom')) // Filter only custom items
-//     .sort((a, b) => b.quantity - a.quantity)
-//     .slice(0, 3);
-// })
+
 
 function openDrinkOption(menuItem) {
   router.push({
@@ -159,8 +159,11 @@ fetchData();
             @click="openDrinkOption(item.name)"
           >
             <img :src="item.image" :alt="item.name" class="menu-item-image" />
-            <p class="menu-item-name">{{ item.name }}</p>
-            <p class="menu-item-price">{{ item.price }} THB</p>
+            <p>base: {{ item.category }}</p>
+            <p>flavor: {{ item.flavor }}</p>
+            <p>topping: {{ item.topping }}</p>
+            <!-- <p class="menu-item-name">{{ item.name }}</p>
+            <p class="menu-item-price">{{ item.price }} THB</p> -->
           </div>
         </div>
       </div>
