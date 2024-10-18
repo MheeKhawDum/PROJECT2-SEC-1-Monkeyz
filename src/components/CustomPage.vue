@@ -68,7 +68,7 @@ const answers = ref({
   type: "custom",
   name: "custom",
   quantity: 1,
-  totalPrice: 0,
+  price: 0,
 });
 const currentQuestionIndex = ref(0);
 const clickCount = ref(0);
@@ -121,7 +121,7 @@ function updateCupColors() {
 const selectOption = (option) => {
   const questionKey = questions.value[currentQuestionIndex.value].key;
   answers.value[questionKey] = option.option; // บันทึกชื่อของตัวเลือก
-  answers.value.totalPrice += option.price; // เพิ่มราคาในราคารวม
+  answers.value.price += option.price; // เพิ่มราคาในราคารวม
 
   if (currentQuestionIndex.value === 0) {
     changeColor(option.option); // เปลี่ยนสีแก้ว
@@ -216,7 +216,7 @@ const submitOrder = async () => {
 
     <div v-else>
       <h2>การตั้งค่าของคุณเสร็จสมบูรณ์แล้ว</h2>
-      <p>ราคารวม: {{ answers.totalPrice }} THB</p>
+      <p>ราคารวม: {{ answers.price }} THB</p>
       <button @click="submitOrder" class="btn">ยืนยันคำสั่งซื้อ</button>
     </div>
     {{ answers }}
