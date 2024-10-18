@@ -152,17 +152,16 @@
   ],
   "cart": [
     {
-      "id": "b1f2",
+      "id": "5b19",
+      "category": "Coffee",
+      "name": "Latte",
+      "image": "../picture/latte coffee.png",
+      "price": 50,
+      "sweetness": "50%",
       "drinkType": "hot",
-      "sweetness": "75%",
-      "category": "tea",
-      "flavor": "strawberry",
-      "topping": "whip cream",
-      "type": "custom",
-      "name": "custom"
+      "type": "normal",
+      "quantity": 1
     }
   ],
-  "history": [
-    
-  ]
+  "history": []
 }

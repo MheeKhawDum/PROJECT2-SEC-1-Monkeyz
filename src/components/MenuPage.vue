@@ -53,7 +53,7 @@ async function fetchData() {
     });
     // Filter items that have been ordered more than 3 times
     listRecommended.value = Object.values(customItemCount).filter(
-      (item) => item.quantity > 3
+      (item) => item.quantity > 2
     );
 
     console.log(listRecommended.value);
