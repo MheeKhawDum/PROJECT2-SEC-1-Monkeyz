@@ -150,18 +150,6 @@
       "id": "d58b"
     }
   ],
-  "cart": [
-    {
-      "id": "5b19",
-      "category": "Coffee",
-      "name": "Latte",
-      "image": "../picture/latte coffee.png",
-      "price": 50,
-      "sweetness": "50%",
-      "drinkType": "hot",
-      "type": "normal",
-      "quantity": 1
-    }
-  ],
+  "cart": [],
   "history": []
 }
