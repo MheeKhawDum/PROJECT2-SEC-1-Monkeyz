@@ -2,7 +2,9 @@
 import { ref } from "vue";
 import { addOrder } from "../lib/fetch";
 import { useRoute, useRouter } from "vue-router";
-
+import Notification from './notification/Notification.vue'; // Import the notification component
+const notificationVisible = ref(false);
+const notificationMessage = ref('');
 const router = useRouter();
 
 // ตัวแปรสำหรับคำถามและตัวเลือก
@@ -165,11 +167,25 @@ const submitOrder = async () => {
   try {
     const response = await addOrder(answers.value); // เรียกใช้ฟังก์ชัน addOrder ที่ดึงมาจาก fetch.js
     console.log(response.message);
-    router.push({ name: "cart" });
+
+    // แสดง notification เมื่อสั่งซื้อสำเร็จ
+    notificationMessage.value = response.message || "Order submitted successfully!";
+    notificationVisible.value = true;
+
+    // รีไดเรกต์ไปยัง cart หลังจากดีเลย์สั้น ๆ
+    setTimeout(() => {
+      router.push({ name: "cart" });
+    }, 700); // ดีเลย์ 700 มิลลิวินาทีเพื่อให้ผู้ใช้เห็น notification
+
   } catch (error) {
     console.error("Error submitting order:", error);
+
+    // แสดง notification เมื่อเกิดข้อผิดพลาด
+    notificationMessage.value = "Error submitting order. Please try again.";
+    notificationVisible.value = true;
   }
 };
+
 </script>
 
 <template>
@@ -224,6 +240,17 @@ const submitOrder = async () => {
       <button @click="goBack" class="btn">ย้อนกลับ</button>
     </div>
   </div>
+  <Notification
+  :visible="notificationVisible"
+  @close="notificationVisible = false"
+>
+  <template #icon>
+    <span>🔔</span>
+  </template>
+  <template #content>
+    <p>{{ notificationMessage }}</p>
+  </template>
+</Notification>
 </template>
 
 <style scoped>
