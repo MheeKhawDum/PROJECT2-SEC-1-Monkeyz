@@ -2,6 +2,7 @@
 import { ref, computed, onMounted } from "vue";
 import { getOrders, deleteOrder, addHistory, updateOrder } from "../lib/fetch.js"; // นำเข้าฟังก์ชัน getOrders จาก fetch.js
 import { useRouter } from "vue-router";
+import Notification from './notification/Notification.vue'; // Import the notification component
 
 const router = useRouter();
 const cartPopup = ref(true); // Control visibility of cart popup
@@ -9,6 +10,8 @@ const cartItems = ref([]); // Array holding cart items
 const couponCode = ref(""); // ตัวแปรสำหรับเก็บคูปอง
 const discountMessage = ref(""); // ตัวแปรสำหรับข้อความส่วนลด
 const isDiscountApplied = ref(false); // ตัวแปรเพื่อตรวจสอบว่ามีการใช้ส่วนลดหรือไม่
+const notificationMessage = ref(""); 
+const showNotification = ref(false); 
 
 onMounted(async () => {
   await loadOrders();
@@ -27,8 +30,16 @@ const loadOrders = async () => {
 // ฟังก์ชันสำหรับลบคำสั่งซื้อ
 const removeOrder = async (orderId) => {
   try {
-    await deleteOrder(orderId); // เรียกใช้ฟังก์ชัน deleteOrder
-    cartItems.value = cartItems.value.filter((order) => order.id !== orderId); // อัปเดต orders หลังจากลบ
+    await deleteOrder(orderId);
+    cartItems.value = cartItems.value.filter((order) => order.id !== orderId);
+    
+    // แสดงการแจ้งเตือนเมื่อมีการลบ
+    notificationMessage.value = "Item removed from the cart";
+    showNotification.value = true;
+    setTimeout(() => {
+      showNotification.value = false; // ซ่อนการแจ้งเตือนหลังจาก 3 วินาที
+    }, 3000);
+    
     loadOrders();
   } catch (error) {
     console.error("Error deleting order:", error);
@@ -108,18 +119,27 @@ async function decreaseQuantity(id) {
 }
 
 async function placeOrder() {
-  const addHistoryResponse = await addHistory(cartItems.value); // เพิ่มข้อมูลไปยัง history
-
-  if (addHistoryResponse.resCode === 201) {
-    // เช็คว่าเพิ่มสำเร็จหรือไม่
-    for (let item of cartItems.value) {
-      await deleteOrder(item.id); // ลบออเดอร์ในตะกร้า
+  try {
+    const addHistoryResponse = await addHistory(cartItems.value);
+  
+    if (addHistoryResponse.resCode === 201) {
+      for (let item of cartItems.value) {
+        await deleteOrder(item.id);
+      }
+      cartItems.value = [];
+      
+      // แสดงการแจ้งเตือนเมื่อสั่งซื้อสำเร็จ
+      notificationMessage.value = "Order placed and cart cleared!";
+      showNotification.value = true;
+      setTimeout(() => {
+        showNotification.value = false; // ซ่อนการแจ้งเตือนหลังจาก 3 วินาที
+        openCartPopup(); // นำทางไปที่หน้า menuPage หลังจากการแจ้งเตือน
+      }, 3000);
+    } else {
+      console.error("Error adding to history");
     }
-    cartItems.value = []; // ล้างตะกร้า
-    alert("Order placed and cart cleared!"); // แจ้งผู้ใช้
-    openCartPopup(); // เปิดหน้าต่าง popup
-  } else {
-    console.error("Error adding to history"); // ถ้ามีข้อผิดพลาด
+  } catch (error) {
+    console.error("Error placing order:", error);
   }
 }
 
@@ -223,5 +243,13 @@ function closeCartPopup() {
         </div>
       </div>
     </div>
+    <Notification :visible="showNotification" @close="showNotification = false">
+      <template #icon>
+        <span class="text-red-500">⚠️</span>
+      </template>
+      <template #content>
+        <div>{{ notificationMessage }}</div>
+      </template>
+    </Notification>
   </div>
 </template>

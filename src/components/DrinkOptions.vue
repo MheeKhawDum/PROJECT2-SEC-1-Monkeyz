@@ -2,6 +2,7 @@
 import { ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { getItems, addOrder, deleteOrder } from "../lib/fetch";
+import Notification from './notification/Notification.vue'; // Import the notification component
 
 const route = useRoute();
 const router = useRouter();
@@ -9,6 +10,8 @@ const selectedMenuItem = ref(null);
 const menuItems = ref([]);
 const selectedSweetness = ref("50%"); // Default sweetness
 const selectedDrinkType = ref("hot"); // Default drink type
+const notificationVisible = ref(false);
+const notificationMessage = ref('');
 
 // Fetch menu items
 async function fetchMenu() {
@@ -63,16 +66,32 @@ async function openCart() {
         quantity: existingItem.quantity + 1,
       };
       await addOrder(updatedItem); // เพิ่มเมนูเข้าไปใน cart ใหม่
+
+      // แสดง notification เมื่อเพิ่มจำนวนสำเร็จ
+      notificationMessage.value = "Updated quantity for " + updatedItem.name;
+      notificationVisible.value = true;
     } else {
       // ถ้าไม่มี ให้เพิ่มเมนูใหม่
       await addOrder(orderDetails); // เพิ่มเมนูเข้าไปใน cart
+
+      // แสดง notification เมื่อเพิ่มเมนูใหม่สำเร็จ
+      notificationMessage.value = "Added " + orderDetails.name + " to cart.";
+      notificationVisible.value = true;
     }
 
-    router.push({ name: "cart" });
+    // รีไดเรกต์ไปยัง cart หลังจากดีเลย์สั้น ๆ
+    setTimeout(() => {
+      router.push({ name: "cart" });
+    }, 700); // ดีเลย์ 700 มิลลิวินาทีเพื่อให้ผู้ใช้เห็น notification
+
   } catch (error) {
     console.error("Error submitting order:", error);
+    // แสดง notification เมื่อมีข้อผิดพลาด
+    notificationMessage.value = "Error submitting order. Please try again."; // ข้อความข้อผิดพลาด
+    notificationVisible.value = true; // แสดง notification
   }
 }
+
 
 </script>
 
@@ -118,6 +137,17 @@ async function openCart() {
     <p>Drink not found.</p>
     <button @click="openMenu">Back</button>
   </div>
+    <Notification
+  :visible="notificationVisible"
+  @close="notificationVisible = false"
+>
+  <template #icon>
+    <span>🔔</span>
+  </template>
+  <template #content>
+    <p>{{ notificationMessage }}</p>
+  </template>
+</Notification>
 </template>
 
 <style scoped>
