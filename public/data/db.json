@@ -150,6 +150,52 @@
       "id": "d58b"
     }
   ],
-  "cart": [],
-  "history": []
+  "cart": [
+    {
+      "id": "bcc5",
+      "category": "Coffee",
+      "name": "Mocha",
+      "image": "../picture/Mocha_coffe.png",
+      "price": 50,
+      "sweetness": "50%",
+      "drinkType": "hot",
+      "type": "normal",
+      "quantity": 1
+    }
+  ],
+  "history": [
+    {
+      "id": "5x6mboct9",
+      "items": [
+        {
+          "id": "1a5d",
+          "drinkType": "cold",
+          "sweetness": "75%",
+          "category": "tea",
+          "flavor": "strawberry",
+          "topping": "whip cream",
+          "type": "custom",
+          "name": "custom",
+          "quantity": 1,
+          "price": 75
+        }
+      ]
+    },
+    {
+      "id": "h0mv6h48a",
+      "items": [
+        {
+          "id": "bcc5",
+          "category": "Coffee",
+          "name": "Mocha",
+          "image": "../picture/Mocha_coffe.png",
+          "price": 50,
+          "sweetness": "50%",
+          "drinkType": "hot",
+          "type": "normal",
+          "quantity": 3
+        }
+      ]
+    }
+  ]
 }

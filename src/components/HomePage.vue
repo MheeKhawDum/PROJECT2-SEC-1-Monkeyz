@@ -99,11 +99,7 @@ const drinkOptionsItem = (drink) => {
         </div>
         <img
           class="relative mx-auto max-w-screen-xl px-4 sm:px-6 lg:flex lg:items-center lg:px-20 cursor-pointer"
-          src="../picture/espresso_coffee-removebg-preview.png"
-          @click="
-            drinkOptionsItem(coffeeMenu[1]);
-            openPage('drinkOption');
-          "
+          src=""
         />
       </div>
     </div>

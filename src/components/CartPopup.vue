@@ -55,7 +55,7 @@ const applyDiscount = () => {
   const normalizedCouponCode = couponCode.value.trim().toLowerCase(); // แปลงคูปองเป็นตัวพิมพ์เล็ก
 
   // ตรวจสอบว่าจำนวนแก้วครบ 5 แก้วหรือไม่
-  if (totalQuantity === 5 && normalizedCouponCode === "discount20") {
+  if (totalQuantity >= 5 && normalizedCouponCode === "discount20") {
     discountMessage.value = "คุณได้รับส่วนลด 20%!"; // ข้อความยืนยันส่วนลด
     isDiscountApplied.value = true; // ตั้งค่าว่ามีการใช้ส่วนลด
   } else if (normalizedCouponCode !== "discount20" && normalizedCouponCode) {
@@ -172,30 +172,28 @@ function closeCartPopup() {
         </div>
 
         <!-- ช่องกรอกคูปอง -->
-        <div class="flex items-center">
+        <div class="flex items-center mt-4 space-x-2">
           <input
             type="text"
             v-model="couponCode"
             placeholder="Enter coupon code"
-            class="border p-1 rounded"
+            class="border p-2 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           <button
             @click="applyDiscount"
-            class="bg-blue-500 text-white px-2 rounded"
+            class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-all"
           >
             Apply
           </button>
         </div>
 
         <!-- แสดงข้อความส่วนลด -->
-        <div v-if="discountMessage" class="text-green-500">
+        <div v-if="discountMessage" class="text-red-500">
           {{ discountMessage }}
         </div>
 
         <!-- Display total price -->
-        <div class="text-right">
-          Total Price: {{ totalPrice }} THB
-        </div>
+        <div class="text-right">Total Price: {{ totalPrice }} THB</div>
 
         <!-- Action buttons -->
         <div class="mt-4 flex justify-between">
