@@ -187,5 +187,27 @@ async function getHistory() {
   }
 }
 
+// ฟังก์ชันอัปเดตออเดอร์ใน backend
+async function updateOrder(updatedItem) {
+  try {
+    const res = await fetch(`${url}/cart/${updatedItem.id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updatedItem),
+    });
 
-export { getMenu, getItems, deleteOrder, editOrder, addOrder, getOrders ,getOrdersbyId, addHistory, getHistory}
+    if (!res.ok) {
+      throw new Error("Failed to update the order");
+    }
+
+    const data = await res.json();
+    return { resCode: res.status, message: "Order updated successfully", data: data };
+  } catch (error) {
+    console.error("Error updating order:", error);
+    throw error;
+  }
+}
+
+export { getMenu, getItems, deleteOrder, editOrder, addOrder, getOrders ,getOrdersbyId, addHistory, getHistory, updateOrder}

@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import { getItems, addOrder } from "../lib/fetch";
+import { getItems, addOrder, deleteOrder } from "../lib/fetch";
 
 const route = useRoute();
 const router = useRouter();
@@ -43,14 +43,37 @@ async function openCart() {
     type: "normal",
     quantity: 1,
   };
+
   try {
-    const response = await addOrder(orderDetails); // เรียกใช้ฟังก์ชัน addOrder ที่ดึงมาจาก fetch.js
-    console.log(response.message);
+    // ดึงรายการที่มีอยู่ใน cart
+    const cartItems = await getItems(`${import.meta.env.VITE_BASE_URL}/cart`);
+
+    // เช็คว่าใน cart มีเมนูที่มี id เดียวกันหรือไม่
+    const existingItem = cartItems.find(
+      (item) => item.id === orderDetails.id && item.drinkType === orderDetails.drinkType && item.sweetness === orderDetails.sweetness
+    );
+
+    if (existingItem) {
+      // ลบรายการเก่าออกจาก cart โดยใช้ฟังก์ชัน deleteOrder
+      await deleteOrder(existingItem.id);
+
+      // เพิ่มเมนูใหม่พร้อมกับ +1 quantity
+      const updatedItem = {
+        ...existingItem,
+        quantity: existingItem.quantity + 1,
+      };
+      await addOrder(updatedItem); // เพิ่มเมนูเข้าไปใน cart ใหม่
+    } else {
+      // ถ้าไม่มี ให้เพิ่มเมนูใหม่
+      await addOrder(orderDetails); // เพิ่มเมนูเข้าไปใน cart
+    }
+
     router.push({ name: "cart" });
   } catch (error) {
     console.error("Error submitting order:", error);
   }
 }
+
 </script>
 
 <template>
