@@ -2,7 +2,7 @@
 import { ref, computed } from "vue";
 import { useRouter } from "vue-router";
 import HeaderFooterLayout from "./Header.vue";
-import { getMenu, getItems } from "../lib/fetch";
+import { getMenu, getItems, addOrder } from "../lib/fetch";
 import { getOrders } from "../lib/fetch.js"; // นำเข้าฟังก์ชัน getOrders จาก fetch.js
 
 const router = useRouter();
@@ -71,12 +71,11 @@ async function fetchData() {
     isLoading.value = false;
   }
 }
-function editOrder(item) {
-  // Check the type of the order
-  if (item.type === "custom") {
-    // Navigate to custom edit page (ensure the name matches your router)
-    router.push({ name: "drinkOptioncustom", params: { id: item.id } });
-  }
+
+function addCustomOrder(item){
+  let tempItem = {...item}
+  tempItem.quantity = 1
+   addOrder(tempItem)
 }
 
 function openDrinkOption(menuItem) {
@@ -163,7 +162,7 @@ fetchData();
             v-for="(item, index) in listRecommended"
             :key="index"
             class="menu-item relative"
-            @click="editOrder(item)"
+            @click="addCustomOrder(item)"
           >
             <img :src="item.image" :alt="item.name" class="menu-item-image" />
             <p>Base: {{ item.category }}</p>

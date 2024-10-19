@@ -150,32 +150,7 @@
       "id": "d58b"
     }
   ],
-  "cart": [
-    {
-      "id": "df3a",
-      "drinkType": "hot",
-      "sweetness": "75%",
-      "category": "tea",
-      "flavor": "strawberry",
-      "topping": "whip cream",
-      "type": "custom",
-      "name": "custom",
-      "quantity": 1,
-      "price": 65
-    },
-    {
-      "id": "d87d",
-      "drinkType": "hot",
-      "sweetness": "75%",
-      "category": "tea",
-      "flavor": "strawberry",
-      "topping": "whip cream",
-      "type": "custom",
-      "name": "custom",
-      "quantity": 1,
-      "price": 65
-    }
-  ],
+  "cart": [],
   "history": [
     {
       "id": "1xmtgt949",
@@ -206,6 +181,40 @@
           "type": "custom",
           "name": "custom",
           "quantity": 5,
+          "price": 65
+        }
+      ]
+    },
+    {
+      "id": "93szpc68l",
+      "items": [
+        {
+          "id": "67d1",
+          "drinkType": "hot",
+          "sweetness": "75%",
+          "category": "tea",
+          "flavor": "strawberry",
+          "topping": "whip cream",
+          "type": "custom",
+          "name": "custom",
+          "quantity": 4,
+          "price": 65
+        }
+      ]
+    },
+    {
+      "id": "v2oxkjli0",
+      "items": [
+        {
+          "id": "67d1",
+          "drinkType": "hot",
+          "sweetness": "75%",
+          "category": "tea",
+          "flavor": "strawberry",
+          "topping": "whip cream",
+          "type": "custom",
+          "name": "custom",
+          "quantity": 1,
           "price": 65
         }
       ]
