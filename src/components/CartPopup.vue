@@ -1,6 +1,6 @@
 <script setup>
 import { ref, computed, onMounted } from "vue";
-import { getOrders, deleteOrder, addHistory } from "../lib/fetch.js"; // นำเข้าฟังก์ชัน getOrders จาก fetch.js
+import { getOrders, deleteOrder, addHistory, updateOrder } from "../lib/fetch.js"; // นำเข้าฟังก์ชัน getOrders จาก fetch.js
 import { useRouter } from "vue-router";
 
 const router = useRouter();
@@ -90,15 +90,21 @@ const totalPrice = computed(() => {
 });
 
 // ฟังก์ชันเพิ่มจำนวนสินค้า
-function addQuantity(id) {
+async function addQuantity(id) {
   const item = cartItems.value.find((item) => item.id === id);
-  if (item) item.quantity++;
+  if (item) {
+    item.quantity++;
+    await updateOrder(item); // อัปเดตข้อมูลใน backend ทันทีหลังจากเพิ่ม quantity
+  }
 }
 
 // ฟังก์ชันลดจำนวนสินค้า
-function decreaseQuantity(id) {
+async function decreaseQuantity(id) {
   const item = cartItems.value.find((item) => item.id === id);
-  if (item && item.quantity > 1) item.quantity--;
+  if (item && item.quantity > 1) {
+    item.quantity--;
+    await updateOrder(item); // อัปเดตข้อมูลใน backend ทันทีหลังจากลด quantity
+  }
 }
 
 async function placeOrder() {
