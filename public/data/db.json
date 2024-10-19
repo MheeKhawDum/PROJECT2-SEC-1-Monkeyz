@@ -152,6 +152,53 @@
   ],
   "cart": [],
   "history": [
-    
+    {
+      "id": "i5qia9hzt",
+      "items": [
+        {
+          "id": "fcac",
+          "category": "Tea",
+          "name": "Hojicha Tea",
+          "image": "../picture/hojicha tea.png",
+          "price": 50,
+          "sweetness": "50%",
+          "drinkType": "hot",
+          "type": "normal",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "id": "dg4xogabu",
+      "items": [
+        {
+          "id": "fcac",
+          "category": "Tea",
+          "name": "Hojicha Tea",
+          "image": "../picture/hojicha tea.png",
+          "price": 50,
+          "sweetness": "50%",
+          "drinkType": "hot",
+          "type": "normal",
+          "quantity": 4
+        }
+      ]
+    },
+    {
+      "id": "z5vp8rl0h",
+      "items": [
+        {
+          "id": "fcac",
+          "category": "Tea",
+          "name": "Hojicha Tea",
+          "image": "../picture/hojicha tea.png",
+          "price": 50,
+          "sweetness": "50%",
+          "drinkType": "hot",
+          "type": "normal",
+          "quantity": 5
+        }
+      ]
+    }
   ]
 }

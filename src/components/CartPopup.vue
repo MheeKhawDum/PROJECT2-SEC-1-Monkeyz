@@ -1,11 +1,14 @@
 <script setup>
 import { ref, computed, onMounted } from "vue";
-import { getOrders, deleteOrder, addHistory } from "../lib/fetch.js"; // นำเข้าฟังก์ชัน getOrders จาก fetch.js
+import { getOrders, deleteOrder, addHistory, updateOrder } from "../lib/fetch.js"; // นำเข้าฟังก์ชัน getOrders จาก fetch.js
 import { useRouter } from "vue-router";
 
 const router = useRouter();
 const cartPopup = ref(true); // Control visibility of cart popup
 const cartItems = ref([]); // Array holding cart items
+const couponCode = ref(""); // ตัวแปรสำหรับเก็บคูปอง
+const discountMessage = ref(""); // ตัวแปรสำหรับข้อความส่วนลด
+const isDiscountApplied = ref(false); // ตัวแปรเพื่อตรวจสอบว่ามีการใช้ส่วนลดหรือไม่
 
 onMounted(async () => {
   await loadOrders();
@@ -44,46 +47,65 @@ function editOrder(item) {
   }
 }
 
+const applyDiscount = () => {
+  const totalQuantity = cartItems.value.reduce(
+    (sum, item) => sum + item.quantity,
+    0
+  );
+  const normalizedCouponCode = couponCode.value.trim().toLowerCase(); // แปลงคูปองเป็นตัวพิมพ์เล็ก
+
+  // ตรวจสอบว่าจำนวนแก้วครบ 5 แก้วหรือไม่
+  if (totalQuantity === 5 && normalizedCouponCode === "discount20") {
+    discountMessage.value = "คุณได้รับส่วนลด 20%!"; // ข้อความยืนยันส่วนลด
+    isDiscountApplied.value = true; // ตั้งค่าว่ามีการใช้ส่วนลด
+  } else if (normalizedCouponCode !== "discount20" && normalizedCouponCode) {
+    discountMessage.value = "ส่วนลดไม่ถูกต้อง"; // ข้อความสำหรับกรณีคูปองไม่ถูกต้อง
+    isDiscountApplied.value = false; // ไม่ใช้ส่วนลด
+  } else if (normalizedCouponCode) {
+    discountMessage.value = "จำนวนแก้วไม่พอที่จะใช้ส่วนลด"; // ข้อความสำหรับกรณีไม่ครบ
+    isDiscountApplied.value = false; // ไม่ใช้ส่วนลด
+  } else {
+    discountMessage.value = ""; // ล้างข้อความหากไม่มีคูปอง
+    isDiscountApplied.value = false; // ไม่ใช้ส่วนลด
+  }
+};
+
+const discount = (totalPrice, totalQuantity) => {
+  if (isDiscountApplied.value) {
+    return totalPrice * 0.8; // ลดราคา 20%
+  }
+  return totalPrice; // ส่งคืนราคาปกติ
+};
+
 const totalPrice = computed(() => {
-  return cartItems.value.reduce((total, item) => {
-    const price = item.price ? item.price : 0; // ตรวจสอบว่ามี price หรือไม่ ถ้าไม่มีให้ใช้ 0
-    console.log(
-      `Item: ${item.name}, Price: ${price}, Quantity: ${item.quantity}`
-    );
+  const totalQuantity = cartItems.value.reduce(
+    (sum, item) => sum + item.quantity,
+    0
+  );
+  const total = cartItems.value.reduce((total, item) => {
+    const price = item.price ? item.price : 0; // ตรวจสอบว่ามี price หรือไม่
     return total + price * item.quantity;
   }, 0);
+  return discount(total, totalQuantity); // ส่งจำนวนสินค้าไปที่ฟังก์ชัน discount
 });
 
 // ฟังก์ชันเพิ่มจำนวนสินค้า
-function addQuantity(id) {
+async function addQuantity(id) {
   const item = cartItems.value.find((item) => item.id === id);
-  if (item) item.quantity++;
-}
-
-//disscount
-function applyDiscount(price, quantity) {
-  if (quantity === 3) {
-    return price - (price * 15) / 100; // ลด 15%
-  } else if (quantity === 5) {
-    return price - (price * 20) / 100; // ลด 20%
+  if (item) {
+    item.quantity++;
+    await updateOrder(item); // อัปเดตข้อมูลใน backend ทันทีหลังจากเพิ่ม quantity
   }
-  return price; // ถ้าไม่เข้าเงื่อนไข ไม่ลดราคา
 }
 
 // ฟังก์ชันลดจำนวนสินค้า
-function decreaseQuantity(id) {
+async function decreaseQuantity(id) {
   const item = cartItems.value.find((item) => item.id === id);
-  if (item && item.quantity > 1) item.quantity--;
+  if (item && item.quantity > 1) {
+    item.quantity--;
+    await updateOrder(item); // อัปเดตข้อมูลใน backend ทันทีหลังจากลด quantity
+  }
 }
-
-// ฟังก์ชันสั่งซื้อ
-// function placeOrder() {
-//   // Implement your order logic
-//   alert("Order placed!");
-//   addHistory(cartItems.value)
-//   // cartItems.value = [];
-//   openCartPopup();
-// }
 
 async function placeOrder() {
   const addHistoryResponse = await addHistory(cartItems.value); // เพิ่มข้อมูลไปยัง history
@@ -155,8 +177,31 @@ function closeCartPopup() {
           <button @click="editOrder(item)" class="text-blue-600">Edit</button>
         </div>
 
+        <!-- ช่องกรอกคูปอง -->
+        <div class="flex items-center">
+          <input
+            type="text"
+            v-model="couponCode"
+            placeholder="Enter coupon code"
+            class="border p-1 rounded"
+          />
+          <button
+            @click="applyDiscount"
+            class="bg-blue-500 text-white px-2 rounded"
+          >
+            Apply
+          </button>
+        </div>
+
+        <!-- แสดงข้อความส่วนลด -->
+        <div v-if="discountMessage" class="text-green-500">
+          {{ discountMessage }}
+        </div>
+
         <!-- Display total price -->
-        <div class="text-right">Total Price: {{ totalPrice }} THB</div>
+        <div class="text-right">
+          Total Price: {{ totalPrice }} THB
+        </div>
 
         <!-- Action buttons -->
         <div class="mt-4 flex justify-between">
