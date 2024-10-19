@@ -150,6 +150,65 @@
       "id": "d58b"
     }
   ],
-  "cart": [],
-  "history": []
+  "cart": [
+    {
+      "id": "df3a",
+      "drinkType": "hot",
+      "sweetness": "75%",
+      "category": "tea",
+      "flavor": "strawberry",
+      "topping": "whip cream",
+      "type": "custom",
+      "name": "custom",
+      "quantity": 1,
+      "price": 65
+    },
+    {
+      "id": "d87d",
+      "drinkType": "hot",
+      "sweetness": "75%",
+      "category": "tea",
+      "flavor": "strawberry",
+      "topping": "whip cream",
+      "type": "custom",
+      "name": "custom",
+      "quantity": 1,
+      "price": 65
+    }
+  ],
+  "history": [
+    {
+      "id": "1xmtgt949",
+      "items": [
+        {
+          "id": "870f",
+          "category": "Tea",
+          "name": "Lemon Tea",
+          "image": "../picture/Lemontea.png",
+          "price": 50,
+          "sweetness": "50%",
+          "drinkType": "hot",
+          "type": "normal",
+          "quantity": 5
+        }
+      ]
+    },
+    {
+      "id": "i4k6xr1s0",
+      "items": [
+        {
+          "id": "67d1",
+          "drinkType": "hot",
+          "sweetness": "75%",
+          "category": "tea",
+          "flavor": "strawberry",
+          "topping": "whip cream",
+          "type": "custom",
+          "name": "custom",
+          "quantity": 5,
+          "price": 65
+        }
+      ]
+    }
+  ]
 }
