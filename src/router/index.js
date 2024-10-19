@@ -8,6 +8,7 @@ import EditPage from '@/components/EditPage.vue'
 import EditPageCustom from '../components/EditPageCustom.vue'
 import DrinkOptions from '@/components/DrinkOptions.vue'
 import History from '../components/History.vue'
+import DrinkOptionsCustom from '../components/DrinkOptionsCustom.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -39,6 +40,11 @@ const router = createRouter({
       path: '/edit/:id',
       name: 'edit',
       component: EditPage
+    },
+    {
+      path: '/drinkOptioncustom/:id',
+      name: 'drinkOptioncustom',
+      component: DrinkOptionsCustom
     },
     {
       path: '/cart',

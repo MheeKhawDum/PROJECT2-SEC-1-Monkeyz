@@ -22,26 +22,6 @@ const cartData = ref({
 });
 
 // ฟังก์ชันดึงข้อมูลจาก cart
-// async function fetchCartData() {
-//   const orders = await getOrdersbyId(editId); // Fetch cart data
-//   console.log("Orders:", orders);
-
-//   // Update the cartData properties
-//   cartData.value.id = orders.id;
-//   cartData.value.drinkType = orders.drinkType;
-//   cartData.value.sweetness = orders.sweetness;
-//   cartData.value.category = orders.category;
-//   cartData.value.flavor = orders.flavor;
-//   cartData.value.topping = orders.topping;
-//   cartData.value.type = orders.type;
-//   cartData.value.name = orders.name;
-//   cartData.value.quantity = orders.quantity;
-//   cartData.value.price = orders.price;
-
-//   changeDrinkType(cartData.value.drinkType);
-// }
-
-// ฟังก์ชันดึงข้อมูลจาก cart
 async function fetchCartData() {
   const orders = await getOrdersbyId(editId); // Fetch cart data
   console.log("Orders:", orders);
@@ -187,13 +167,13 @@ const saveEdit = () => {
 function cancelEdit() {
   console.log("Edit canceled");
   alert("Edit canceled.");
-  router.push({ name: "cart" });
+  router.push({ name: "menuPage" });
 }
 </script>
 
 <template>
   <div class="edit-container">
-    <h1>Edit Your Drink</h1>
+    <h1>Submit Your Drink</h1>
 
     <!-- Drink Preview Section -->
     <div class="drink-preview" :style="{ backgroundColor: backgroundColor }">
@@ -250,11 +230,9 @@ function cancelEdit() {
       </div>
 
       <div class="button-group">
-        <button type="button" @click="saveEdit" class="save-btn">
-          Save Changes
-        </button>
+        <button type="button" @click="saveEdit" class="save-btn">Submit</button>
         <button type="button" @click="cancelEdit" class="cancel-btn">
-          Cancel
+          Back
         </button>
       </div>
     </form>

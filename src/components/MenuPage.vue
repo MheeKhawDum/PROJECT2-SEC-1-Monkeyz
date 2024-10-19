@@ -3,6 +3,7 @@ import { ref, computed } from "vue";
 import { useRouter } from "vue-router";
 import HeaderFooterLayout from "./Header.vue";
 import { getMenu, getItems } from "../lib/fetch";
+import { getOrders } from "../lib/fetch.js"; // นำเข้าฟังก์ชัน getOrders จาก fetch.js
 
 const router = useRouter();
 const isLoading = ref(true);
@@ -68,6 +69,13 @@ async function fetchData() {
     errorMessage.value = "Failed to load menu items. Please try again.";
   } finally {
     isLoading.value = false;
+  }
+}
+function editOrder(item) {
+  // Check the type of the order
+  if (item.type === "custom") {
+    // Navigate to custom edit page (ensure the name matches your router)
+    router.push({ name: "drinkOptioncustom", params: { id: item.id } });
   }
 }
 
@@ -154,15 +162,20 @@ fetchData();
           <div
             v-for="(item, index) in listRecommended"
             :key="index"
-            class="menu-item"
-            @click="openDrinkOption(item.name)"
+            class="menu-item relative"
+            @click="editOrder(item)"
           >
             <img :src="item.image" :alt="item.name" class="menu-item-image" />
-            <p>base: {{ item.category }}</p>
-            <p>flavor: {{ item.flavor }}</p>
-            <p>topping: {{ item.topping }}</p>
-            <!-- <p class="menu-item-name">{{ item.name }}</p>
-            <p class="menu-item-price">{{ item.price }} THB</p> -->
+            <p>Base: {{ item.category }}</p>
+            <p>Flavor: {{ item.flavor }}</p>
+            <p>Topping: {{ item.topping }}</p>
+
+            <!-- Popup for quantity with fire animation -->
+            <div
+              class="popup-quantity absolute top-0 right-0 bg-red-500 text-white rounded-full px-2 py-1 animate-fire"
+            >
+              🔥 {{ item.quantity }} times
+            </div>
           </div>
         </div>
       </div>
@@ -228,5 +241,23 @@ fetchData();
 .menu-item-price {
   font-size: 1em;
   color: #777;
+}
+.popup-quantity {
+  font-size: 0.9rem;
+  font-weight: bold;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  animation: fire-animation 1.5s ease infinite;
+}
+
+@keyframes fire-animation {
+  0% {
+    transform: scale(1) translateY(0);
+  }
+  50% {
+    transform: scale(1.2) translateY(-5px);
+  }
+  100% {
+    transform: scale(1) translateY(0);
+  }
 }
 </style>

@@ -173,7 +173,7 @@ const submitOrder = async () => {
 </script>
 
 <template>
-  <div class="wrapper">
+  <div class="wrapper bg-orange-100">
     <div class="background" :style="{ backgroundColor: backgroundColor }">
       <div class="container">
         <div class="cup">

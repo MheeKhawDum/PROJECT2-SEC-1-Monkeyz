@@ -90,18 +90,30 @@ const drinkOptionsItem = (drink) => {
 
               <a
                 @click="router.push({ name: 'customPage' })"
-                class="block rounded-lg px-20 py-6 font-sans text-xl font-extrabold uppercase text-slate-950 transition-all hover:bg-orange-500/50 active:bg-orange-500/20 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+                class="block rounded-lg px-20 py-6 font-sans text-xl font-extrabold uppercase text-orange-500 transition-all hover:bg-orange-500/50 active:bg-orange-500/20 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
               >
                 Custom Menu
               </a>
             </div>
           </div>
         </div>
-        <img
-          class="relative mx-auto max-w-screen-xl px-4 sm:px-6 lg:flex lg:items-center lg:px-20 cursor-pointer"
-          src=""
-        />
+        <img class="img" src="/public/picture/logo.png" />
       </div>
     </div>
   </HeaderFooterLayout>
 </template>
+
+<style>
+/* .bg {
+  background-image: url("/public/picture/bg.jpg");
+  background-color: bisque;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+} */
+.img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+</style>

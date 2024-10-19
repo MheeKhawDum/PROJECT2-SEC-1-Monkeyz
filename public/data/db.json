@@ -152,10 +152,45 @@
   ],
   "cart": [
     {
-      "id": "bcc5",
+      "id": "1a5d",
+      "drinkType": "cold",
+      "sweetness": "75%",
+      "category": "tea",
+      "flavor": "strawberry",
+      "topping": "whip cream",
+      "type": "custom",
+      "name": "custom",
+      "quantity": 1,
+      "price": 75
+    },
+    {
+      "id": "18fc",
       "category": "Coffee",
-      "name": "Mocha",
-      "image": "../picture/Mocha_coffe.png",
+      "name": "Espresso",
+      "image": "../picture/espresso coffee.png",
+      "price": 50,
+      "sweetness": "50%",
+      "drinkType": "hot",
+      "type": "normal",
+      "quantity": 1
+    },
+    {
+      "id": "2e46",
+      "drinkType": "cold",
+      "sweetness": "75%",
+      "category": "tea",
+      "flavor": "strawberry",
+      "topping": "whip cream",
+      "type": "custom",
+      "name": "custom",
+      "quantity": 1,
+      "price": 75
+    },
+    {
+      "id": "5b19",
+      "category": "Coffee",
+      "name": "Latte",
+      "image": "../picture/latte coffee.png",
       "price": 50,
       "sweetness": "50%",
       "drinkType": "hot",
@@ -194,6 +229,74 @@
           "drinkType": "hot",
           "type": "normal",
           "quantity": 3
+        }
+      ]
+    },
+    {
+      "id": "g3ax0duxm",
+      "items": [
+        {
+          "id": "1a5d",
+          "drinkType": "cold",
+          "sweetness": "75%",
+          "category": "tea",
+          "flavor": "strawberry",
+          "topping": "whip cream",
+          "type": "custom",
+          "name": "custom",
+          "quantity": 1,
+          "price": 75
+        }
+      ]
+    },
+    {
+      "id": "bijzgdfne",
+      "items": [
+        {
+          "id": "7ab2",
+          "drinkType": "cold",
+          "sweetness": "75%",
+          "category": "tea",
+          "flavor": "strawberry",
+          "topping": "whip cream",
+          "type": "custom",
+          "name": "custom",
+          "quantity": 4,
+          "price": 75
+        }
+      ]
+    },
+    {
+      "id": "lsnw3ym8q",
+      "items": [
+        {
+          "id": "721b",
+          "drinkType": "cold",
+          "sweetness": "100%",
+          "category": "milk",
+          "flavor": "vanilla",
+          "topping": "cookie",
+          "type": "custom",
+          "name": "custom",
+          "quantity": 6,
+          "price": 80
+        }
+      ]
+    },
+    {
+      "id": "exvzdexxl",
+      "items": [
+        {
+          "id": "0df8",
+          "drinkType": "hot",
+          "sweetness": "50%",
+          "category": "coffee",
+          "flavor": "chocolate",
+          "topping": "gummy",
+          "type": "custom",
+          "name": "custom",
+          "quantity": 3,
+          "price": 60
         }
       ]
     }
