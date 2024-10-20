@@ -150,7 +150,20 @@
       "id": "d58b"
     }
   ],
-  "cart": [],
+  "cart": [
+    {
+      "id": "67d1",
+      "drinkType": "hot",
+      "sweetness": "75%",
+      "category": "tea",
+      "flavor": "strawberry",
+      "topping": "whip cream",
+      "type": "custom",
+      "name": "custom",
+      "quantity": 1,
+      "price": 65
+    }
+  ],
   "history": [
     {
       "id": "1xmtgt949",

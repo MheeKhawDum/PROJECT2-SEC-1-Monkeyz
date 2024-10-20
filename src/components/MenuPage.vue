@@ -4,6 +4,7 @@ import { useRouter } from "vue-router";
 import HeaderFooterLayout from "./Header.vue";
 import { getMenu, getItems, addOrder } from "../lib/fetch";
 import { getOrders } from "../lib/fetch.js"; // นำเข้าฟังก์ชัน getOrders จาก fetch.js
+import Notification from './notification/Notification.vue';
 
 const router = useRouter();
 const isLoading = ref(true);
@@ -16,6 +17,9 @@ const listHistory = ref({});
 const listTempHistory = ref([]);
 const listCustomAndQuantityFilter = ref([]);
 const listRecommended = ref([]);
+
+const notificationVisible = ref(false);
+const notificationMessage = ref('');
 
 // ฟังก์ชันดึงข้อมูลจาก API
 async function fetchData() {
@@ -75,7 +79,17 @@ async function fetchData() {
 function addCustomOrder(item){
   let tempItem = {...item}
   tempItem.quantity = 1
-   addOrder(tempItem)
+  addOrder(tempItem)
+
+  notificationMessage.value = "added custom order to cart" + `Base: ${item.category}` + `Flavor: ${item.flavor}` + `Topping: ${item.topping}` + `Type: ${item.drinkType}`
+  notificationVisible.value = true;
+
+  setTimeout(() => {
+      notificationVisible.value = false; // ซ่อนการแจ้งเตือนหลังจาก 3 วินาที
+      router.push({ name: "cart" })
+  }, 3000);
+
+  
 }
 
 function openDrinkOption(menuItem) {
@@ -168,6 +182,7 @@ fetchData();
             <p>Base: {{ item.category }}</p>
             <p>Flavor: {{ item.flavor }}</p>
             <p>Topping: {{ item.topping }}</p>
+            <p>Type: {{ item.drinkType }}</p>
 
             <!-- Popup for quantity with fire animation -->
             <div
@@ -179,6 +194,16 @@ fetchData();
         </div>
       </div>
     </div>
+
+    <Notification :visible="notificationVisible" @close="notificationVisible = false">
+      <template #icon>
+        <span class="text-red-500">🔔</span>
+      </template>
+      <template #content>
+        <div>{{ notificationMessage }}</div>
+      </template>
+    </Notification>
+
   </HeaderFooterLayout>
 </template>
 
