@@ -72,6 +72,7 @@ const answers = ref({
   name: "custom",
   quantity: 1,
   price: 0,
+  image: "../picture/mystery_cup.png",
 });
 const currentQuestionIndex = ref(0);
 const clickCount = ref(0);

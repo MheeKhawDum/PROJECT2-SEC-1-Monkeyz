@@ -151,35 +151,23 @@
       "id": "d58b"
     }
   ],
-  "cart": [
-    {
-      "id": "42a0",
-      "drinkType": "hot",
-      "sweetness": "50%",
-      "category": "coffee",
-      "flavor": "chocolate",
-      "topping": "gummy",
-      "type": "custom",
-      "name": "custom",
-      "quantity": 1,
-      "price": 60
-    }
-  ],
+  "cart": [],
   "history": [
     {
-      "id": "krz8mjdp3",
+      "id": "6scm5dp8c",
       "items": [
         {
-          "id": "42a0",
-          "drinkType": "hot",
-          "sweetness": "50%",
-          "category": "coffee",
-          "flavor": "chocolate",
-          "topping": "gummy",
+          "id": "96f8",
+          "drinkType": "cold",
+          "sweetness": "100%",
+          "category": "milk",
+          "flavor": "vanilla",
+          "topping": "cookie",
           "type": "custom",
           "name": "custom",
           "quantity": 5,
-          "price": 60
+          "price": 80,
+          "image": "../picture/mystery_cup.png"
         }
       ]
     }
