@@ -31,7 +31,7 @@ const questions = ref([
   },
   {
     id: 3,
-    question: "SSelect Your Base",
+    question: "Select Your Base",
     key: "category",
     options: [
       { option: "coffee", price: 40 },
