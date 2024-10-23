@@ -229,8 +229,8 @@ function closeCartPopup() {
             cartItems.reduce((sum, item) => sum + item.quantity, 0) >= 5
           "
         >
-          Use this coupon: <span class="font-bold">"discount20"</span> to get 20% off!
-          off!
+          Use this coupon: <span class="font-bold">"discount20"</span> to get
+          20% off!
         </p>
         <!-- แสดงข้อความส่วนลด -->
         <div v-if="discountMessage" class="text-red-500">
