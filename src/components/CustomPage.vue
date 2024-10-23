@@ -12,7 +12,7 @@ const router = useRouter();
 const questions = ref([
   {
     id: 1,
-    question: "เลือกประเภทเครื่องดื่ม",
+    question: "Select Your drink type",
     key: "drinkType",
     options: [
       { option: "hot", price: 0 },
@@ -21,7 +21,7 @@ const questions = ref([
   },
   {
     id: 2,
-    question: "เลือก ความหวาน",
+    question: "Select Your sweetness",
     key: "sweetness",
     options: [
       { option: "50%", price: 0 },
@@ -31,7 +31,7 @@ const questions = ref([
   },
   {
     id: 3,
-    question: "เลือก Base",
+    question: "SSelect Your Base",
     key: "category",
     options: [
       { option: "coffee", price: 40 },
@@ -41,7 +41,7 @@ const questions = ref([
   },
   {
     id: 4,
-    question: "เลือก Flavor",
+    question: "Select Your Flavor",
     key: "flavor",
     options: [
       { option: "chocolate", price: 10 },
@@ -51,7 +51,7 @@ const questions = ref([
   },
   {
     id: 5,
-    question: "เลือก Topping",
+    question: "Select Your Topping",
     key: "topping",
     options: [
       { option: "gummy", price: 10 },
@@ -223,7 +223,7 @@ const submitOrder = async () => {
       <li><a href="#" @click="router.push({ name: 'menuPage' })">Menu</a></li>
       <li><a href="#" @click="router.push({ name: 'home' })">Home</a></li>
     </template>
-    <div class="wrapper bg-orange-100">
+    <div class="wrapper h-screen bg-orange-100 justify-between">
       <div class="background" :style="{ backgroundColor: backgroundColor }">
         <div class="container">
           <div class="cup">
@@ -265,12 +265,16 @@ const submitOrder = async () => {
       </div>
 
       <div v-else>
-        <h2>การตั้งค่าของคุณเสร็จสมบูรณ์แล้ว</h2>
-        <p>ราคารวม: {{ answers.price }} THB</p>
-        <button @click="submitOrder" class="btn">ยืนยันคำสั่งซื้อ</button>
+        <div class="flex flex-col items-center justify-center space-y-4">
+          <h2 class="text-center text-lg font-bold">
+            Prepared Your Custom Menu
+          </h2>
+          <p class="text-center">Price: {{ answers.price }} THB</p>
+          <button @click="submitOrder" class="btn">Comfirm Your order</button>
+        </div>
       </div>
       <div v-if="currentQuestionIndex > 0">
-        <button @click="goBack" class="btn">ย้อนกลับ</button>
+        <button @click="goBack" class="btn mt-3">Back</button>
       </div>
     </div>
     <Notification
