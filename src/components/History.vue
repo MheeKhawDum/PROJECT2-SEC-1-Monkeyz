@@ -18,13 +18,8 @@ const loadHistory = async () => {
   try {
     const data = await getHistory();
 
-    // ปรับโครงสร้างข้อมูลเพื่อแสดงรายการเครื่องดื่ม
-    const formattedHistory = data.map((order) => ({
-      id: order.id,
-      drinks: order.items, // เข้าถึงข้อมูลเครื่องดื่มใน items ได้โดยตรง
-    }));
-
-    historyItems.value = formattedHistory;
+    historyItems.value = data;
+    console.log(historyItems);
   } catch (error) {
     console.error("Error loading history:", error);
   }
@@ -68,7 +63,7 @@ const reorder = async (drink) => {
             <h2 class="font-bold text-slate-950">Order ID: {{ order.id }}</h2>
             <ul class="drink-list">
               <li
-                v-for="drink in order.drinks"
+                v-for="drink in order.items"
                 :key="drink.id"
                 class="drink-item"
               >
