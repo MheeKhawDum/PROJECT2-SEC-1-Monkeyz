@@ -103,7 +103,8 @@
       "topping": "",
       "price": "",
       "drinktype": "",
-      "id": "2adb"
+      "id": "2adb",
+      "image": "../picture/mystery_cup.png"
     }
   ],
   "meterial": [
@@ -150,85 +151,22 @@
       "id": "d58b"
     }
   ],
-  "cart": [
-    {
-      "id": "67d1",
-      "drinkType": "hot",
-      "sweetness": "75%",
-      "category": "tea",
-      "flavor": "strawberry",
-      "topping": "whip cream",
-      "type": "custom",
-      "name": "custom",
-      "quantity": 1,
-      "price": 65
-    }
-  ],
+  "cart": [],
   "history": [
     {
-      "id": "1xmtgt949",
+      "id": "krz8mjdp3",
       "items": [
         {
-          "id": "870f",
-          "category": "Tea",
-          "name": "Lemon Tea",
-          "image": "../picture/Lemontea.png",
-          "price": 50,
+          "id": "42a0",
+          "drinkType": "hot",
           "sweetness": "50%",
-          "drinkType": "hot",
-          "type": "normal",
-          "quantity": 5
-        }
-      ]
-    },
-    {
-      "id": "i4k6xr1s0",
-      "items": [
-        {
-          "id": "67d1",
-          "drinkType": "hot",
-          "sweetness": "75%",
-          "category": "tea",
-          "flavor": "strawberry",
-          "topping": "whip cream",
+          "category": "coffee",
+          "flavor": "chocolate",
+          "topping": "gummy",
           "type": "custom",
           "name": "custom",
           "quantity": 5,
-          "price": 65
-        }
-      ]
-    },
-    {
-      "id": "93szpc68l",
-      "items": [
-        {
-          "id": "67d1",
-          "drinkType": "hot",
-          "sweetness": "75%",
-          "category": "tea",
-          "flavor": "strawberry",
-          "topping": "whip cream",
-          "type": "custom",
-          "name": "custom",
-          "quantity": 4,
-          "price": 65
-        }
-      ]
-    },
-    {
-      "id": "v2oxkjli0",
-      "items": [
-        {
-          "id": "67d1",
-          "drinkType": "hot",
-          "sweetness": "75%",
-          "category": "tea",
-          "flavor": "strawberry",
-          "topping": "whip cream",
-          "type": "custom",
-          "name": "custom",
-          "quantity": 1,
-          "price": 65
+          "price": 60
         }
       ]
     }
