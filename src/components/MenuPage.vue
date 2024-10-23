@@ -3,7 +3,6 @@ import { ref, computed } from "vue";
 import { useRouter } from "vue-router";
 import HeaderFooterLayout from "./Header.vue";
 import { getMenu, getItems, addOrder } from "../lib/fetch";
-import { getOrders } from "../lib/fetch.js"; // นำเข้าฟังก์ชัน getOrders จาก fetch.js
 import Notification from './notification/Notification.vue';
 
 const router = useRouter();
@@ -83,9 +82,9 @@ function addCustomOrder(item){
   notificationVisible.value = true;
 
   setTimeout(() => {
-      notificationVisible.value = false; // ซ่อนการแจ้งเตือนหลังจาก 3 วินาที
+      notificationVisible.value = false; // ซ่อนการแจ้งเตือนหลังจาก 1.5 วินาที
       router.push({ name: "cart" })
-  }, 3000);
+  }, 1500);
 
   
 }
