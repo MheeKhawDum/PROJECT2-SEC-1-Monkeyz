@@ -41,8 +41,6 @@ async function fetchData() {
       listTempHistory.value.push(item.items[0]);
     });
 
-    console.log(listTempHistory.value);
-
     const customItemCount = {};
 
     listTempHistory.value.forEach((item) => {
@@ -64,10 +62,6 @@ async function fetchData() {
     listRecommended.value = listCustomAndQuantityFilter.value
       .sort((a, b) => b.quantity - a.quantity)
       .slice(0, 5);
-
-    console.log(listCustomAndQuantityFilter.value);
-    console.log("↑ all custom items ------- top3 most ordered custom item ↓");
-    console.log(listRecommended.value);
   } catch (error) {
     console.error(error);
     errorMessage.value = "Failed to load menu items. Please try again.";
