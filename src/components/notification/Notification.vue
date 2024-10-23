@@ -3,7 +3,7 @@
     <div class="notification-content">
       <slot name="icon"></slot>
       <slot name="content"></slot>
-      <button @click="$emit('close')">Close</button>
+      <button @click="$emit('close')">&ensp; Close</button>
     </div>
   </div>
 </template>

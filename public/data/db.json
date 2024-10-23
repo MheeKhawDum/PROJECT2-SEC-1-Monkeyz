@@ -151,7 +151,20 @@
       "id": "d58b"
     }
   ],
-  "cart": [],
+  "cart": [
+    {
+      "id": "42a0",
+      "drinkType": "hot",
+      "sweetness": "50%",
+      "category": "coffee",
+      "flavor": "chocolate",
+      "topping": "gummy",
+      "type": "custom",
+      "name": "custom",
+      "quantity": 1,
+      "price": 60
+    }
+  ],
   "history": [
     {
       "id": "krz8mjdp3",

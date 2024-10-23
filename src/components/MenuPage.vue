@@ -19,7 +19,7 @@ const listCustomAndQuantityFilter = ref([]);
 const listRecommended = ref([]);
 
 const notificationVisible = ref(false);
-const notificationMessage = ref('');
+const notificationMessage = ref([]);
 
 // ฟังก์ชันดึงข้อมูลจาก API
 async function fetchData() {
@@ -75,7 +75,11 @@ function addCustomOrder(item){
   tempItem.quantity = 1
   addOrder(tempItem)
 
-  notificationMessage.value = "added custom order to cart" + `Base: ${item.category}` + `Flavor: ${item.flavor}` + `Topping: ${item.topping}` + `Type: ${item.drinkType}`
+  notificationMessage.value.text = "Added custom order to cart" 
+  notificationMessage.value.base = `Base: ${item.category}`
+  notificationMessage.value.flavor = `Flavor: ${item.flavor}`
+  notificationMessage.value.topping = `Topping: ${item.topping}`
+  notificationMessage.value.type = `Type: ${item.drinkType}`
   notificationVisible.value = true;
 
   setTimeout(() => {
@@ -194,7 +198,13 @@ fetchData();
         <span class="text-red-500">🔔</span>
       </template>
       <template #content>
-        <div>{{ notificationMessage }}</div>
+        <div>
+          {{ notificationMessage.text }} <br>
+          {{ notificationMessage.base }} <br>
+          {{ notificationMessage.flavor }} <br>
+          {{ notificationMessage.topping }} <br>
+          {{ notificationMessage.type }}
+        </div> 
       </template>
     </Notification>
 
