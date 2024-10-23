@@ -2,6 +2,7 @@
 import { ref, onMounted } from "vue";
 import { getHistory, addOrder, getOrdersbyId } from "../lib/fetch.js";
 import { useRouter } from "vue-router";
+import HeaderFooterLayout from "./Header.vue";
 
 const router = useRouter();
 const historyItems = ref([]);
@@ -51,39 +52,44 @@ const reorder = async (drink) => {
 </script>
 
 <template>
-  <div class="history-page h-screen">
-    <h1 class="text-2xl font-bold text-slate-950">Your Order History</h1>
-    <div v-if="historyItems.length === 0" class="empty-message">
-      <p>No orders found in history.</p>
+  <HeaderFooterLayout>
+    <template #sidebar>
+      <li><a href="#" @click="router.push({ name: 'menuPage' })">Menu</a></li>
+      <li><a href="#" @click="router.push({ name: 'home' })">Home</a></li>
+    </template>
+    <div class="history-page h-screen">
+      <h1 class="text-2xl font-bold text-slate-950">Your Order History</h1>
+      <div v-if="historyItems.length === 0" class="empty-message">
+        <p>No orders found in history.</p>
+      </div>
+      <div v-else class="history-list">
+        <ul>
+          <li v-for="order in historyItems" :key="order.id" class="order-card">
+            <h2 class="font-bold text-slate-950">Order ID: {{ order.id }}</h2>
+            <ul class="drink-list">
+              <li
+                v-for="drink in order.drinks"
+                :key="drink.id"
+                class="drink-item"
+              >
+                <img :src="drink.image" :alt="drink.name" class="drink-image" />
+                <div class="drink-details font-semibold text-slate-950">
+                  <h3>{{ drink.name }}</h3>
+                  <p>Price: {{ drink.price }} THB</p>
+                  <p>Sweetness: {{ drink.sweetness }}</p>
+                  <p>Type: {{ drink.drinkType }}</p>
+                </div>
+                <button @click="reorder(drink)" class="reorder-btn">
+                  Reorder
+                </button>
+                <button @click="openMenu" class="back-btn">Back</button>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
     </div>
-    <div v-else class="history-list">
-      <ul>
-        <li v-for="order in historyItems" :key="order.id" class="order-card">
-          <h2 class="font-bold text-slate-950">Order ID: {{ order.id }}</h2>
-          <ul class="drink-list">
-            <li
-              v-for="drink in order.drinks"
-              :key="drink.id"
-              class="drink-item"
-            >
-              <img :src="drink.image" :alt="drink.name" class="drink-image" />
-              <div class="drink-details font-semibold text-slate-950">
-                <h3>{{ drink.name }}</h3>
-                <p>Price: {{ drink.price }} THB</p>
-                <p>Sweetness: {{ drink.sweetness }}</p>
-                <p>Type: {{ drink.drinkType }}</p>
-              </div>
-              <button @click="reorder(drink)" class="reorder-btn">
-                Reorder
-              </button>
-              <button @click="openMenu" class="back-btn">Back</button>
-            </li>
-          </ul>
-        </li>
-      </ul>
-    </div>
-  </div>
-  x
+  </HeaderFooterLayout>
 </template>
 
 <style scoped>

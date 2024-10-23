@@ -2,9 +2,10 @@
 import { ref } from "vue";
 import { addOrder } from "../lib/fetch";
 import { useRoute, useRouter } from "vue-router";
-import Notification from './notification/Notification.vue'; // Import the notification component
+import Notification from "./notification/Notification.vue"; // Import the notification component
+import HeaderFooterLayout from "./Header.vue";
 const notificationVisible = ref(false);
-const notificationMessage = ref('');
+const notificationMessage = ref("");
 const router = useRouter();
 
 // ตัวแปรสำหรับคำถามและตัวเลือก
@@ -122,28 +123,28 @@ function updateCupColors() {
 const selectOption = (option) => {
   const questionKey = questions.value[currentQuestionIndex.value].key;
   const previousOption = answers.value[questionKey];
- 
+
   // ถ้ามีตัวเลือกเก่าอยู่แล้ว ให้ลบราคาของตัวเลือกเก่าออกก่อน
   if (previousOption) {
-    const previousPrice = questions.value[currentQuestionIndex.value].options.find(
-      (opt) => opt.option === previousOption
-    ).price;
+    const previousPrice = questions.value[
+      currentQuestionIndex.value
+    ].options.find((opt) => opt.option === previousOption).price;
     answers.value.price -= previousPrice; // ลบราคาของตัวเลือกเก่า
   }
- 
+
   // บันทึกตัวเลือกใหม่
   answers.value[questionKey] = option.option;
   answers.value.price += option.price; // เพิ่มราคาของตัวเลือกใหม่
- 
+
   if (currentQuestionIndex.value === 0) {
     changeColor(option.option); // เปลี่ยนสีแก้ว
   } else if (currentQuestionIndex.value >= 1) {
     fillLevel.value = Math.min(fillLevel.value + 1, maxLayers.value);
     updateCupColors();
   }
- 
+
   clickCount.value++;
- 
+
   // ไปยังคำถามถัดไปหรือจบการเลือก
   if (currentQuestionIndex.value < questions.value.length) {
     currentQuestionIndex.value++;
@@ -156,7 +157,7 @@ const goBack = () => {
   if (currentQuestionIndex.value > 0) {
     const questionKey = questions.value[currentQuestionIndex.value]?.key;
     const currentOption = answers.value[questionKey];
- 
+
     // ลดราคาจากตัวเลือกปัจจุบัน
     const currentPrice = currentOption
       ? questions.value[currentQuestionIndex.value].options.find(
@@ -164,9 +165,9 @@ const goBack = () => {
         ).price
       : 0;
     answers.value.price -= currentPrice; // ลดราคา
- 
+
     answers.value[questionKey] = null; // ลบคำตอบของคำถามปัจจุบัน
- 
+
     // ตรวจสอบการเปลี่ยนจากเย็นเป็นร้อนและลบ 10 บาท
     if (currentQuestionIndex.value === 1) {
       const previousOption = answers.value["drinkType"];
@@ -174,9 +175,9 @@ const goBack = () => {
         answers.value.price -= 10; // ลบ 10 บาทถ้าเปลี่ยนจากเย็นเป็นร้อน
       }
     }
- 
+
     currentQuestionIndex.value--; // ย้อนกลับไปยังคำถามก่อนหน้า
- 
+
     if (currentQuestionIndex.value >= 1) {
       fillLevel.value = Math.max(0, fillLevel.value - 1); // ลดระดับเลเยอร์
       updateCupColors(); // อัปเดตสีแก้ว
@@ -184,7 +185,7 @@ const goBack = () => {
       fillLevel.value = 0;
       updateCupColors(); // รีเซ็ตสีแก้วเมื่อกลับไปหน้าคำถามแรก
     }
- 
+
     clickCount.value--;
     isFinished.value = false; // ตั้งค่า isFinished เป็น false หากย้อนกลับ
   }
@@ -197,14 +198,14 @@ const submitOrder = async () => {
     console.log(response.message);
 
     // แสดง notification เมื่อสั่งซื้อสำเร็จ
-    notificationMessage.value = response.message || "Order submitted successfully!";
+    notificationMessage.value =
+      response.message || "Order submitted successfully!";
     notificationVisible.value = true;
 
     // รีไดเรกต์ไปยัง cart หลังจากดีเลย์สั้น ๆ
     setTimeout(() => {
       router.push({ name: "cart" });
     }, 700); // ดีเลย์ 700 มิลลิวินาทีเพื่อให้ผู้ใช้เห็น notification
-
   } catch (error) {
     console.error("Error submitting order:", error);
 
@@ -213,71 +214,76 @@ const submitOrder = async () => {
     notificationVisible.value = true;
   }
 };
-
 </script>
 
 <template>
-  <div class="wrapper bg-orange-100">
-    <div class="background" :style="{ backgroundColor: backgroundColor }">
-      <div class="container">
-        <div class="cup">
-          <div
-            class="cup-layer"
-            :style="{ height: '25%', backgroundColor: cupColors.layer4 }"
-          ></div>
-          <div
-            class="cup-layer"
-            :style="{ height: '25%', backgroundColor: cupColors.layer3 }"
-          ></div>
-          <div
-            class="cup-layer"
-            :style="{ height: '25%', backgroundColor: cupColors.layer2 }"
-          ></div>
-          <div
-            class="cup-layer"
-            :style="{ height: '25%', backgroundColor: cupColors.layer1 }"
-          ></div>
+  <HeaderFooterLayout>
+    <template #sidebar>
+      <li><a href="#" @click="router.push({ name: 'menuPage' })">Menu</a></li>
+      <li><a href="#" @click="router.push({ name: 'home' })">Home</a></li>
+    </template>
+    <div class="wrapper bg-orange-100">
+      <div class="background" :style="{ backgroundColor: backgroundColor }">
+        <div class="container">
+          <div class="cup">
+            <div
+              class="cup-layer"
+              :style="{ height: '25%', backgroundColor: cupColors.layer4 }"
+            ></div>
+            <div
+              class="cup-layer"
+              :style="{ height: '25%', backgroundColor: cupColors.layer3 }"
+            ></div>
+            <div
+              class="cup-layer"
+              :style="{ height: '25%', backgroundColor: cupColors.layer2 }"
+            ></div>
+            <div
+              class="cup-layer"
+              :style="{ height: '25%', backgroundColor: cupColors.layer1 }"
+            ></div>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div
-      v-if="!isFinished && currentQuestionIndex < questions.length"
-      class="question-container"
-    >
-      <h2>{{ questions[currentQuestionIndex].question }}</h2>
-      <div class="options">
-        <button
-          v-for="option in questions[currentQuestionIndex].options"
-          :key="option.option"
-          class="btn"
-          @click="selectOption(option)"
-        >
-          {{ option.option }} - {{ option.price }} THB
-        </button>
+      <div
+        v-if="!isFinished && currentQuestionIndex < questions.length"
+        class="question-container"
+      >
+        <h2>{{ questions[currentQuestionIndex].question }}</h2>
+        <div class="options">
+          <button
+            v-for="option in questions[currentQuestionIndex].options"
+            :key="option.option"
+            class="btn"
+            @click="selectOption(option)"
+          >
+            {{ option.option }} - {{ option.price }} THB
+          </button>
+        </div>
+      </div>
+
+      <div v-else>
+        <h2>การตั้งค่าของคุณเสร็จสมบูรณ์แล้ว</h2>
+        <p>ราคารวม: {{ answers.price }} THB</p>
+        <button @click="submitOrder" class="btn">ยืนยันคำสั่งซื้อ</button>
+      </div>
+      <div v-if="currentQuestionIndex > 0">
+        <button @click="goBack" class="btn">ย้อนกลับ</button>
       </div>
     </div>
-
-    <div v-else>
-      <h2>การตั้งค่าของคุณเสร็จสมบูรณ์แล้ว</h2>
-      <p>ราคารวม: {{ answers.price }} THB</p>
-      <button @click="submitOrder" class="btn">ยืนยันคำสั่งซื้อ</button>
-    </div>
-    <div v-if="currentQuestionIndex > 0">
-      <button @click="goBack" class="btn">ย้อนกลับ</button>
-    </div>
-  </div>
-  <Notification
-  :visible="notificationVisible"
-  @close="notificationVisible = false"
->
-  <template #icon>
-    <span>🔔</span>
-  </template>
-  <template #content>
-    <p>{{ notificationMessage }}</p>
-  </template>
-</Notification>
+    <Notification
+      :visible="notificationVisible"
+      @close="notificationVisible = false"
+    >
+      <template #icon>
+        <span>🔔</span>
+      </template>
+      <template #content>
+        <p>{{ notificationMessage }}</p>
+      </template>
+    </Notification>
+  </HeaderFooterLayout>
 </template>
 
 <style scoped>
