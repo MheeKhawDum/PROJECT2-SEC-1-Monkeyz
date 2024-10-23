@@ -70,20 +70,20 @@ const applyDiscount = () => {
   const normalizedCouponCode = couponCode.value.trim().toLowerCase(); // แปลงคูปองเป็นตัวพิมพ์เล็ก
 
   if (!normalizedCouponCode) {
-    discountMessage.value = "กรุณากรอกรหัสคูปอง"; // Message when no coupon is entered
+    discountMessage.value = "Please Type Your coupon"; // Message when no coupon is entered
     isDiscountApplied.value = false;
     return;
   }
 
   // ตรวจสอบว่าจำนวนแก้วครบ 5 แก้วหรือไม่
   if (totalQuantity >= 5 && normalizedCouponCode === "discount20") {
-    discountMessage.value = "คุณได้รับส่วนลด 20%!"; // ข้อความยืนยันส่วนลด
+    discountMessage.value = "You got discount 20%!"; // ข้อความยืนยันส่วนลด
     isDiscountApplied.value = true; // ตั้งค่าว่ามีการใช้ส่วนลด
   } else if (normalizedCouponCode !== "discount20" && normalizedCouponCode) {
-    discountMessage.value = "ส่วนลดไม่ถูกต้อง"; // ข้อความสำหรับกรณีคูปองไม่ถูกต้อง
+    discountMessage.value = "Wrong discount code"; // ข้อความสำหรับกรณีคูปองไม่ถูกต้อง
     isDiscountApplied.value = false; // ไม่ใช้ส่วนลด
   } else if (normalizedCouponCode) {
-    discountMessage.value = "จำนวนแก้วไม่พอที่จะใช้ส่วนลด"; // ข้อความสำหรับกรณีไม่ครบ
+    discountMessage.value = "Not enough cups to apply the discount"; // ข้อความสำหรับกรณีไม่ครบ
     isDiscountApplied.value = false; // ไม่ใช้ส่วนลด
   } else {
     discountMessage.value = ""; // ล้างข้อความหากไม่มีคูปอง
