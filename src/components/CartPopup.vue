@@ -1,8 +1,13 @@
 <script setup>
 import { ref, computed, onMounted } from "vue";
-import { getOrders, deleteOrder, addHistory, updateOrder } from "../lib/fetch.js"; // นำเข้าฟังก์ชัน getOrders จาก fetch.js
+import {
+  getOrders,
+  deleteOrder,
+  addHistory,
+  updateOrder,
+} from "../lib/fetch.js"; // นำเข้าฟังก์ชัน getOrders จาก fetch.js
 import { useRouter } from "vue-router";
-import Notification from './notification/Notification.vue'; // Import the notification component
+import Notification from "./notification/Notification.vue"; // Import the notification component
 
 const router = useRouter();
 const cartPopup = ref(true); // Control visibility of cart popup
@@ -10,8 +15,8 @@ const cartItems = ref([]); // Array holding cart items
 const couponCode = ref(""); // ตัวแปรสำหรับเก็บคูปอง
 const discountMessage = ref(""); // ตัวแปรสำหรับข้อความส่วนลด
 const isDiscountApplied = ref(false); // ตัวแปรเพื่อตรวจสอบว่ามีการใช้ส่วนลดหรือไม่
-const notificationMessage = ref(""); 
-const showNotification = ref(false); 
+const notificationMessage = ref("");
+const showNotification = ref(false);
 
 onMounted(async () => {
   await loadOrders();
@@ -20,7 +25,6 @@ onMounted(async () => {
 const loadOrders = async () => {
   try {
     const data = await getOrders(); // เรียกใช้ฟังก์ชัน getOrders เพื่อดึงข้อมูล
-    console.log("Loaded Orders", data);
     cartItems.value = data; // เก็บข้อมูลที่ได้ลงใน orders
   } catch (error) {
     console.error("Error loading orders:", error);
@@ -32,14 +36,14 @@ const removeOrder = async (orderId) => {
   try {
     await deleteOrder(orderId);
     cartItems.value = cartItems.value.filter((order) => order.id !== orderId);
-    
+
     // แสดงการแจ้งเตือนเมื่อมีการลบ
     notificationMessage.value = "Item removed from the cart";
     showNotification.value = true;
     setTimeout(() => {
       showNotification.value = false; // ซ่อนการแจ้งเตือนหลังจาก 3 วินาที
     }, 3000);
-    
+
     loadOrders();
   } catch (error) {
     console.error("Error deleting order:", error);
@@ -64,6 +68,12 @@ const applyDiscount = () => {
     0
   );
   const normalizedCouponCode = couponCode.value.trim().toLowerCase(); // แปลงคูปองเป็นตัวพิมพ์เล็ก
+
+  if (!normalizedCouponCode) {
+    discountMessage.value = "กรุณากรอกรหัสคูปอง"; // Message when no coupon is entered
+    isDiscountApplied.value = false;
+    return;
+  }
 
   // ตรวจสอบว่าจำนวนแก้วครบ 5 แก้วหรือไม่
   if (totalQuantity >= 5 && normalizedCouponCode === "discount20") {
@@ -121,13 +131,13 @@ async function decreaseQuantity(id) {
 async function placeOrder() {
   try {
     const addHistoryResponse = await addHistory(cartItems.value);
-  
+
     if (addHistoryResponse.resCode === 201) {
       for (let item of cartItems.value) {
         await deleteOrder(item.id);
       }
       cartItems.value = [];
-      
+
       // แสดงการแจ้งเตือนเมื่อสั่งซื้อสำเร็จ
       notificationMessage.value = "Order placed and cart cleared!";
       showNotification.value = true;
@@ -213,6 +223,15 @@ function closeCartPopup() {
           </button>
         </div>
 
+        <p
+          v-if="
+            cartItems.length > 0 &&
+            cartItems.reduce((sum, item) => sum + item.quantity, 0) >= 5
+          "
+        >
+          Use this coupon: <span class="font-bold">"discount20"</span> to get 20% off!
+          off!
+        </p>
         <!-- แสดงข้อความส่วนลด -->
         <div v-if="discountMessage" class="text-red-500">
           {{ discountMessage }}
