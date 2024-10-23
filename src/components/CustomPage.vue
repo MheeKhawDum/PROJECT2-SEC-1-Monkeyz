@@ -119,24 +119,33 @@ function updateCupColors() {
   });
 }
 
-// ฟังก์ชันสำหรับเลือกตัวเลือกและไปยังคำถามถัดไป
 const selectOption = (option) => {
   const questionKey = questions.value[currentQuestionIndex.value].key;
-  answers.value[questionKey] = option.option; // บันทึกชื่อของตัวเลือก
-  answers.value.price += option.price; // เพิ่มราคาในราคารวม
-
+  const previousOption = answers.value[questionKey];
+ 
+  // ถ้ามีตัวเลือกเก่าอยู่แล้ว ให้ลบราคาของตัวเลือกเก่าออกก่อน
+  if (previousOption) {
+    const previousPrice = questions.value[currentQuestionIndex.value].options.find(
+      (opt) => opt.option === previousOption
+    ).price;
+    answers.value.price -= previousPrice; // ลบราคาของตัวเลือกเก่า
+  }
+ 
+  // บันทึกตัวเลือกใหม่
+  answers.value[questionKey] = option.option;
+  answers.value.price += option.price; // เพิ่มราคาของตัวเลือกใหม่
+ 
   if (currentQuestionIndex.value === 0) {
     changeColor(option.option); // เปลี่ยนสีแก้ว
   } else if (currentQuestionIndex.value >= 1) {
     fillLevel.value = Math.min(fillLevel.value + 1, maxLayers.value);
     updateCupColors();
   }
-
-  // เพิ่มจำนวนการกดปุ่ม
+ 
   clickCount.value++;
-
+ 
   // ไปยังคำถามถัดไปหรือจบการเลือก
-  if (currentQuestionIndex.value < questions.value.length - 1) {
+  if (currentQuestionIndex.value < questions.value.length) {
     currentQuestionIndex.value++;
   } else {
     isFinished.value = true; // ตั้งค่าเป็น true เมื่อเลือกเสร็จแล้ว
@@ -145,20 +154,39 @@ const selectOption = (option) => {
 
 const goBack = () => {
   if (currentQuestionIndex.value > 0) {
-    const questionKey = questions.value[currentQuestionIndex.value].key;
-    answers.value[questionKey] = null; // ลบคำตอบเมื่อย้อนกลับ
-    currentQuestionIndex.value--;
-
+    const questionKey = questions.value[currentQuestionIndex.value]?.key;
+    const currentOption = answers.value[questionKey];
+ 
+    // ลดราคาจากตัวเลือกปัจจุบัน
+    const currentPrice = currentOption
+      ? questions.value[currentQuestionIndex.value].options.find(
+          (option) => option.option === currentOption
+        ).price
+      : 0;
+    answers.value.price -= currentPrice; // ลดราคา
+ 
+    answers.value[questionKey] = null; // ลบคำตอบของคำถามปัจจุบัน
+ 
+    // ตรวจสอบการเปลี่ยนจากเย็นเป็นร้อนและลบ 10 บาท
+    if (currentQuestionIndex.value === 1) {
+      const previousOption = answers.value["drinkType"];
+      if (previousOption === "cold") {
+        answers.value.price -= 10; // ลบ 10 บาทถ้าเปลี่ยนจากเย็นเป็นร้อน
+      }
+    }
+ 
+    currentQuestionIndex.value--; // ย้อนกลับไปยังคำถามก่อนหน้า
+ 
     if (currentQuestionIndex.value >= 1) {
-      fillLevel.value = Math.max(0, fillLevel.value - 1);
-      updateCupColors();
+      fillLevel.value = Math.max(0, fillLevel.value - 1); // ลดระดับเลเยอร์
+      updateCupColors(); // อัปเดตสีแก้ว
     } else {
       fillLevel.value = 0;
-      updateCupColors();
+      updateCupColors(); // รีเซ็ตสีแก้วเมื่อกลับไปหน้าคำถามแรก
     }
-
+ 
     clickCount.value--;
-    isFinished.value = false; // หากย้อนกลับให้ตั้งเป็น false
+    isFinished.value = false; // ตั้งค่า isFinished เป็น false หากย้อนกลับ
   }
 };
 
@@ -235,7 +263,6 @@ const submitOrder = async () => {
       <p>ราคารวม: {{ answers.price }} THB</p>
       <button @click="submitOrder" class="btn">ยืนยันคำสั่งซื้อ</button>
     </div>
-    {{ answers }}
     <div v-if="currentQuestionIndex > 0">
       <button @click="goBack" class="btn">ย้อนกลับ</button>
     </div>
