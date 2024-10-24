@@ -1,4 +1,4 @@
-# PROJECT2-SEC-1-Monkeyz
+[INT203-Monkeyz(explain).docx](https://github.com/user-attachments/files/17501052/INT203-Monkeyz.explain.docx)# PROJECT2-SEC-1-Monkeyz
 
 
 ## สมาชิกในทีม
@@ -29,3 +29,6 @@
 
 # วิดีโอวิธีการใช้งานเว็บ
 https://youtu.be/CdtFGNAjYXo
+
+# doc วิธีการใช้งานเว็บ + หน้าที่สมาชิกแต่ละคน
+[INT203-Monkeyz(explain).docx](https://github.com/user-attachments/files/17501050/INT203-Monkeyz.explain.docx)
