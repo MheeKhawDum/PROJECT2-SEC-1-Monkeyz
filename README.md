@@ -12,7 +12,7 @@
 - รับหน้าที่ (ออกแบบฐานข้อมูล, function discount, fetch add delete in cart)
 
 นายชยาศิส เกษรมาศ 65130500097 (20%)
-- รับหน้าที่ (แบ่ง component, ทำ router, ทำ fetch edit custom menu page, fetch add history, history page, re-order function)
+- รับหน้าที่ (แบ่ง component, ทำ router, ทำ fetch edit custom menu page, fetch add history, re-order function)
 
 นายธนกร วงษ์คนดี 65130500123 (20%)
 - รับหน้าที่ (function recommend, function discount)
