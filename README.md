@@ -4,12 +4,16 @@
 ## สมาชิกในทีม
 นายจิตติพัฒน์ พลหาร 65130500009 (20%)
 - รับหน้าที่ (แบ่ง component, function recommend, ตกแต่ง UI)
+
 นายชนะพล เอื้อเฟื้อ 65130500015 (20%)
 - รับหน้าที่ (แบ่ง component, ทำ notification ต่างๆ, ทำ edit normal menu page)
+
 นายชิษณุชา เชิงสมอ 65130500016 (20%)
 - รับหน้าที่ (ออกแบบฐานข้อมูล, function discount)
+
 นายชยาศิส เกษรมาศ 65130500097 (20%)
 - รับหน้าที่ (แบ่ง component, ทำ router, ทำ fetch edit custom menu page, history, re-order function)
+
 นายธนกร วงษ์คนดี 65130500123 (20%)
 - รับหน้าที่ (function recommend, function discount)
 
