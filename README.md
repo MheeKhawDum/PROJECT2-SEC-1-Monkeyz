@@ -1,4 +1,4 @@
-[INT203-Monkeyz(explain).docx](https://github.com/user-attachments/files/17501052/INT203-Monkeyz.explain.docx)# PROJECT2-SEC-1-Monkeyz
+# PROJECT2-SEC-1-Monkeyz
 
 
 ## สมาชิกในทีม
