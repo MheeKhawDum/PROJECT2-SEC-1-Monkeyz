@@ -19,7 +19,6 @@ const loadHistory = async () => {
     const data = await getHistory();
 
     historyItems.value = data;
-    console.log(historyItems);
   } catch (error) {
     console.error("Error loading history:", error);
   }
